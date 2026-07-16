@@ -6,6 +6,8 @@ const clinicSchema = z.object({
   id: z.uuid(),
   name: z.string(),
   organization_id: z.uuid(),
+  status: z.string().optional(),
+  timezone: z.string().optional(),
 });
 
 const scoreSummarySchema = z.object({

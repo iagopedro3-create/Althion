@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { signOut } from '@/app/auth/actions';
+import { PortalNav } from '@/components/portal/portal-nav';
 import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
@@ -22,7 +24,7 @@ export default async function PortalLayout({ children }: Readonly<{ children: Re
         </a>
         <nav aria-label="Navegação principal" className="portal-nav">
           <a href="/app">Clínicas</a>
-          <span aria-label="Radar e Score provisórios">Radar · v1</span>
+          <span aria-label="Portal do Cliente versão um">Portal · v1</span>
         </nav>
         <form action={signOut}>
           <button className="quiet-button" type="submit">
@@ -30,6 +32,9 @@ export default async function PortalLayout({ children }: Readonly<{ children: Re
           </button>
         </form>
       </header>
+      <Suspense fallback={<div className="portal-nav-skeleton" aria-hidden="true" />}>
+        <PortalNav />
+      </Suspense>
       {children}
     </div>
   );
