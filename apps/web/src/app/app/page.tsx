@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { fetchPrincipal } from '@/lib/api/principal';
+import { fetchClinics } from '@/lib/api/radar';
 import { createClient } from '@/lib/supabase/server';
 
 export default async function FoundationPage() {
@@ -12,32 +13,49 @@ export default async function FoundationPage() {
   if (!session) redirect('/entrar');
 
   const result = await fetchPrincipal(session.access_token);
+  const clinicGroups =
+    result.kind === 'success'
+      ? await Promise.all(
+          result.principal.memberships.map(async (membership) => ({
+            clinics: await fetchClinics(session.access_token, membership.organizationId),
+            membership,
+          })),
+        )
+      : [];
 
   return (
     <main className="portal-main">
       <div>
-        <p className="eyebrow">Fundação operacional</p>
-        <h1>Seu ambiente Althion</h1>
+        <p className="eyebrow">Operação administrativa</p>
+        <h1>Escolha a clínica que precisa de atenção.</h1>
         <p className="lead-copy">
-          A base segura da operação está ativa. Radar, Score e demais módulos entram somente nas
-          próximas fases aprovadas.
+          O Radar transforma dados do período em lacunas, recomendações e uma nota operacional
+          explicável.
         </p>
       </div>
 
-      {result.kind === 'success' && result.principal.memberships.length > 0 ? (
-        <section className="tenant-grid" aria-label="Organizações disponíveis">
-          {result.principal.memberships.map((membership) => (
-            <article className="tenant-card" key={membership.organizationId}>
-              <span className="status-dot" aria-hidden="true" />
-              <div>
-                <h2>Organização autorizada</h2>
-                <p>
-                  Papel: <strong>{membership.role.replaceAll('_', ' ')}</strong>
-                </p>
-                <small>Identificador: {membership.organizationId}</small>
-              </div>
-            </article>
-          ))}
+      {clinicGroups.some(
+        (group) => group.clinics.kind === 'success' && group.clinics.data.length,
+      ) ? (
+        <section className="tenant-grid" aria-label="Clínicas disponíveis">
+          {clinicGroups.flatMap((group) =>
+            group.clinics.kind === 'success'
+              ? group.clinics.data.map((clinic) => (
+                  <a
+                    className="tenant-card actionable-card"
+                    href={`/app/radar?organizationId=${clinic.organization_id}&clinicId=${clinic.id}`}
+                    key={clinic.id}
+                  >
+                    <span className="status-dot" aria-hidden="true" />
+                    <div>
+                      <h2>{clinic.name}</h2>
+                      <p>Ver diagnóstico, Score e próximas ações.</p>
+                      <small>Papel: {group.membership.role.replaceAll('_', ' ')}</small>
+                    </div>
+                  </a>
+                ))
+              : [],
+          )}
         </section>
       ) : result.kind === 'success' ? (
         <section className="state-card" aria-live="polite">

@@ -20,6 +20,10 @@ export default async function PortalLayout({ children }: Readonly<{ children: Re
           <span className="brand-mark">A</span>
           <span>Althion</span>
         </a>
+        <nav aria-label="Navegação principal" className="portal-nav">
+          <a href="/app">Clínicas</a>
+          <span aria-label="Radar e Score provisórios">Radar · v1</span>
+        </nav>
         <form action={signOut}>
           <button className="quiet-button" type="submit">
             Sair
