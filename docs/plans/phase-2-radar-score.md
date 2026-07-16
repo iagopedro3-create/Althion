@@ -2,9 +2,9 @@
 
 ## Estado
 
-**Planejada em 16 de julho de 2026; aguardando aprovação explícita para implementação.**
+**Aprovada e implementada em 16 de julho de 2026; validação de banco pendente.**
 
-Este documento autoriza apenas a revisão do plano. Nenhum código de Radar ou Score será criado antes da aprovação. A execução das migrations e dos testes pgTAP da Fase 1 continua sendo um gate obrigatório antes de considerar qualquer migration da Fase 2 pronta para merge ou staging.
+Os pesos e critérios de suficiência provisórios foram autorizados. A execução das migrations e dos testes pgTAP das Fases 1 e 2 continua sendo gate obrigatório antes de considerar a fase pronta para merge ou staging.
 
 ## Objetivo e decisão suportada
 
@@ -72,7 +72,7 @@ O usuário principal desta fase é o gestor da clínica. O Especialista de Relac
 | `operator`                | não                             | não                         | não             | não      | não           |
 | `viewer`                  | diagnóstico concluído no escopo | não                         | não             | não      | não           |
 
-Capabilities propostas: `radar:read`, `radar:write`, `radar:submit`, `score:read`, `score:calculate`, `score-formula:manage` e `radar-report:export`.
+Capabilities implementadas: `radar:read`, `radar:write`, `radar:submit`, `score:read`, `score:calculate`, `score_formula:manage` e `radar_report:export`.
 
 ## Modelo de dados proposto
 
@@ -343,6 +343,6 @@ Nenhuma biblioteca de gráficos ou PDF será adicionada inicialmente. Componente
 5. Confirmar se impressão/PDF pelo navegador + CSV satisfaz a exportação inicial.
 6. Disponibilizar Docker ou CI para executar migrations, regenerar tipos e validar pgTAP.
 
-## Autorização necessária
+## Gate de encerramento
 
-A implementação começará apenas após aprovação explícita deste plano. A aprovação deve também indicar se os pesos e critérios de suficiência podem ser usados como hipótese `v1-provisional`; thresholds não aprovados permanecerão em estado draft e não produzirão um Score oficial.
+A implementação foi autorizada com pesos e suficiência `v1-provisional`. A fórmula permanece `draft` até a definição de owner nominal e calibração. O aceite depende de Docker/CI, tipos regenerados e repetição de todos os gates.

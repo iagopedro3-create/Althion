@@ -1,4 +1,4 @@
-# Runbook da Fundação
+# Runbook da Fundação, Radar e Score
 
 ## Health
 
@@ -9,14 +9,17 @@ Ambas são públicas, rate-limited e não retornam segredo, versão interna ou c
 
 ## Sintomas principais
 
-| Código/estado              | Interpretação                    | Ação                                      |
-| -------------------------- | -------------------------------- | ----------------------------------------- |
-| `AUTHENTICATION_REQUIRED`  | bearer ausente ou inválido       | renovar login; não registrar token        |
-| `PROFILE_NOT_PROVISIONED`  | Auth existe sem profile          | verificar trigger/provisionamento         |
-| `ACCESS_DENIED`            | capability ou scope insuficiente | revisar membership/assignment e auditoria |
-| `DATA_SERVICE_UNAVAILABLE` | Data API indisponível/falhou     | validar Supabase e correlation ID         |
-| `PROVIDER_NOT_CONFIGURED`  | Helena propositalmente bloqueada | não improvisar URL; obter documentação    |
-| integration `blocked`      | conexão não habilitada           | estado esperado na Fase 1                 |
+| Código/estado              | Interpretação                            | Ação                                            |
+| -------------------------- | ---------------------------------------- | ----------------------------------------------- |
+| `AUTHENTICATION_REQUIRED`  | bearer ausente ou inválido               | renovar login; não registrar token              |
+| `PROFILE_NOT_PROVISIONED`  | Auth existe sem profile                  | verificar trigger/provisionamento               |
+| `ACCESS_DENIED`            | capability ou scope insuficiente         | revisar membership/assignment e auditoria       |
+| `DATA_SERVICE_UNAVAILABLE` | Data API indisponível/falhou             | validar Supabase e correlation ID               |
+| `RADAR_INPUT_INVALID`      | período, contagem ou vínculo inválido    | revisar payload agregado; não logar observações |
+| `RADAR_STATE_CONFLICT`     | rascunho enviado ou comando concorrente  | recarregar; não sobrescrever snapshot           |
+| `RADAR_NOT_FOUND`          | recurso inexistente ou invisível por RLS | confirmar tenant, clínica e acesso              |
+| `PROVIDER_NOT_CONFIGURED`  | Helena propositalmente bloqueada         | não improvisar URL; obter documentação          |
+| integration `blocked`      | conexão não habilitada                   | estado esperado na Fase 1                       |
 
 ## Revogação de acesso
 
@@ -45,6 +48,15 @@ Ambas são públicas, rate-limited e não retornam segredo, versão interna ou c
 ## Helena
 
 Não existe operação real na Fase 1. Nenhum erro autoriza criar endpoint, credencial ou payload por tentativa. O desbloqueio segue `docs/architecture/integrations.md`.
+
+## Radar e Score
+
+- `insufficient_data` não é incidente: verificar cobertura e dimensões obrigatórias.
+- Divergência entre prévia e snapshot persistido é incidente de severidade alta; preservar input hash, fórmula e correlation ID.
+- Nunca editar assessment enviado, Score, componente, evidência ou recomendação; um novo cálculo exige novo assessment.
+- Exportação CSV deve gerar `radar.assessment.exported` e nunca registrar o conteúdo exportado.
+- Fórmula `draft` deve aparecer como provisória. Não publicar sem owner, calibração e revisão.
+- Em suspeita de acesso indevido, revogar membership/assignment, preservar auditoria e executar a suíte cross-tenant.
 
 ## Backup e restore
 

@@ -2,7 +2,7 @@
 
 ## Estado atual
 
-A Fundação implementa `/`, `/entrar`, `/recuperar-acesso`, `/definir-senha`, `/auth/callback`, `/app`, health, `/api/v1/me` e os endpoints fundacionais de organização descritos em `docs/current-state.md`. As demais rotas deste documento continuam propostas e não constituem API pronta.
+As rotas da Fundação e de Radar/Score estão implementadas. Rotas de Portal amplo, Cockpit, engines e integrações continuam propostas e não constituem API pronta.
 
 ## Convenções
 
@@ -30,26 +30,32 @@ As seções comerciais (recuperação, leads, agenda, especialista, IA, indicado
 
 ## Portal do cliente
 
-| Rota web                            | Finalidade                                             | Fase                          |
-| ----------------------------------- | ------------------------------------------------------ | ----------------------------- |
-| `/app`                              | Dashboard orientado a problemas, oportunidades e ações | 3                             |
-| `/app/radar`                        | Diagnósticos e novo Radar                              | 2                             |
-| `/app/score`                        | Score, componentes e histórico                         | 2                             |
-| `/app/leads`                        | Visão normalizada de leads                             | 3/6                           |
-| `/app/agenda`                       | Capacidade e eventos administrativos                   | 3, limitada até definir fonte |
-| `/app/recuperacao`                  | Oportunidades priorizadas                              | 3/5                           |
-| `/app/recuperacao/[opportunityId]`  | Evidências, ações e resultado                          | 5                             |
-| `/app/indicadores`                  | Métricas e comparações                                 | 3                             |
-| `/app/relatorios`                   | Relatórios e exportações                               | 2/3                           |
-| `/app/acoes`                        | Ações executadas e pendentes                           | 3/5                           |
-| `/app/qualidade`                    | Performance de IA, revisões e handoffs                 | 7                             |
-| `/app/solicitacoes`                 | Solicitações do cliente                                | 3                             |
-| `/app/plano-de-melhoria`            | Plano, responsáveis e prazos                           | 3                             |
-| `/app/especialista`                 | Especialista atribuído e contato operacional           | 3                             |
-| `/app/integracoes`                  | Conexões, estado e freshness                           | 3/6                           |
-| `/app/configuracoes`                | Organização, clínicas, unidades e preferências         | 1/3                           |
-| `/app/configuracoes/acessos`        | Memberships e permissões                               | 1                             |
-| `/app/configuracoes/consentimentos` | Políticas e supressões administrativas                 | 5                             |
+| Rota web                               | Finalidade                                             | Fase                          |
+| -------------------------------------- | ------------------------------------------------------ | ----------------------------- |
+| `/app`                                 | Dashboard orientado a problemas, oportunidades e ações | 3                             |
+| `/app/radar`                           | Histórico de diagnósticos                              | 2, implementada               |
+| `/app/radar/novo`                      | Questionário manual em etapas                          | 2, implementada               |
+| `/app/radar/[assessmentId]`            | Rascunho, prévia, envio e evidências                   | 2, implementada               |
+| `/app/radar/[assessmentId]/editar`     | Edição de rascunho                                     | 2, implementada               |
+| `/app/radar/[assessmentId]/relatorio`  | Relatório imprimível                                   | 2, implementada               |
+| `/app/radar/[assessmentId]/export.csv` | Exportação autorizada e auditada                       | 2, implementada               |
+| `/app/score`                           | Score, componentes, comparação e histórico             | 2, implementada               |
+| `/app/score/[scoreId]`                 | Nota, cobertura, componentes, recomendações e lineage  | 2, implementada               |
+| `/app/leads`                           | Visão normalizada de leads                             | 3/6                           |
+| `/app/agenda`                          | Capacidade e eventos administrativos                   | 3, limitada até definir fonte |
+| `/app/recuperacao`                     | Oportunidades priorizadas                              | 3/5                           |
+| `/app/recuperacao/[opportunityId]`     | Evidências, ações e resultado                          | 5                             |
+| `/app/indicadores`                     | Métricas e comparações                                 | 3                             |
+| `/app/relatorios`                      | Relatórios e exportações                               | 2/3                           |
+| `/app/acoes`                           | Ações executadas e pendentes                           | 3/5                           |
+| `/app/qualidade`                       | Performance de IA, revisões e handoffs                 | 7                             |
+| `/app/solicitacoes`                    | Solicitações do cliente                                | 3                             |
+| `/app/plano-de-melhoria`               | Plano, responsáveis e prazos                           | 3                             |
+| `/app/especialista`                    | Especialista atribuído e contato operacional           | 3                             |
+| `/app/integracoes`                     | Conexões, estado e freshness                           | 3/6                           |
+| `/app/configuracoes`                   | Organização, clínicas, unidades e preferências         | 1/3                           |
+| `/app/configuracoes/acessos`           | Memberships e permissões                               | 1                             |
+| `/app/configuracoes/consentimentos`    | Políticas e supressões administrativas                 | 5                             |
 
 ## Cockpit do Especialista
 
@@ -98,20 +104,21 @@ Mutations exigem validação, autorização, auditoria e idempotency key quando 
 
 ## API de produto por módulo
 
-| Prefixo                                                        | Recursos principais                  | Fase                    |
-| -------------------------------------------------------------- | ------------------------------------ | ----------------------- |
-| `/api/v1/organizations/:organizationId/radar-assessments`      | diagnóstico, respostas e relatório   | 2                       |
-| `/api/v1/organizations/:organizationId/scores`                 | cálculo, componentes e histórico     | 2                       |
-| `/api/v1/organizations/:organizationId/dashboard`              | projeção acionável do portal         | 3                       |
-| `/api/v1/organizations/:organizationId/leads`                  | visão normalizada                    | 3/6                     |
-| `/api/v1/organizations/:organizationId/appointments`           | eventos administrativos              | 3, após source of truth |
-| `/api/v1/organizations/:organizationId/requests`               | solicitações e estados               | 3                       |
-| `/api/v1/specialist/assignments`                               | carteira do especialista autenticado | 4                       |
-| `/api/v1/organizations/:organizationId/recovery-rules`         | regras e versões                     | 5                       |
-| `/api/v1/organizations/:organizationId/recovery-opportunities` | oportunidades e ações                | 5                       |
-| `/api/v1/organizations/:organizationId/quality-reviews`        | avaliação e revisão                  | 7                       |
-| `/api/v1/organizations/:organizationId/capacity`               | snapshots e recomendações            | 8                       |
-| `/api/v1/organizations/:organizationId/ad-accounts`            | leitura Google Ads                   | 9                       |
+| Prefixo                                                                     | Recursos principais                       | Fase                    |
+| --------------------------------------------------------------------------- | ----------------------------------------- | ----------------------- |
+| `/api/v1/organizations/:organizationId/clinics/:clinicId/radar-assessments` | rascunho, detalhe, prévia, envio e export | 2, implementada         |
+| `/api/v1/organizations/:organizationId/clinics/:clinicId/scores`            | snapshots, detalhe e histórico            | 2, implementada         |
+| `/api/v1/organizations/:organizationId/clinics/:clinicId/score-comparisons` | comparação explícita entre snapshots      | 2, implementada         |
+| `/api/v1/organizations/:organizationId/dashboard`                           | projeção acionável do portal              | 3                       |
+| `/api/v1/organizations/:organizationId/leads`                               | visão normalizada                         | 3/6                     |
+| `/api/v1/organizations/:organizationId/appointments`                        | eventos administrativos                   | 3, após source of truth |
+| `/api/v1/organizations/:organizationId/requests`                            | solicitações e estados                    | 3                       |
+| `/api/v1/specialist/assignments`                                            | carteira do especialista autenticado      | 4                       |
+| `/api/v1/organizations/:organizationId/recovery-rules`                      | regras e versões                          | 5                       |
+| `/api/v1/organizations/:organizationId/recovery-opportunities`              | oportunidades e ações                     | 5                       |
+| `/api/v1/organizations/:organizationId/quality-reviews`                     | avaliação e revisão                       | 7                       |
+| `/api/v1/organizations/:organizationId/capacity`                            | snapshots e recomendações                 | 8                       |
+| `/api/v1/organizations/:organizationId/ad-accounts`                         | leitura Google Ads                        | 9                       |
 
 Operações específicas como simular, aprovar ou pausar podem usar sub-recursos/commands REST, definidos no plano detalhado da respectiva fase; não serão antecipadas sem contrato.
 

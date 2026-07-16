@@ -2,7 +2,7 @@
 
 ## Status
 
-Baseline e controles da Fundação. Autenticação, capabilities, RLS, constraints compostas, auditoria, idempotência, rate limit, redaction e testes foram implementados na Fase 1. A execução local de pgTAP depende de Docker e as decisões jurídicas continuam sujeitas a validação especializada e contratos.
+Baseline e controles das Fases 1 e 2. Autenticação, capabilities, RLS, constraints compostas, auditoria, idempotência, rate limit, redaction, Radar e Score foram implementados. A execução local de pgTAP depende de Docker e as decisões jurídicas continuam sujeitas a validação especializada e contratos.
 
 ## Objetivos
 
@@ -112,6 +112,17 @@ O bypass de RLS é risco crítico. A service role:
 - Erros públicos não expõem stack, SQL, IDs externos ou existência indevida.
 - Mutations críticas usam idempotency key e optimistic concurrency/version quando necessário.
 - Logs têm correlation ID, mas redaction central remove PII e segredos.
+
+### Radar e Score
+
+- inputs são contagens agregadas; campos livres são opcionais, limitados e nunca entram em logs;
+- navegador não envia nota persistida: o PostgreSQL calcula o snapshot a partir dos inputs autorizados;
+- rascunhos são visíveis apenas a owner, manager e especialista atribuído; doctor/viewer leem somente concluídos;
+- operator não possui capability de Radar/Score;
+- Score, componentes, evidências, recomendações e fórmula publicada são imutáveis;
+- exportação exige capability, revalida RLS, gera auditoria e neutraliza formula injection;
+- `insufficient_data` usa nota nula; ausência de dados não é convertida em zero;
+- fórmula provisória não é benchmark, qualidade clínica ou verdade financeira.
 
 ## Webhooks e integrações
 

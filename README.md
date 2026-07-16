@@ -4,7 +4,7 @@ Fundação técnica da plataforma de Recuperação e Performance da Agenda para 
 
 ## Estado
 
-Fase 1 — Fundação. A integração Helena está bloqueada até a entrega da documentação oficial. Todos os dados locais são sintéticos.
+Fase 2 — Radar e Althion Score implementados com dados manuais/sintéticos e fórmula provisória. A integração Helena está bloqueada até a entrega da documentação oficial.
 
 ## Requisitos
 

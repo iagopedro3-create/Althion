@@ -2,7 +2,7 @@
 
 ## Status
 
-Baseline lógico de toda a plataforma. A parte fundacional já possui schema executável em `supabase/migrations`; as demais tabelas serão confirmadas no plano da fase correspondente. `id uuid`, `created_at timestamptz` e `updated_at timestamptz` são padrão e foram omitidos das listas abaixo para reduzir repetição.
+Baseline lógico de toda a plataforma. Fundação, Radar e Score possuem schema executável em `supabase/migrations`; as demais tabelas serão confirmadas no plano da fase correspondente. `id uuid`, `created_at timestamptz` e `updated_at timestamptz` são padrão e foram omitidos das listas abaixo para reduzir repetição.
 
 ## Campos padrão tenant-owned
 
@@ -59,16 +59,16 @@ Papéis tenant iniciais: `organization_owner`, `clinic_manager`, `doctor`, `oper
 
 ## Radar e Score
 
-| Tabela                     | Campos mínimos específicos                                                                                                                                              | Constraints/explicação                                              |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `radar_assessments`        | `organization_id`, `clinic_id?`, `period_start`, `period_end`, `status`, `questionnaire_version`, `data_coverage`, `completed_at?`                                      | período válido; versão imutável após conclusão                      |
-| `radar_answers`            | `organization_id`, `assessment_id`, `question_key`, `value_numeric?`, `value_code?`, `is_unknown`, `source_system`, `observed_at?`                                      | exatamente um tipo de valor ou desconhecido                         |
-| `radar_recommendations`    | `organization_id`, `assessment_id`, `code`, `priority`, `rationale`, `status`                                                                                           | rationale administrativo e explicável                               |
-| `score_formulas`           | `organization_id?`, `name`, `version`, `status`, `effective_from`, `effective_to?`, `minimum_coverage`                                                                  | imutável após ativação; versão única por escopo                     |
-| `score_formula_components` | `formula_id`, `dimension`, `weight`, `normalization_rule_version`, `minimum_data`                                                                                       | dimensão única/fórmula; `0 <= weight <= 1`; soma validada ao ativar |
-| `althion_scores`           | `organization_id`, `clinic_id?`, `assessment_id?`, `formula_id`, `period_start`, `period_end`, `score?`, `status`, `data_coverage`, `confidence_level`, `calculated_at` | score 0–100 ou nulo se insuficiente                                 |
-| `althion_score_components` | `organization_id`, `score_id`, `dimension`, `raw_value?`, `normalized_value?`, `weight`, `weighted_value?`, `status`, `explanation`                                     | snapshot dos pesos/valores usados                                   |
-| `score_evidence`           | `organization_id`, `component_id`, `source_type`, `source_id?`, `observed_at`, `value_snapshot`, `quality_status`                                                       | lineage; snapshot sem conteúdo sensível                             |
+| Tabela                             | Campos mínimos específicos                                                                                                                             | Constraints/explicação                                      |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| `radar_assessments`                | `organization_id`, `clinic_id`, `unit_id?`, `period_start`, `period_end`, `status`, `questionnaire_version`, `created_by`, `submitted_at?`             | 7–92 dias; rascunho editável e enviado imutável             |
+| `radar_metric_inputs`              | `organization_id`, `clinic_id`, `assessment_id`, `metric_code`, `numerator`, `denominator`, `source`, `quality`, `observation?`                        | razão agregada; numerador não supera denominador            |
+| `radar_recommendations`            | `organization_id`, `clinic_id`, `assessment_id`, `score_id`, `rule_code`, `rule_version`, `priority`, `title`, `rationale`                             | regra determinística e snapshot imutável                    |
+| `althion_score_formulas`           | `version`, `status`, `minimum_coverage`, `mandatory_dimensions`, `definition_hash`, `published_at?`                                                    | global; draft ou publicação imutável                        |
+| `althion_score_formula_components` | `formula_id`, `metric_code`, `dimension`, `label`, `weight`, `transformation`                                                                          | uma métrica/dimensão por fórmula; soma validada ao publicar |
+| `althion_scores`                   | `organization_id`, `clinic_id`, `assessment_id`, `formula_id`, `status`, `score_value?`, `coverage`, `input_hash`, `calculated_at`                     | nota 0–100 ou nula se insuficiente                          |
+| `althion_score_components`         | `organization_id`, `score_id`, `metric_code`, `dimension`, `status`, `score_value?`, `weight`, `contribution?`, `explanation`                          | snapshot dos pesos e valores usados                         |
+| `althion_score_evidence`           | `organization_id`, `score_id`, `component_id`, `metric_input_id?`, `numerator?`, `denominator?`, `normalized_value?`, `reason_code?`, `transformation` | lineage sem conteúdo sensível                               |
 
 Dimensões iniciais: `speed`, `conversion`, `continuity`, `occupancy`, `attendance`, `recovery`, `retention`, `data_intelligence`.
 
@@ -126,5 +126,5 @@ Dimensões iniciais: `speed`, `conversion`, `continuity`, `occupancy`, `attendan
 - granularidade de escopo do operador e filas Helena;
 - política de PII mínima para busca e deduplicação de contatos;
 - retenção e base legal por entidade;
-- pesos, normalização, dados mínimos e owner da fórmula do Score;
+- owner nominal e thresholds de calibração da fórmula oficial do Score;
 - definição operacional de slot, ocupação, recuperação e comparecimento.

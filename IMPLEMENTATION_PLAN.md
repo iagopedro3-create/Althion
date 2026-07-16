@@ -2,7 +2,7 @@
 
 ## Controle de escopo
 
-Este plano foi criado na Fase 0. A Fase 1 foi autorizada e implementada em 16 de julho de 2026. Código, testes e builds locais estão verdes; migrations e pgTAP aguardam execução em Docker/CI antes do aceite final. O planejamento detalhado da Fase 2 foi autorizado em 16 de julho de 2026 e está em `docs/plans/phase-2-radar-score.md`; implementação aguarda aprovação explícita desse plano.
+Este plano foi criado na Fase 0. As Fases 1 e 2 foram autorizadas e implementadas em 16 de julho de 2026. Código, testes e builds locais estão verdes; migrations e 37 assertions pgTAP aguardam execução em Docker/CI antes do aceite final. A Fase 3 permanece não autorizada.
 
 O repositório começou vazio: sem commits, remoto, stack ou landing page. Portanto, a Fundação será greenfield e não uma migração de código existente.
 
@@ -332,7 +332,7 @@ Nenhuma foi instalada. Versões devem ser verificadas e fixadas no lockfile some
 
 ### Adiadas até necessidade real
 
-- React Hook Form: Fase 2, formulários complexos;
+- React Hook Form e resolvers Zod: instalados na Fase 2 para o formulário do Radar;
 - biblioteca de gráficos: Fase 2/3 após requisitos de acessibilidade e export;
 - BullMQ/Redis ou fila gerenciada: Fase 5/6 após escolher infraestrutura;
 - OpenTelemetry e error tracking: fornecedor definido antes de staging;
@@ -369,20 +369,22 @@ Após confirmar o provedor/remoto:
 4. Como filas permitidas do operador serão mapeadas sem acoplar à Helena?
 5. Qual é o fluxo inicial de Auth: convite + senha, magic link, OTP ou SSO?
 6. Quais taxonomias definem status/motivo de lead, perda, appointment e ação?
-7. Quem é owner da fórmula Althion Score v1 e quais são pesos, dados mínimos e comparação?
+7. Quem é o owner nominal da fórmula Althion Score v1 e quais thresholds serão calibrados antes da publicação?
 8. Quais SLAs e limites de frequência serão padrão e quais são configuráveis?
 9. Quais canais e protocolos de escalonamento humano estão aprovados?
 10. Quais identidade visual, copy e documentos jurídicos devem orientar o site?
 
-## Critérios para encerrar a Fase 1 e iniciar a Fase 2
+## Critérios para encerrar a Fase 2 e planejar a Fase 3
 
-1. Executar `db:start`, `db:reset`, `db:lint` e os 15 testes pgTAP em host/CI com Docker.
+1. Executar `db:start`, `db:reset`, `db:lint` e as 37 assertions pgTAP em host/CI com Docker.
 2. Regenerar `packages/contracts/src/database.types.ts` pelo schema executado e revisar o diff.
 3. Repetir lint, typecheck, testes, build e E2E após a geração dos tipos.
-4. Manter Helena bloqueada e dados exclusivamente sintéticos.
-5. Revisar as limitações em `docs/releases/phase-1.md`.
-6. Definir owner, pesos, cobertura mínima e versão da fórmula do Althion Score.
-7. Apresentar plano, arquivos, riscos e critérios detalhados da Fase 2.
-8. Obter aprovação explícita para **iniciar a Fase 2**.
+4. Provisionar usuário exclusivamente sintético para E2E autenticado do Radar.
+5. Revisar migrations, functions `security definer`, grants e policies por segunda pessoa.
+6. Manter Helena bloqueada, fórmula `draft` e dados exclusivamente sintéticos.
+7. Definir owner nominal e plano de calibração antes de publicar a fórmula oficial.
+8. Revisar as limitações em `docs/releases/phase-2.md`.
+9. Apresentar plano, arquivos, riscos e critérios detalhados da Fase 3.
+10. Obter aprovação explícita para **iniciar a Fase 3**.
 
-Sem esses gates, o trabalho permitido é corrigir/validar a Fundação; não iniciar Radar ou Score.
+Sem esses gates, o trabalho permitido é corrigir/validar Radar, Score e Fundação; não iniciar o Portal amplo.

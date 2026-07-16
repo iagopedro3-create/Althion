@@ -2,7 +2,7 @@
 
 ## Status
 
-Este documento combina arquitetura implementada e arquitetura-alvo. A Fundação foi materializada na Fase 1; módulos de produto, worker, filas e integrações reais continuam condicionados à aprovação das fases correspondentes.
+Este documento combina arquitetura implementada e arquitetura-alvo. A Fundação foi materializada na Fase 1 e Radar/Score na Fase 2. Portal amplo, engines, worker, filas e integrações reais continuam condicionados à aprovação das fases correspondentes.
 
 ## Direção arquitetural
 

@@ -2,7 +2,7 @@
 
 ## Estado da especificação
 
-**Draft para decisão; não implementada e não publicada.**
+**Implementada como `1.0.0-provisional`; draft e não publicada como fórmula oficial.**
 
 Owner proposto: Produto Althion, com aprovação conjunta de Operações e revisão técnica. A fórmula deve possuir um responsável nominal antes de ser publicada.
 

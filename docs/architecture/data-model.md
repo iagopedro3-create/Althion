@@ -2,7 +2,7 @@
 
 ## Status e objetivos
 
-Modelo lógico evolutivo. As tabelas de tenancy, acesso, profissionais, especialistas, flags, integrações, auditoria e idempotência foram criadas na Fase 1. As entidades de Radar, Score e engines continuam propostas e serão materializadas apenas por suas fases.
+Modelo lógico evolutivo. Tenancy e Fundação foram materializados na Fase 1; Radar e Score foram materializados na Fase 2. Entidades operacionais externas e engines continuam propostas e serão criadas apenas por suas fases.
 
 ## Convenções globais
 
@@ -69,13 +69,13 @@ erDiagram
 ```mermaid
 erDiagram
     ORGANIZATIONS ||--o{ RADAR_ASSESSMENTS : runs
-    RADAR_ASSESSMENTS ||--o{ RADAR_ANSWERS : captures
+    RADAR_ASSESSMENTS ||--o{ RADAR_METRIC_INPUTS : captures
     RADAR_ASSESSMENTS ||--o{ RADAR_RECOMMENDATIONS : generates
-    SCORE_FORMULAS ||--o{ SCORE_FORMULA_COMPONENTS : defines
+    ALTHION_SCORE_FORMULAS ||--o{ ALTHION_SCORE_FORMULA_COMPONENTS : defines
     RADAR_ASSESSMENTS ||--o{ ALTHION_SCORES : informs
-    SCORE_FORMULAS ||--o{ ALTHION_SCORES : versions
+    ALTHION_SCORE_FORMULAS ||--o{ ALTHION_SCORES : versions
     ALTHION_SCORES ||--o{ ALTHION_SCORE_COMPONENTS : explains
-    ALTHION_SCORE_COMPONENTS ||--o{ SCORE_EVIDENCE : traces
+    ALTHION_SCORE_COMPONENTS ||--o{ ALTHION_SCORE_EVIDENCE : traces
 ```
 
 A fórmula é imutável após ativação. Um novo peso cria nova versão. Cada score registra completude, confiança, período e estado `insufficient_data` quando necessário. Componentes preservam valores e pesos efetivamente usados; evidências apontam para inputs ou snapshots, sem depender do estado atual da fonte.
