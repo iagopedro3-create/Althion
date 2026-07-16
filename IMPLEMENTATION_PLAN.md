@@ -2,7 +2,7 @@
 
 ## Controle de escopo
 
-Este plano foi criado na Fase 0. As Fases 1 e 2 foram autorizadas e implementadas em 16 de julho de 2026. Código, testes e builds locais estão verdes; migrations e 37 assertions pgTAP aguardam execução em Docker/CI antes do aceite final. A Fase 3 permanece não autorizada.
+Este plano foi criado na Fase 0. As Fases 1 e 2 foram autorizadas e implementadas em 16 de julho de 2026. Código, testes e builds locais estão verdes; migrations e 37 assertions pgTAP aguardam execução em Docker/CI antes do aceite final. O planejamento detalhado da Fase 3 foi iniciado, mas código de produto aguarda aprovação do plano e conclusão dos gates de banco.
 
 O repositório começou vazio: sem commits, remoto, stack ou landing page. Portanto, a Fundação será greenfield e não uma migração de código existente.
 
@@ -253,6 +253,8 @@ Plano detalhado: `docs/plans/phase-2-radar-score.md`. Especificação draft: `do
 - indicadores, ações, solicitações, plano e integrações;
 - visual responsivo, acessível e orientado a decisão;
 - autorização por rota, caso de uso e RLS.
+
+Plano detalhado: `docs/plans/phase-3-client-portal.md`. Escopo proposto source-backed: Radar/Score, recomendações, solicitações, plano/tarefas, Especialista e estado de integrações. Leads, agenda, Recovery e Quality permanecem indisponíveis enquanto suas fontes e módulos não existirem.
 
 ### Fase 4 — Cockpit
 

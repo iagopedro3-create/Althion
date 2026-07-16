@@ -4,7 +4,7 @@
 
 Cada fase é um gate. Antes de iniciar: plano detalhado, arquivos, riscos, critérios de aceite e aprovação explícita. Depois: lint, typecheck, testes, build, E2E relevante, revisão visual/acessibilidade, documentação, evidências, limitações e próximos passos.
 
-A Fase 2 foi aprovada e implementada em 16 de julho de 2026. O aceite técnico permanece condicionado aos gates de banco documentados. A Fase 3 não está autorizada.
+A Fase 2 foi aprovada e implementada em 16 de julho de 2026. O aceite técnico permanece condicionado aos gates de banco documentados. O planejamento detalhado da Fase 3 foi iniciado; código de produto aguarda aprovação do plano e conclusão dos gates anteriores.
 
 ## Sequência
 
@@ -13,7 +13,7 @@ A Fase 2 foi aprovada e implementada em 16 de julho de 2026. O aceite técnico p
 | 0. Auditoria           | Estado atual, visão, arquitetura, segurança, dados e plano                      | Revisão do solicitante                                         | Concluída            |
 | 1. Fundação            | Base modular, Auth, tenancy, RBAC/RLS, auditoria, flags e providers vazios/mock | Execução de migrations/pgTAP em Docker ou CI                   | Em validação         |
 | 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Execução das migrations e 37 assertions pgTAP                  | Em validação         |
-| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Pesquisa de UX e métricas validadas                            | Não iniciada         |
+| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Plano aprovado, gates de banco, pesquisa de UX e métricas      | Em planejamento      |
 | 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Modelo operacional do Especialista e SLAs                      | Não iniciada         |
 | 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Consentimento, supressão, frequência e fontes definidas        | Não iniciada         |
 | 6. Helena              | Sync real, webhooks, normalização e monitoramento                               | Documentação oficial, sandbox e contrato; atualmente bloqueada | Bloqueada            |
@@ -58,6 +58,8 @@ Plano detalhado: `docs/plans/phase-2-radar-score.md`. Fórmula proposta: `docs/p
 ## Fase 3 — Portal
 
 Construir uma home orientada a alertas, oportunidades e próximas ações. Tabelas ficam reservadas para investigação detalhada; o dashboard principal prioriza decisão e impacto administrativo.
+
+Plano detalhado: `docs/plans/phase-3-client-portal.md`. Até a aprovação, oportunidades são apenas uma proposta de projeção das recomendações Radar; nenhum conceito do Recovery Engine será antecipado.
 
 ## Fase 4 — Cockpit
 

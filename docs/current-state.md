@@ -4,7 +4,7 @@
 
 Atualizado em 16 de julho de 2026 após a implementação da Fase 2. O repositório contém a Fundação executável e o primeiro módulo de produto da Althion: Radar manual, Althion Score v1 provisório, recomendações determinísticas, histórico, comparação, relatório e exportação CSV.
 
-A integração Helena permanece intencionalmente bloqueada. Portal amplo, Recovery, Cockpit, Quality, Capacity e Google Ads não foram iniciados. A Fase 2 está em validação porque as migrations e os testes pgTAP ainda dependem de Docker/CI.
+A integração Helena permanece intencionalmente bloqueada. O Portal amplo entrou em planejamento, sem código de produto; Recovery, Cockpit, Quality, Capacity e Google Ads não foram iniciados. A Fase 2 está em validação porque as migrations e os testes pgTAP ainda dependem de Docker/CI.
 
 ## Stack atual
 
