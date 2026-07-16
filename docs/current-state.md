@@ -4,7 +4,7 @@
 
 Atualizado em 16 de julho de 2026 após a implementação da Fase 1. O repositório começou vazio, sem commits ou remoto, e agora contém a Fundação executável da Althion: monorepo TypeScript, web Next.js, API NestJS, schema Supabase/PostgreSQL, autenticação, autorização em profundidade, auditoria, feature flags e camada CRM substituível.
 
-A integração Helena permanece intencionalmente bloqueada. Radar, Score, Portal funcional, Recovery, Quality, Capacity e Google Ads não foram iniciados.
+A integração Helena permanece intencionalmente bloqueada. O planejamento detalhado de Radar e Score foi criado, mas nenhum código de produto da Fase 2 foi iniciado. Portal funcional, Recovery, Quality, Capacity e Google Ads não foram iniciados.
 
 ## Stack atual
 
@@ -128,4 +128,4 @@ As tabelas de Radar, Score e engines continuam apenas no modelo lógico e serão
 
 ## Git
 
-O repositório ainda não possui commit ou remoto configurado. Todos os arquivos atuais estão não versionados até que o usuário escolha o provedor e autorize staging/commit.
+O repositório está na branch `codex/phase-1-foundation`. A Fundação foi registrada no commit `43d8b9a`; nenhum remoto está configurado. O planejamento da Fase 2 é mantido em commit documental separado da implementação.

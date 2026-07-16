@@ -2,7 +2,7 @@
 
 ## Controle de escopo
 
-Este plano foi criado na Fase 0. A Fase 1 foi autorizada e implementada em 16 de julho de 2026. Código, testes e builds locais estão verdes; migrations e pgTAP aguardam execução em Docker/CI antes do aceite final. A Fase 2 permanece não autorizada.
+Este plano foi criado na Fase 0. A Fase 1 foi autorizada e implementada em 16 de julho de 2026. Código, testes e builds locais estão verdes; migrations e pgTAP aguardam execução em Docker/CI antes do aceite final. O planejamento detalhado da Fase 2 foi autorizado em 16 de julho de 2026 e está em `docs/plans/phase-2-radar-score.md`; implementação aguarda aprovação explícita desse plano.
 
 O repositório começou vazio: sem commits, remoto, stack ou landing page. Portanto, a Fundação será greenfield e não uma migração de código existente.
 
@@ -244,6 +244,8 @@ Cada plano será detalhado e reapresentado antes da fase.
 - cálculo determinístico com dados insuficientes;
 - relatório/export e histórico;
 - testes de limites, pesos, períodos e rastreabilidade.
+
+Plano detalhado: `docs/plans/phase-2-radar-score.md`. Especificação draft: `docs/product/althion-score-v1.md`.
 
 ### Fase 3 — Portal
 

@@ -4,23 +4,23 @@
 
 Cada fase é um gate. Antes de iniciar: plano detalhado, arquivos, riscos, critérios de aceite e aprovação explícita. Depois: lint, typecheck, testes, build, E2E relevante, revisão visual/acessibilidade, documentação, evidências, limitações e próximos passos.
 
-Nenhuma fase posterior está autorizada por este roadmap.
+O planejamento da Fase 2 foi autorizado em 16 de julho de 2026. A implementação permanece condicionada à aprovação explícita do plano detalhado e aos gates de banco documentados.
 
 ## Sequência
 
-| Fase                   | Resultado                                                                       | Dependências/gate                                              | Status               |
-| ---------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------- | -------------------- |
-| 0. Auditoria           | Estado atual, visão, arquitetura, segurança, dados e plano                      | Revisão do solicitante                                         | Concluída            |
-| 1. Fundação            | Base modular, Auth, tenancy, RBAC/RLS, auditoria, flags e providers vazios/mock | Execução de migrations/pgTAP em Docker ou CI                   | Em validação         |
-| 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Fórmula v1, dados mínimos e identidade do relatório            | Não iniciada         |
-| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Pesquisa de UX e métricas validadas                            | Não iniciada         |
-| 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Modelo operacional do Especialista e SLAs                      | Não iniciada         |
-| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Consentimento, supressão, frequência e fontes definidas        | Não iniciada         |
-| 6. Helena              | Sync real, webhooks, normalização e monitoramento                               | Documentação oficial, sandbox e contrato; atualmente bloqueada | Bloqueada            |
-| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | Política de conteúdo/IA e avaliação de privacidade             | Não iniciada         |
-| 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Fonte oficial de agenda e definição de slot                    | Bloqueada pela fonte |
-| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | Conta sandbox, consentimentos e taxonomia de atribuição        | Não iniciada         |
-| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores          | Não iniciada         |
+| Fase                   | Resultado                                                                       | Dependências/gate                                              | Status                          |
+| ---------------------- | ------------------------------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------- |
+| 0. Auditoria           | Estado atual, visão, arquitetura, segurança, dados e plano                      | Revisão do solicitante                                         | Concluída                       |
+| 1. Fundação            | Base modular, Auth, tenancy, RBAC/RLS, auditoria, flags e providers vazios/mock | Execução de migrations/pgTAP em Docker ou CI                   | Em validação                    |
+| 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Aprovação do plano, fórmula v1 e validação de banco            | Planejada; aguardando aprovação |
+| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Pesquisa de UX e métricas validadas                            | Não iniciada                    |
+| 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Modelo operacional do Especialista e SLAs                      | Não iniciada                    |
+| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Consentimento, supressão, frequência e fontes definidas        | Não iniciada                    |
+| 6. Helena              | Sync real, webhooks, normalização e monitoramento                               | Documentação oficial, sandbox e contrato; atualmente bloqueada | Bloqueada                       |
+| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | Política de conteúdo/IA e avaliação de privacidade             | Não iniciada                    |
+| 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Fonte oficial de agenda e definição de slot                    | Bloqueada pela fonte            |
+| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | Conta sandbox, consentimentos e taxonomia de atribuição        | Não iniciada                    |
+| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores          | Não iniciada                    |
 
 ## Fase 0 — Auditoria
 
@@ -52,6 +52,8 @@ Não inclui dashboard de produto, Score, regra de recuperação real ou chamada 
 ## Fase 2 — Radar e Score
 
 Começar com dados manuais e sintéticos permite validar fórmula e UX sem esperar integração. A nota deve mostrar cobertura, componentes, evidências e `dados insuficientes` quando aplicável. Exportação só após revisão visual e sanitização.
+
+Plano detalhado: `docs/plans/phase-2-radar-score.md`. Fórmula proposta: `docs/product/althion-score-v1.md`.
 
 ## Fase 3 — Portal
 
