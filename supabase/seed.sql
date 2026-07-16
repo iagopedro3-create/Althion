@@ -7,7 +7,9 @@ values
   ('80000000-0000-4000-8000-000000000003', 'viewer-b@synthetic.althion.local', '{"display_name":"Viewer B sintético"}'),
   ('80000000-0000-4000-8000-000000000004', 'specialist@synthetic.althion.local', '{"display_name":"Especialista sintético"}'),
   ('80000000-0000-4000-8000-000000000005', 'target@synthetic.althion.local', '{"display_name":"Target sintético"}'),
-  ('80000000-0000-4000-8000-000000000006', 'operator-a@synthetic.althion.local', '{"display_name":"Operador A sintético"}');
+  ('80000000-0000-4000-8000-000000000006', 'operator-a@synthetic.althion.local', '{"display_name":"Operador A sintético"}'),
+  ('80000000-0000-4000-8000-000000000007', 'doctor-a@synthetic.althion.local', '{"display_name":"Doctor A sintético"}'),
+  ('80000000-0000-4000-8000-000000000008', 'viewer-a@synthetic.althion.local', '{"display_name":"Viewer A sintético"}');
 
 insert into public.organizations (id, name, slug)
 values
@@ -40,12 +42,22 @@ insert into public.memberships (id, organization_id, profile_id, role)
 select '40000000-0000-4000-8000-000000000004', '10000000-0000-4000-8000-000000000001', id, 'operator'
 from public.profiles where auth_user_id = '80000000-0000-4000-8000-000000000006';
 
+insert into public.memberships (id, organization_id, profile_id, role)
+select '40000000-0000-4000-8000-000000000005', '10000000-0000-4000-8000-000000000001', id, 'doctor'
+from public.profiles where auth_user_id = '80000000-0000-4000-8000-000000000007';
+
+insert into public.memberships (id, organization_id, profile_id, role)
+select '40000000-0000-4000-8000-000000000006', '10000000-0000-4000-8000-000000000001', id, 'viewer'
+from public.profiles where auth_user_id = '80000000-0000-4000-8000-000000000008';
+
 insert into public.membership_scopes (organization_id, membership_id, clinic_id, unit_id)
 values
   ('10000000-0000-4000-8000-000000000001', '40000000-0000-4000-8000-000000000001', null, null),
   ('10000000-0000-4000-8000-000000000001', '40000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000001', null),
   ('10000000-0000-4000-8000-000000000002', '40000000-0000-4000-8000-000000000003', null, null),
-  ('10000000-0000-4000-8000-000000000001', '40000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000001', null);
+  ('10000000-0000-4000-8000-000000000001', '40000000-0000-4000-8000-000000000004', '20000000-0000-4000-8000-000000000001', null),
+  ('10000000-0000-4000-8000-000000000001', '40000000-0000-4000-8000-000000000005', '20000000-0000-4000-8000-000000000001', null),
+  ('10000000-0000-4000-8000-000000000001', '40000000-0000-4000-8000-000000000006', '20000000-0000-4000-8000-000000000001', null);
 
 insert into public.relationship_specialists (id, profile_id)
 select '50000000-0000-4000-8000-000000000001', id
@@ -67,6 +79,15 @@ select
   'Habilitação sintética para validar a Fase 2.'
 from public.feature_flags
 where key = 'radar.score.v1';
+
+insert into public.feature_flag_overrides (organization_id, feature_flag_id, enabled, reason)
+select
+  '10000000-0000-4000-8000-000000000001',
+  id,
+  true,
+  'Habilitação sintética para validar a Fase 3.'
+from public.feature_flags
+where key = 'portal.client.v1';
 
 insert into public.integrations (organization_id, provider, status, capabilities, last_error_code)
 values

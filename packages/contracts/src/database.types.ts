@@ -1,5 +1,5 @@
 /**
- * Temporary typed baseline for the Phase 1 tables used by the API.
+ * Temporary typed baseline for the Phase 1-3 tables used by the API.
  * Regenerate from the local schema with `pnpm db:types` once Docker is available.
  */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
@@ -19,6 +19,8 @@ export interface Database {
       feature_flags: TableDefinition<FeatureFlagRow>;
       idempotency_records: TableDefinition<IdempotencyRecordRow>;
       integrations: TableDefinition<IntegrationRow>;
+      improvement_plan_status_history: TableDefinition<ImprovementPlanStatusHistoryRow>;
+      improvement_plans: TableDefinition<ImprovementPlanRow>;
       memberships: TableDefinition<MembershipRow>;
       membership_scopes: TableDefinition<MembershipScopeRow>;
       organizations: TableDefinition<OrganizationRow>;
@@ -29,9 +31,77 @@ export interface Database {
       radar_recommendations: TableDefinition<RadarRecommendationRow>;
       relationship_assignments: TableDefinition<RelationshipAssignmentRow>;
       relationship_specialists: TableDefinition<RelationshipSpecialistRow>;
+      request_status_history: TableDefinition<RequestStatusHistoryRow>;
+      requests: TableDefinition<PortalRequestRow>;
+      task_status_history: TableDefinition<TaskStatusHistoryRow>;
+      tasks: TableDefinition<PortalTaskRow>;
     };
     Views: Record<string, never>;
     Functions: {
+      create_improvement_plan: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+          target_period_end: string | null;
+          target_period_start: string | null;
+          target_source_score_id: string | null;
+          target_title: string;
+        };
+        Returns: string;
+      };
+      create_portal_request: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_category: string;
+          target_clinic_id: string;
+          target_details: string;
+          target_organization_id: string;
+          target_priority: string;
+          target_subject: string;
+        };
+        Returns: string;
+      };
+      create_portal_task: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_assignee_profile_id: string | null;
+          target_clinic_id: string;
+          target_due_at: string | null;
+          target_organization_id: string;
+          target_plan_id: string;
+          target_priority: string;
+          target_radar_recommendation_id: string | null;
+          target_title: string;
+        };
+        Returns: string;
+      };
+      get_portal_people: {
+        Args: {
+          target_clinic_id: string;
+          target_organization_id: string;
+        };
+        Returns: Array<{
+          display_name: string;
+          person_kind: string;
+          profile_id: string;
+        }>;
+      };
+      get_portal_specialist: {
+        Args: {
+          target_clinic_id: string;
+          target_organization_id: string;
+        };
+        Returns: Array<{
+          assignment_id: string;
+          display_name: string;
+          profile_id: string;
+          starts_at: string;
+        }>;
+      };
       create_radar_assessment: {
         Args: {
           idempotency_key: string;
@@ -95,6 +165,42 @@ export interface Database {
           target_assessment_id: string;
           target_clinic_id: string;
           target_organization_id: string;
+        };
+        Returns: string;
+      };
+      transition_improvement_plan: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+          target_plan_id: string;
+          target_reason_code: string | null;
+          target_status: string;
+        };
+        Returns: string;
+      };
+      transition_portal_request: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+          target_reason_code: string | null;
+          target_request_id: string;
+          target_status: string;
+        };
+        Returns: string;
+      };
+      transition_portal_task: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+          target_reason_code: string | null;
+          target_status: string;
+          target_task_id: string;
         };
         Returns: string;
       };
@@ -373,4 +479,93 @@ export interface RadarRecommendationRow extends Record<string, unknown> {
   rule_version: string;
   score_id: string;
   title: string;
+}
+
+export interface PortalRequestRow extends Record<string, unknown> {
+  acknowledged_at: string | null;
+  assignee_profile_id: string | null;
+  category: 'access' | 'integration' | 'data_quality' | 'operational_support' | 'meeting' | 'other';
+  clinic_id: string;
+  closed_at: string | null;
+  created_at: string;
+  details: string;
+  id: string;
+  organization_id: string;
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+  requester_profile_id: string;
+  resolved_at: string | null;
+  status: 'open' | 'acknowledged' | 'in_progress' | 'waiting_customer' | 'resolved' | 'closed';
+  subject: string;
+  updated_at: string;
+}
+
+export interface RequestStatusHistoryRow extends Record<string, unknown> {
+  changed_at: string;
+  changed_by_profile_id: string;
+  clinic_id: string;
+  from_status: PortalRequestRow['status'] | null;
+  id: string;
+  organization_id: string;
+  reason_code: string | null;
+  request_id: string;
+  to_status: PortalRequestRow['status'];
+}
+
+export interface ImprovementPlanRow extends Record<string, unknown> {
+  activated_at: string | null;
+  archived_at: string | null;
+  clinic_id: string;
+  completed_at: string | null;
+  created_at: string;
+  created_by_profile_id: string;
+  id: string;
+  organization_id: string;
+  period_end: string | null;
+  period_start: string | null;
+  source_score_id: string | null;
+  status: 'draft' | 'active' | 'completed' | 'archived';
+  title: string;
+  updated_at: string;
+  version: number;
+}
+
+export interface ImprovementPlanStatusHistoryRow extends Record<string, unknown> {
+  changed_at: string;
+  changed_by_profile_id: string;
+  clinic_id: string;
+  from_status: ImprovementPlanRow['status'] | null;
+  id: string;
+  improvement_plan_id: string;
+  organization_id: string;
+  reason_code: string | null;
+  to_status: ImprovementPlanRow['status'];
+}
+
+export interface PortalTaskRow extends Record<string, unknown> {
+  assignee_profile_id: string | null;
+  clinic_id: string;
+  completed_at: string | null;
+  created_at: string;
+  created_by_profile_id: string;
+  due_at: string | null;
+  id: string;
+  improvement_plan_id: string;
+  organization_id: string;
+  priority: 'low' | 'normal' | 'high';
+  radar_recommendation_id: string | null;
+  status: 'todo' | 'in_progress' | 'blocked' | 'completed' | 'cancelled';
+  title: string;
+  updated_at: string;
+}
+
+export interface TaskStatusHistoryRow extends Record<string, unknown> {
+  changed_at: string;
+  changed_by_profile_id: string;
+  clinic_id: string;
+  from_status: PortalTaskRow['status'] | null;
+  id: string;
+  organization_id: string;
+  reason_code: string | null;
+  task_id: string;
+  to_status: PortalTaskRow['status'];
 }
