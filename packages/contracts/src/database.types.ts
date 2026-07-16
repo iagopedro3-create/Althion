@@ -9,6 +9,11 @@ export interface Database {
   public: {
     Tables: {
       audit_logs: TableDefinition<AuditLogRow>;
+      althion_score_components: TableDefinition<AlthionScoreComponentRow>;
+      althion_score_evidence: TableDefinition<AlthionScoreEvidenceRow>;
+      althion_score_formula_components: TableDefinition<AlthionScoreFormulaComponentRow>;
+      althion_score_formulas: TableDefinition<AlthionScoreFormulaRow>;
+      althion_scores: TableDefinition<AlthionScoreRow>;
       clinics: TableDefinition<ClinicRow>;
       feature_flag_overrides: TableDefinition<FeatureFlagOverrideRow>;
       feature_flags: TableDefinition<FeatureFlagRow>;
@@ -19,11 +24,27 @@ export interface Database {
       organizations: TableDefinition<OrganizationRow>;
       platform_roles: TableDefinition<PlatformRoleRow>;
       profiles: TableDefinition<ProfileRow>;
+      radar_assessments: TableDefinition<RadarAssessmentRow>;
+      radar_metric_inputs: TableDefinition<RadarMetricInputRow>;
+      radar_recommendations: TableDefinition<RadarRecommendationRow>;
       relationship_assignments: TableDefinition<RelationshipAssignmentRow>;
       relationship_specialists: TableDefinition<RelationshipSpecialistRow>;
     };
     Views: Record<string, never>;
     Functions: {
+      create_radar_assessment: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_metrics: Json;
+          target_organization_id: string;
+          target_period_end: string;
+          target_period_start: string;
+          target_unit_id: string | null;
+        };
+        Returns: string;
+      };
       grant_membership: {
         Args: {
           idempotency_key: string;
@@ -44,6 +65,38 @@ export interface Database {
           target_organization_id: string;
         };
         Returns: undefined;
+      };
+      replace_radar_assessment: {
+        Args: {
+          request_id: string;
+          target_assessment_id: string;
+          target_clinic_id: string;
+          target_metrics: Json;
+          target_organization_id: string;
+          target_period_end: string;
+          target_period_start: string;
+          target_unit_id: string | null;
+        };
+        Returns: undefined;
+      };
+      record_radar_export: {
+        Args: {
+          request_id: string;
+          target_assessment_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+        };
+        Returns: undefined;
+      };
+      submit_radar_assessment: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_assessment_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+        };
+        Returns: string;
       };
     };
     Enums: Record<string, never>;
@@ -205,4 +258,119 @@ interface IdempotencyRecordRow extends Record<string, unknown> {
   scope: string;
   status: string;
   updated_at: string;
+}
+
+export interface RadarAssessmentRow extends Record<string, unknown> {
+  clinic_id: string;
+  created_at: string;
+  created_by: string;
+  deleted_at: string | null;
+  id: string;
+  organization_id: string;
+  period_end: string;
+  period_start: string;
+  questionnaire_version: string;
+  status: 'draft' | 'submitted';
+  submitted_at: string | null;
+  unit_id: string | null;
+  updated_at: string;
+}
+
+export interface RadarMetricInputRow extends Record<string, unknown> {
+  assessment_id: string;
+  clinic_id: string;
+  created_at: string;
+  denominator: number;
+  id: string;
+  metric_code: string;
+  numerator: number;
+  observation: string | null;
+  organization_id: string;
+  quality: 'declared' | 'verified';
+  source: 'manual';
+  updated_at: string;
+}
+
+export interface AlthionScoreFormulaRow extends Record<string, unknown> {
+  created_at: string;
+  definition_hash: string;
+  id: string;
+  mandatory_dimensions: string[];
+  minimum_coverage: number;
+  published_at: string | null;
+  status: 'draft' | 'published' | 'retired';
+  updated_at: string;
+  version: string;
+}
+
+export interface AlthionScoreFormulaComponentRow extends Record<string, unknown> {
+  created_at: string;
+  dimension: string;
+  formula_id: string;
+  id: string;
+  label: string;
+  metric_code: string;
+  transformation: Json;
+  weight: number;
+}
+
+export interface AlthionScoreRow extends Record<string, unknown> {
+  assessment_id: string;
+  calculated_at: string;
+  clinic_id: string;
+  coverage: number;
+  created_at: string;
+  formula_id: string;
+  id: string;
+  input_hash: string;
+  organization_id: string;
+  score_value: number | null;
+  status: 'calculated' | 'insufficient_data';
+}
+
+export interface AlthionScoreComponentRow extends Record<string, unknown> {
+  contribution: number | null;
+  created_at: string;
+  dimension: string;
+  explanation: Json;
+  id: string;
+  metric_code: string;
+  organization_id: string;
+  score_id: string;
+  score_value: number | null;
+  status: 'calculated' | 'insufficient_data';
+  weight: number;
+}
+
+export interface AlthionScoreEvidenceRow extends Record<string, unknown> {
+  component_id: string;
+  created_at: string;
+  denominator: number | null;
+  id: string;
+  metric_code: string;
+  metric_input_id: string | null;
+  normalized_value: number | null;
+  numerator: number | null;
+  organization_id: string;
+  quality: 'declared' | 'verified' | null;
+  reason_code: string | null;
+  score_id: string;
+  source: 'manual' | null;
+  transformation: Json;
+}
+
+export interface RadarRecommendationRow extends Record<string, unknown> {
+  assessment_id: string;
+  clinic_id: string;
+  created_at: string;
+  dimension: string | null;
+  evidence_metric_code: string | null;
+  id: string;
+  organization_id: string;
+  priority: 'high' | 'medium' | 'low';
+  rationale: string;
+  rule_code: string;
+  rule_version: string;
+  score_id: string;
+  title: string;
 }
