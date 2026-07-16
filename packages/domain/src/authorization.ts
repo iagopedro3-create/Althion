@@ -24,6 +24,13 @@ export const CAPABILITIES = [
   'audit_log:read',
   'integration:read',
   'integration:manage',
+  'radar:read',
+  'radar:write',
+  'radar:submit',
+  'radar_report:export',
+  'score:read',
+  'score:calculate',
+  'score_formula:manage',
 ] as const;
 
 export type Capability = (typeof CAPABILITIES)[number];
@@ -65,10 +72,28 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'membership:read',
     'feature_flag:read',
     'integration:read',
+    'radar:read',
+    'radar:write',
+    'radar:submit',
+    'radar_report:export',
+    'score:read',
+    'score:calculate',
   ]),
-  doctor: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
+  doctor: new Set([
+    'organization:read',
+    'clinic:read',
+    'feature_flag:read',
+    'radar:read',
+    'score:read',
+  ]),
   operator: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
-  viewer: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
+  viewer: new Set([
+    'organization:read',
+    'clinic:read',
+    'feature_flag:read',
+    'radar:read',
+    'score:read',
+  ]),
 };
 
 const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
@@ -76,6 +101,12 @@ const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'clinic:read',
   'feature_flag:read',
   'integration:read',
+  'radar:read',
+  'radar:write',
+  'radar:submit',
+  'radar_report:export',
+  'score:read',
+  'score:calculate',
 ]);
 
 export function isPlatformAdmin(principal: Principal): boolean {

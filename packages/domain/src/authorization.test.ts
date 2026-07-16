@@ -49,4 +49,23 @@ describe('authorization', () => {
       hasCapability(principal, '11111111-1111-4111-8111-111111111111', 'membership:manage'),
     ).toBe(false);
   });
+
+  it('allows a scoped manager to operate Radar only in the assigned clinic', () => {
+    expect(
+      hasCapability(
+        principal,
+        '11111111-1111-4111-8111-111111111111',
+        'radar:submit',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        principal,
+        '11111111-1111-4111-8111-111111111111',
+        'radar:submit',
+        'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+      ),
+    ).toBe(false);
+  });
 });
