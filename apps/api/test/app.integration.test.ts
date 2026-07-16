@@ -22,7 +22,7 @@ describe('API foundation', () => {
     const module = await Test.createTestingModule({ imports: [AppModule] }).compile();
     app = module.createNestApplication();
     await app.init();
-  });
+  }, 30_000);
 
   afterAll(async () => {
     if (app) await app.close();
@@ -39,6 +39,11 @@ describe('API foundation', () => {
     await request(app.getHttpServer())
       .get(
         '/api/v1/organizations/10000000-0000-4000-8000-000000000001/clinics/20000000-0000-4000-8000-000000000001/radar-assessments',
+      )
+      .expect(401);
+    await request(app.getHttpServer())
+      .get(
+        '/api/v1/organizations/10000000-0000-4000-8000-000000000001/clinics/20000000-0000-4000-8000-000000000001/portal/dashboard',
       )
       .expect(401);
   });

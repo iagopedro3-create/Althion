@@ -7,6 +7,7 @@ import { RadarService } from './radar.service';
 
 @Module({
   controllers: [RadarController],
+  exports: [RadarRepository, RadarService],
   imports: [DatabaseModule],
   providers: [RadarRepository, RadarService],
 })

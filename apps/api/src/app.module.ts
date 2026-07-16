@@ -11,8 +11,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { DatabaseModule } from './modules/database/database.module';
 import { HealthModule } from './modules/health/health.module';
+import { ImprovementPlansModule } from './modules/improvement-plans/improvement-plans.module';
 import { IntegrationsModule } from './modules/integrations/integrations.module';
+import { PortalModule } from './modules/portal/portal.module';
 import { RadarModule } from './modules/radar/radar.module';
+import { RequestsModule } from './modules/requests/requests.module';
 import { TenancyModule } from './modules/tenancy/tenancy.module';
 
 @Module({
@@ -41,8 +44,11 @@ import { TenancyModule } from './modules/tenancy/tenancy.module';
     ThrottlerModule.forRoot([{ limit: 100, ttl: 60_000 }]),
     AuthModule,
     HealthModule,
+    ImprovementPlansModule,
     IntegrationsModule,
+    PortalModule,
     RadarModule,
+    RequestsModule,
     TenancyModule,
   ],
   providers: [
