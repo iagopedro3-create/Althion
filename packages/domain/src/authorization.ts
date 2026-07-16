@@ -31,6 +31,14 @@ export const CAPABILITIES = [
   'score:read',
   'score:calculate',
   'score_formula:manage',
+  'portal:read',
+  'request:read',
+  'request:create',
+  'request:manage',
+  'improvement_plan:read',
+  'improvement_plan:manage',
+  'task:read',
+  'task:manage',
 ] as const;
 
 export type Capability = (typeof CAPABILITIES)[number];
@@ -78,6 +86,14 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'radar_report:export',
     'score:read',
     'score:calculate',
+    'portal:read',
+    'request:read',
+    'request:create',
+    'request:manage',
+    'improvement_plan:read',
+    'improvement_plan:manage',
+    'task:read',
+    'task:manage',
   ]),
   doctor: new Set([
     'organization:read',
@@ -85,6 +101,11 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'feature_flag:read',
     'radar:read',
     'score:read',
+    'portal:read',
+    'request:read',
+    'request:create',
+    'improvement_plan:read',
+    'task:read',
   ]),
   operator: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
   viewer: new Set([
@@ -93,6 +114,10 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'feature_flag:read',
     'radar:read',
     'score:read',
+    'portal:read',
+    'request:read',
+    'improvement_plan:read',
+    'task:read',
   ]),
 };
 
@@ -107,6 +132,14 @@ const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'radar_report:export',
   'score:read',
   'score:calculate',
+  'portal:read',
+  'request:read',
+  'request:create',
+  'request:manage',
+  'improvement_plan:read',
+  'improvement_plan:manage',
+  'task:read',
+  'task:manage',
 ]);
 
 export function isPlatformAdmin(principal: Principal): boolean {
