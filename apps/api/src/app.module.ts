@@ -12,6 +12,7 @@ import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 import { DatabaseModule } from './modules/database/database.module';
 import { HealthModule } from './modules/health/health.module';
 import { IntegrationsModule } from './modules/integrations/integrations.module';
+import { RadarModule } from './modules/radar/radar.module';
 import { TenancyModule } from './modules/tenancy/tenancy.module';
 
 @Module({
@@ -41,6 +42,7 @@ import { TenancyModule } from './modules/tenancy/tenancy.module';
     AuthModule,
     HealthModule,
     IntegrationsModule,
+    RadarModule,
     TenancyModule,
   ],
   providers: [

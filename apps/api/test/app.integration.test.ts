@@ -36,5 +36,10 @@ describe('API foundation', () => {
 
   it('rejects protected endpoints without a bearer token', async () => {
     await request(app.getHttpServer()).get('/api/v1/me').expect(401);
+    await request(app.getHttpServer())
+      .get(
+        '/api/v1/organizations/10000000-0000-4000-8000-000000000001/clinics/20000000-0000-4000-8000-000000000001/radar-assessments',
+      )
+      .expect(401);
   });
 });
