@@ -1,0 +1,132 @@
+# Mapa de rotas
+
+## Estado atual
+
+A Fundação implementa `/`, `/entrar`, `/recuperar-acesso`, `/definir-senha`, `/auth/callback`, `/app`, health, `/api/v1/me` e os endpoints fundacionais de organização descritos em `docs/current-state.md`. As demais rotas deste documento continuam propostas e não constituem API pronta.
+
+## Convenções
+
+- URLs de interface ficam em português e são orientadas ao usuário.
+- API REST usa `/api/v1` e nomes estáveis em inglês.
+- `organizationId` explícito melhora rastreabilidade, mas sempre é validado por guardas e RLS.
+- IDs externos da Helena nunca aparecem como chave primária pública da Althion.
+- Detalhes usam UUID Althion e retornam `404` ou `403` conforme a política de não enumeração aprovada.
+- Webhooks têm namespace próprio, rate limit, assinatura, replay protection e idempotência.
+
+## Site e autenticação
+
+| Rota web            | Finalidade                                     | Fase                                |
+| ------------------- | ---------------------------------------------- | ----------------------------------- |
+| `/`                 | Proposta de valor e funcionamento              | A definir; não há landing existente |
+| `/diagnostico`      | Entrada pública do Radar                       | 2                                   |
+| `/seguranca`        | Segurança e privacidade em linguagem comercial | A definir                           |
+| `/privacidade`      | Aviso de privacidade aprovado                  | Antes do piloto                     |
+| `/termos`           | Termos aprovados                               | Antes do piloto                     |
+| `/entrar`           | Login                                          | 1                                   |
+| `/auth/callback`    | Callback de autenticação                       | 1                                   |
+| `/recuperar-acesso` | Recuperação de acesso                          | 1                                   |
+
+As seções comerciais (recuperação, leads, agenda, especialista, IA, indicadores e aquisição futura) podem ser âncoras da home ou páginas próprias após conteúdo e identidade visual aprovados.
+
+## Portal do cliente
+
+| Rota web                            | Finalidade                                             | Fase                          |
+| ----------------------------------- | ------------------------------------------------------ | ----------------------------- |
+| `/app`                              | Dashboard orientado a problemas, oportunidades e ações | 3                             |
+| `/app/radar`                        | Diagnósticos e novo Radar                              | 2                             |
+| `/app/score`                        | Score, componentes e histórico                         | 2                             |
+| `/app/leads`                        | Visão normalizada de leads                             | 3/6                           |
+| `/app/agenda`                       | Capacidade e eventos administrativos                   | 3, limitada até definir fonte |
+| `/app/recuperacao`                  | Oportunidades priorizadas                              | 3/5                           |
+| `/app/recuperacao/[opportunityId]`  | Evidências, ações e resultado                          | 5                             |
+| `/app/indicadores`                  | Métricas e comparações                                 | 3                             |
+| `/app/relatorios`                   | Relatórios e exportações                               | 2/3                           |
+| `/app/acoes`                        | Ações executadas e pendentes                           | 3/5                           |
+| `/app/qualidade`                    | Performance de IA, revisões e handoffs                 | 7                             |
+| `/app/solicitacoes`                 | Solicitações do cliente                                | 3                             |
+| `/app/plano-de-melhoria`            | Plano, responsáveis e prazos                           | 3                             |
+| `/app/especialista`                 | Especialista atribuído e contato operacional           | 3                             |
+| `/app/integracoes`                  | Conexões, estado e freshness                           | 3/6                           |
+| `/app/configuracoes`                | Organização, clínicas, unidades e preferências         | 1/3                           |
+| `/app/configuracoes/acessos`        | Memberships e permissões                               | 1                             |
+| `/app/configuracoes/consentimentos` | Políticas e supressões administrativas                 | 5                             |
+
+## Cockpit do Especialista
+
+| Rota web                            | Finalidade                                  | Fase |
+| ----------------------------------- | ------------------------------------------- | ---- |
+| `/especialista`                     | Carteira, saúde, alertas e capacidade       | 4    |
+| `/especialista/clinicas/[clinicId]` | Visão 360 administrativa da conta atribuída | 4    |
+| `/especialista/alertas`             | Alertas priorizados                         | 4    |
+| `/especialista/incidentes`          | Incidentes e SLA                            | 4    |
+| `/especialista/pendencias`          | Tarefas e solicitações                      | 4    |
+| `/especialista/agenda`              | Reuniões e follow-ups, não agenda clínica   | 4    |
+| `/especialista/capacidade`          | Complexidade e carga da carteira            | 4/8  |
+
+## Administração da plataforma
+
+| Rota web               | Finalidade                               | Fase      |
+| ---------------------- | ---------------------------------------- | --------- |
+| `/admin`               | Saúde operacional da plataforma          | 1, mínimo |
+| `/admin/organizacoes`  | Provisionamento e estado de organizações | 1         |
+| `/admin/especialistas` | Especialistas e assignments              | 1/4       |
+| `/admin/integracoes`   | Monitoramento de conexões e jobs         | 1/6       |
+| `/admin/feature-flags` | Rollout controlado                       | 1         |
+| `/admin/auditoria`     | Consulta autorizada de auditoria         | 1         |
+| `/admin/incidentes`    | Gestão de incidentes                     | 1/10      |
+
+O namespace `/admin` exige papel de plataforma, MFA e trilha reforçada. Não deve ser uma forma de ignorar tenant sem propósito registrado.
+
+## API de fundação
+
+| Método e rota                                                                  | Finalidade                          | Fase   |
+| ------------------------------------------------------------------------------ | ----------------------------------- | ------ |
+| `GET /health/live`                                                             | Liveness sem dependências           | 1      |
+| `GET /health/ready`                                                            | Readiness sanitizada                | 1      |
+| `GET /api/v1/me`                                                               | Perfil, memberships e capabilities  | 1      |
+| `GET /api/v1/organizations/:organizationId`                                    | Organização autorizada              | 1      |
+| `GET /api/v1/organizations/:organizationId/clinics`                            | Clínicas visíveis                   | 1      |
+| `GET /api/v1/organizations/:organizationId/units`                              | Unidades visíveis                   | Adiada |
+| `GET /api/v1/organizations/:organizationId/memberships`                        | Acessos, restrito a gestores        | 1      |
+| `POST /api/v1/organizations/:organizationId/memberships`                       | Conceder acesso                     | 1      |
+| `PATCH /api/v1/organizations/:organizationId/memberships/:membershipId/revoke` | Revogar acesso de forma idempotente | 1      |
+| `GET /api/v1/organizations/:organizationId/feature-flags`                      | Flags efetivas                      | 1      |
+| `GET /api/v1/organizations/:organizationId/audit-logs`                         | Auditoria autorizada                | 1      |
+| `GET /api/v1/organizations/:organizationId/integrations`                       | Estado sanitizado das integrações   | 1      |
+
+Mutations exigem validação, autorização, auditoria e idempotency key quando repetição puder causar efeito duplicado.
+
+## API de produto por módulo
+
+| Prefixo                                                        | Recursos principais                  | Fase                    |
+| -------------------------------------------------------------- | ------------------------------------ | ----------------------- |
+| `/api/v1/organizations/:organizationId/radar-assessments`      | diagnóstico, respostas e relatório   | 2                       |
+| `/api/v1/organizations/:organizationId/scores`                 | cálculo, componentes e histórico     | 2                       |
+| `/api/v1/organizations/:organizationId/dashboard`              | projeção acionável do portal         | 3                       |
+| `/api/v1/organizations/:organizationId/leads`                  | visão normalizada                    | 3/6                     |
+| `/api/v1/organizations/:organizationId/appointments`           | eventos administrativos              | 3, após source of truth |
+| `/api/v1/organizations/:organizationId/requests`               | solicitações e estados               | 3                       |
+| `/api/v1/specialist/assignments`                               | carteira do especialista autenticado | 4                       |
+| `/api/v1/organizations/:organizationId/recovery-rules`         | regras e versões                     | 5                       |
+| `/api/v1/organizations/:organizationId/recovery-opportunities` | oportunidades e ações                | 5                       |
+| `/api/v1/organizations/:organizationId/quality-reviews`        | avaliação e revisão                  | 7                       |
+| `/api/v1/organizations/:organizationId/capacity`               | snapshots e recomendações            | 8                       |
+| `/api/v1/organizations/:organizationId/ad-accounts`            | leitura Google Ads                   | 9                       |
+
+Operações específicas como simular, aprovar ou pausar podem usar sub-recursos/commands REST, definidos no plano detalhado da respectiva fase; não serão antecipadas sem contrato.
+
+## Integrações e webhooks
+
+| Rota Althion                                              | Finalidade                           | Estado                          |
+| --------------------------------------------------------- | ------------------------------------ | ------------------------------- |
+| `GET /api/v1/organizations/:organizationId/integrations`  | Estado das integrações               | Fundação                        |
+| `POST /api/v1/integrations/helena/webhooks/:connectionId` | Receptor potencial de eventos Helena | Bloqueada até documentação real |
+| `GET /api/v1/organizations/:organizationId/sync-jobs`     | Status e freshness                   | Fase 6                          |
+| `POST /api/v1/organizations/:organizationId/sync-jobs`    | Sync manual autorizado e limitado    | Fase 6                          |
+| `/api/v1/integrations/google-ads/oauth/*`                 | OAuth e callback                     | Fase 9                          |
+
+A rota de webhook proposta é uma rota da Althion; ela não presume URL, evento, header ou assinatura existente na Helena.
+
+## Rotas proibidas
+
+Não serão criados namespaces de prontuário, diagnóstico, prescrição, exames, urgência, telemedicina ou tratamento clínico. Dados de outro tenant nunca serão acessíveis por parâmetro alternativo, query string ou ID externo.

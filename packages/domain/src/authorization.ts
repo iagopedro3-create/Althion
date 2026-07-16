@@ -1,0 +1,167 @@
+export const TENANT_ROLES = [
+  'organization_owner',
+  'clinic_manager',
+  'doctor',
+  'operator',
+  'viewer',
+] as const;
+
+export type TenantRole = (typeof TENANT_ROLES)[number];
+
+export const PLATFORM_ROLES = ['platform_admin'] as const;
+
+export type PlatformRole = (typeof PLATFORM_ROLES)[number];
+
+export const CAPABILITIES = [
+  'organization:read',
+  'organization:update',
+  'clinic:read',
+  'clinic:manage',
+  'membership:read',
+  'membership:manage',
+  'feature_flag:read',
+  'feature_flag:manage',
+  'audit_log:read',
+  'integration:read',
+  'integration:manage',
+] as const;
+
+export type Capability = (typeof CAPABILITIES)[number];
+
+export type MembershipStatus = 'active' | 'invited' | 'revoked' | 'expired';
+
+export interface MembershipScope {
+  readonly clinicId: string | null;
+  readonly unitId: string | null;
+}
+
+export interface PrincipalMembership {
+  readonly organizationId: string;
+  readonly role: TenantRole;
+  readonly scopes: readonly MembershipScope[];
+  readonly status: MembershipStatus;
+}
+
+export interface PrincipalAssignment {
+  readonly clinicId: string | null;
+  readonly organizationId: string;
+  readonly status: 'active' | 'ended';
+}
+
+export interface Principal {
+  readonly assignments: readonly PrincipalAssignment[];
+  readonly memberships: readonly PrincipalMembership[];
+  readonly platformRoles: readonly PlatformRole[];
+  readonly profileId: string;
+  readonly subject: string;
+}
+
+const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> = {
+  organization_owner: new Set(CAPABILITIES),
+  clinic_manager: new Set([
+    'organization:read',
+    'clinic:read',
+    'clinic:manage',
+    'membership:read',
+    'feature_flag:read',
+    'integration:read',
+  ]),
+  doctor: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
+  operator: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
+  viewer: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
+};
+
+const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
+  'organization:read',
+  'clinic:read',
+  'feature_flag:read',
+  'integration:read',
+]);
+
+export function isPlatformAdmin(principal: Principal): boolean {
+  return principal.platformRoles.includes('platform_admin');
+}
+
+export function hasOrganizationAccess(principal: Principal, organizationId: string): boolean {
+  if (isPlatformAdmin(principal)) {
+    return true;
+  }
+
+  return (
+    principal.memberships.some(
+      (membership) =>
+        membership.organizationId === organizationId && membership.status === 'active',
+    ) ||
+    principal.assignments.some(
+      (assignment) =>
+        assignment.organizationId === organizationId && assignment.status === 'active',
+    )
+  );
+}
+
+export function hasClinicAccess(
+  principal: Principal,
+  organizationId: string,
+  clinicId: string,
+): boolean {
+  if (isPlatformAdmin(principal)) {
+    return true;
+  }
+
+  const membership = principal.memberships.find(
+    (candidate) => candidate.organizationId === organizationId && candidate.status === 'active',
+  );
+
+  if (membership) {
+    if (membership.role === 'organization_owner') {
+      return true;
+    }
+
+    if (membership.scopes.some((scope) => scope.clinicId === null)) {
+      return true;
+    }
+
+    if (membership.scopes.some((scope) => scope.clinicId === clinicId)) {
+      return true;
+    }
+  }
+
+  return principal.assignments.some(
+    (assignment) =>
+      assignment.organizationId === organizationId &&
+      assignment.status === 'active' &&
+      (assignment.clinicId === null || assignment.clinicId === clinicId),
+  );
+}
+
+export function hasCapability(
+  principal: Principal,
+  organizationId: string,
+  capability: Capability,
+  clinicId?: string,
+): boolean {
+  if (isPlatformAdmin(principal)) {
+    return true;
+  }
+
+  if (clinicId && !hasClinicAccess(principal, organizationId, clinicId)) {
+    return false;
+  }
+
+  const membership = principal.memberships.find(
+    (candidate) => candidate.organizationId === organizationId && candidate.status === 'active',
+  );
+
+  if (membership && ROLE_CAPABILITIES[membership.role].has(capability)) {
+    return true;
+  }
+
+  const hasAssignment = principal.assignments.some(
+    (assignment) =>
+      assignment.organizationId === organizationId &&
+      assignment.status === 'active' &&
+      (!clinicId || assignment.clinicId === null || assignment.clinicId === clinicId),
+  );
+
+  return hasAssignment && SPECIALIST_CAPABILITIES.has(capability);
+}

@@ -1,0 +1,58 @@
+import { type MiddlewareConsumer, Module, type NestModule } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { LoggerModule } from 'nestjs-pino';
+
+import { CapabilitiesGuard } from './common/auth/capabilities.guard';
+import { RequestContextMiddleware } from './common/http/request-context.middleware';
+import { ApiConfigModule } from './config/api-config.module';
+import { ApiConfigService } from './config/api-config.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
+import { DatabaseModule } from './modules/database/database.module';
+import { HealthModule } from './modules/health/health.module';
+import { IntegrationsModule } from './modules/integrations/integrations.module';
+import { TenancyModule } from './modules/tenancy/tenancy.module';
+
+@Module({
+  imports: [
+    ApiConfigModule,
+    DatabaseModule,
+    LoggerModule.forRootAsync({
+      imports: [ApiConfigModule],
+      inject: [ApiConfigService],
+      useFactory: (config: ApiConfigService) => ({
+        pinoHttp: {
+          level: config.environment.LOG_LEVEL,
+          redact: {
+            paths: [
+              'req.headers.authorization',
+              'req.headers.cookie',
+              'req.body.password',
+              'req.body.token',
+              'res.headers.set-cookie',
+            ],
+            remove: true,
+          },
+        },
+      }),
+    }),
+    ThrottlerModule.forRoot([{ limit: 100, ttl: 60_000 }]),
+    AuthModule,
+    HealthModule,
+    IntegrationsModule,
+    TenancyModule,
+  ],
+  providers: [
+    { provide: APP_GUARD, useExisting: ThrottlerGuard },
+    ThrottlerGuard,
+    { provide: APP_GUARD, useExisting: JwtAuthGuard },
+    { provide: APP_GUARD, useExisting: CapabilitiesGuard },
+    CapabilitiesGuard,
+  ],
+})
+export class AppModule implements NestModule {
+  public configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(RequestContextMiddleware).forRoutes('*');
+  }
+}

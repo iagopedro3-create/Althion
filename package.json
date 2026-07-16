@@ -1,0 +1,50 @@
+{
+  "name": "althion",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=24.0.0 <25",
+    "pnpm": ">=11.0.0 <12"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "build:packages": "pnpm --filter @althion/domain build && pnpm --filter @althion/config build && pnpm --filter @althion/contracts build && pnpm --filter @althion/testing build",
+    "dev:api": "pnpm --filter @althion/api dev",
+    "dev:web": "pnpm --filter @althion/web dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "pnpm build:packages && pnpm -r --if-present typecheck",
+    "test": "pnpm build:packages && vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:db": "supabase test db --local",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset --local",
+    "db:lint": "supabase db lint --local --level warning",
+    "db:types": "supabase gen types typescript --local > packages/contracts/src/database.types.ts",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.2",
+    "@playwright/test": "^1.61.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint": "9.39.2",
+    "eslint-config-next": "^16.2.10",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.9.5",
+    "supabase": "^2.109.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.64.0",
+    "vitest": "^4.1.10"
+  }
+}

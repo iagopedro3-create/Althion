@@ -1,0 +1,21 @@
+packages:
+  - apps/*
+  - packages/*
+
+overrides:
+  postcss: 8.5.19
+
+allowBuilds:
+  '@scarf/scarf': true
+  esbuild: true
+  sharp: true
+  supabase: true
+  unrs-resolver: true
+
+minimumReleaseAgeExclude:
+  - '@supabase/auth-js@2.110.6'
+  - '@supabase/functions-js@2.110.6'
+  - '@supabase/postgrest-js@2.110.6'
+  - '@supabase/realtime-js@2.110.6'
+  - '@supabase/storage-js@2.110.6'
+  - '@supabase/supabase-js@2.110.6'
