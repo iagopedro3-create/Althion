@@ -4,7 +4,7 @@ Fundação técnica da plataforma de Recuperação e Performance da Agenda para 
 
 ## Estado
 
-Fase 2 — Radar e Althion Score implementados com dados manuais/sintéticos e fórmula provisória. A integração Helena está bloqueada até a entrega da documentação oficial.
+Fase 3 — Portal do Cliente implementado sobre Radar e Althion Score, com dados manuais/sintéticos, fontes explícitas e fórmula provisória. A integração Helena está bloqueada até a entrega da documentação oficial. A validação PostgreSQL/pgTAP depende de Docker/CI.
 
 ## Requisitos
 

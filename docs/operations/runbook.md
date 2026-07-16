@@ -1,4 +1,4 @@
-# Runbook da Fundação, Radar e Score
+# Runbook da Fundação, Radar, Score e Portal
 
 ## Health
 
@@ -9,17 +9,20 @@ Ambas são públicas, rate-limited e não retornam segredo, versão interna ou c
 
 ## Sintomas principais
 
-| Código/estado              | Interpretação                            | Ação                                            |
-| -------------------------- | ---------------------------------------- | ----------------------------------------------- |
-| `AUTHENTICATION_REQUIRED`  | bearer ausente ou inválido               | renovar login; não registrar token              |
-| `PROFILE_NOT_PROVISIONED`  | Auth existe sem profile                  | verificar trigger/provisionamento               |
-| `ACCESS_DENIED`            | capability ou scope insuficiente         | revisar membership/assignment e auditoria       |
-| `DATA_SERVICE_UNAVAILABLE` | Data API indisponível/falhou             | validar Supabase e correlation ID               |
-| `RADAR_INPUT_INVALID`      | período, contagem ou vínculo inválido    | revisar payload agregado; não logar observações |
-| `RADAR_STATE_CONFLICT`     | rascunho enviado ou comando concorrente  | recarregar; não sobrescrever snapshot           |
-| `RADAR_NOT_FOUND`          | recurso inexistente ou invisível por RLS | confirmar tenant, clínica e acesso              |
-| `PROVIDER_NOT_CONFIGURED`  | Helena propositalmente bloqueada         | não improvisar URL; obter documentação          |
-| integration `blocked`      | conexão não habilitada                   | estado esperado na Fase 1                       |
+| Código/estado              | Interpretação                             | Ação                                            |
+| -------------------------- | ----------------------------------------- | ----------------------------------------------- |
+| `AUTHENTICATION_REQUIRED`  | bearer ausente ou inválido                | renovar login; não registrar token              |
+| `PROFILE_NOT_PROVISIONED`  | Auth existe sem profile                   | verificar trigger/provisionamento               |
+| `ACCESS_DENIED`            | capability ou scope insuficiente          | revisar membership/assignment e auditoria       |
+| `DATA_SERVICE_UNAVAILABLE` | Data API indisponível/falhou              | validar Supabase e correlation ID               |
+| `RADAR_INPUT_INVALID`      | período, contagem ou vínculo inválido     | revisar payload agregado; não logar observações |
+| `RADAR_STATE_CONFLICT`     | rascunho enviado ou comando concorrente   | recarregar; não sobrescrever snapshot           |
+| `RADAR_NOT_FOUND`          | recurso inexistente ou invisível por RLS  | confirmar tenant, clínica e acesso              |
+| `PORTAL_NOT_AVAILABLE`     | feature flag do Portal desabilitada       | revisar flag/override; não contornar no cliente |
+| `PORTAL_STATE_CONFLICT`    | transição inválida ou comando concorrente | recarregar estado; não forçar update direto     |
+| `PORTAL_CURSOR_INVALID`    | cursor não pertence à clínica autorizada  | reiniciar paginação e revisar URL               |
+| `PROVIDER_NOT_CONFIGURED`  | Helena propositalmente bloqueada          | não improvisar URL; obter documentação          |
+| integration `blocked`      | conexão não habilitada                    | estado esperado na Fase 1                       |
 
 ## Revogação de acesso
 
@@ -57,6 +60,16 @@ Não existe operação real na Fase 1. Nenhum erro autoriza criar endpoint, cred
 - Exportação CSV deve gerar `radar.assessment.exported` e nunca registrar o conteúdo exportado.
 - Fórmula `draft` deve aparecer como provisória. Não publicar sem owner, calibração e revisão.
 - Em suspeita de acesso indevido, revogar membership/assignment, preservar auditoria e executar a suíte cross-tenant.
+
+## Portal do Cliente
+
+- Score ausente, Especialista não atribuído, fonte bloqueada e módulo futuro são estados esperados, não devem receber fallback sintético.
+- Requests, planos e tarefas só mudam por RPC; nunca habilitar escrita direta para resolver conflito.
+- Repetição de command deve reutilizar a mesma `Idempotency-Key`; payload diferente com a mesma chave é erro de entrada.
+- `doctor` só enxerga solicitações próprias; manager/owner/Especialista gerenciam conforme escopo; operator não acessa.
+- Histórico não pode ser editado ou removido. Correção operacional exige nova transição/recurso e trilha auditável.
+- Não copiar para logs assunto, detalhe, título, token, corpo HTTP ou qualquer texto potencialmente sensível.
+- Antes de habilitar a flag em novo tenant, validar migrations, RLS, assignments, clínica e dados Radar exclusivamente sintéticos.
 
 ## Backup e restore
 

@@ -2,7 +2,7 @@
 
 ## Status e objetivos
 
-Modelo lógico evolutivo. Tenancy e Fundação foram materializados na Fase 1; Radar e Score foram materializados na Fase 2. Entidades operacionais externas e engines continuam propostas e serão criadas apenas por suas fases.
+Modelo lógico evolutivo. Tenancy e Fundação foram materializados na Fase 1; Radar e Score na Fase 2; solicitações e planos/tarefas do Portal na Fase 3. Entidades operacionais externas e engines continuam propostas e serão criadas apenas por suas fases.
 
 ## Convenções globais
 
@@ -79,6 +79,28 @@ erDiagram
 ```
 
 A fórmula é imutável após ativação. Um novo peso cria nova versão. Cada score registra completude, confiança, período e estado `insufficient_data` quando necessário. Componentes preservam valores e pesos efetivamente usados; evidências apontam para inputs ou snapshots, sem depender do estado atual da fonte.
+
+## Portal do Cliente
+
+```mermaid
+erDiagram
+    ORGANIZATIONS ||--o{ REQUESTS : owns
+    CLINICS ||--o{ REQUESTS : receives
+    REQUESTS ||--o{ REQUEST_STATUS_HISTORY : changes
+    PROFILES ||--o{ REQUESTS : requests_or_handles
+    ORGANIZATIONS ||--o{ IMPROVEMENT_PLANS : owns
+    CLINICS ||--o{ IMPROVEMENT_PLANS : plans
+    ALTHION_SCORES o|--o{ IMPROVEMENT_PLANS : informs
+    IMPROVEMENT_PLANS ||--o{ IMPROVEMENT_PLAN_STATUS_HISTORY : changes
+    IMPROVEMENT_PLANS ||--o{ TASKS : contains
+    RADAR_RECOMMENDATIONS o|--o{ TASKS : originates
+    TASKS ||--o{ TASK_STATUS_HISTORY : changes
+    PROFILES o|--o{ TASKS : assigned
+```
+
+Todas as entidades do Portal carregam `organization_id` e `clinic_id`, usam FKs compostas e são protegidas por RLS. Históricos são append-only. Solicitações guardam somente contexto administrativo com aviso explícito contra dados clínicos. Planos têm versão monotônica e no máximo um registro `active` por clínica. Tarefas canceladas não entram no denominador de progresso.
+
+Commands de criação e transição passam por RPCs `security definer` com autorização interna, idempotência, auditoria sanitizada e transições determinísticas. Não há grants de escrita direta para `authenticated`.
 
 ## Recovery, Quality e Capacity
 

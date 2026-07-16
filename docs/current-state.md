@@ -2,21 +2,21 @@
 
 ## Resumo executivo
 
-Atualizado em 16 de julho de 2026 após a implementação da Fase 2. O repositório contém a Fundação executável e o primeiro módulo de produto da Althion: Radar manual, Althion Score v1 provisório, recomendações determinísticas, histórico, comparação, relatório e exportação CSV.
+Atualizado em 16 de julho de 2026 após a implementação da Fase 3. O repositório contém a Fundação executável, Radar/Score e o Portal do Cliente source-backed, com dashboard acionável, indicadores, oportunidades do Radar, solicitações, plano de melhoria, Especialista, relatórios, integrações e configurações.
 
-A integração Helena permanece intencionalmente bloqueada. O Portal amplo entrou em planejamento, sem código de produto; Recovery, Cockpit, Quality, Capacity e Google Ads não foram iniciados. A Fase 2 está em validação porque as migrations e os testes pgTAP ainda dependem de Docker/CI.
+A integração Helena permanece intencionalmente bloqueada. Leads, agenda, Recovery e Quality são mostrados como fontes indisponíveis/módulos futuros, nunca como dados simulados. Cockpit, Recovery, Helena, Quality, Capacity e Google Ads não foram iniciados. As Fases 1–3 continuam condicionadas à execução das migrations e dos testes pgTAP em Docker/CI.
 
 ## Stack atual
 
-| Camada    | Implementação                                                                   |
-| --------- | ------------------------------------------------------------------------------- |
-| Workspace | pnpm 11, Node.js 24 e TypeScript 5.9 strict                                     |
-| Web       | Next.js 16 App Router, React 19, Tailwind CSS 4, React Hook Form e Supabase SSR |
-| API       | NestJS 11 REST, JWT/JWKS, Zod, throttling, Helmet e Pino                        |
-| Domínio   | Calculadora determinística e recomendações sem dependência de framework         |
-| Dados     | PostgreSQL 17/Supabase, SQL migrations, RPCs transacionais e RLS                |
-| Testes    | Vitest, Testing Library, Supertest, Playwright, axe e pgTAP                     |
-| CI        | GitHub Actions com secret scan, audit, qualidade, build, E2E e banco            |
+| Camada    | Implementação                                                                             |
+| --------- | ----------------------------------------------------------------------------------------- |
+| Workspace | pnpm 11, Node.js 24 e TypeScript 5.9 strict                                               |
+| Web       | Next.js 16 App Router, React 19, Tailwind CSS 4, React Hook Form, Recharts e Supabase SSR |
+| API       | NestJS 11 REST, JWT/JWKS, Zod, throttling, Helmet e Pino                                  |
+| Domínio   | Calculadora determinística e recomendações sem dependência de framework                   |
+| Dados     | PostgreSQL 17/Supabase, SQL migrations, RPCs transacionais e RLS                          |
+| Testes    | Vitest, Testing Library, Supertest, Playwright, axe e pgTAP                               |
+| CI        | GitHub Actions com secret scan, audit, qualidade, build, E2E e banco                      |
 
 ## Funcionalidades implementadas
 
@@ -43,6 +43,18 @@ A integração Helena permanece intencionalmente bloqueada. O Portal amplo entro
 - acesso restrito por organização, clínica, papel e assignment;
 - nenhum campo clínico, IA, estimativa financeira ou dado real.
 
+### Portal do Cliente
+
+- dashboard orientado a problemas, oportunidades e próximas ações por clínica;
+- Score com suficiência, cobertura, fórmula, histórico e tabela equivalente ao gráfico;
+- recomendações priorizadas somente a partir do Radar, sem antecipar Recovery;
+- solicitações e planos/tarefas com estados determinísticos, idempotência e histórico;
+- Especialista exibido somente com assignment ativo;
+- relatórios, integrações e configurações com fonte/freshness explícitas;
+- feature flag `portal.client.v1` desabilitada por padrão;
+- RBAC e RLS específicos para owner, manager, doctor, viewer, operator e Especialista;
+- nenhum dado clínico, contato automatizado, agenda recuperada ou impacto financeiro fictício.
+
 ## Rotas implementadas
 
 ### Web
@@ -51,6 +63,10 @@ A integração Helena permanece intencionalmente bloqueada. O Portal amplo entro
 - `/app/radar`, `/app/radar/novo`;
 - `/app/radar/[assessmentId]`, `/editar`, `/relatorio`, `/export.csv`;
 - `/app/score`, `/app/score/[scoreId]`.
+- `/app/indicadores`, `/app/oportunidades`, `/app/relatorios`;
+- `/app/solicitacoes`, `/app/solicitacoes/[requestId]`;
+- `/app/plano-de-melhoria`, `/app/especialista`;
+- `/app/integracoes`, `/app/configuracoes`.
 
 ### API Radar/Score
 
@@ -64,6 +80,15 @@ A integração Helena permanece intencionalmente bloqueada. O Portal amplo entro
 
 As rotas fundacionais permanecem documentadas em `docs/architecture/route-map.md`.
 
+### API Portal
+
+- `GET .../portal/dashboard|indicators|opportunities|specialist|people`;
+- `GET|POST .../requests`, `GET .../requests/:requestId`;
+- `POST .../requests/:requestId/transitions`;
+- `GET .../improvement-plans/current`, `POST .../improvement-plans`;
+- `POST .../improvement-plans/:planId/transitions|tasks`;
+- `POST .../tasks/:taskId/transitions`.
+
 ## Banco da Fase 2
 
 - `radar_assessments`, `radar_metric_inputs`, `radar_recommendations`;
@@ -73,29 +98,38 @@ As rotas fundacionais permanecem documentadas em `docs/architecture/route-map.md
 - policies de leitura de rascunho/concluído, escrita e isolamento;
 - triggers de imutabilidade de assessment enviado, snapshots e fórmula publicada.
 
+## Banco da Fase 3
+
+- `requests`, `request_status_history`;
+- `improvement_plans`, `improvement_plan_status_history`;
+- `tasks`, `task_status_history`;
+- RPCs de criação/transição idempotentes e auditadas;
+- FKs compostas, históricos append-only e um plano ativo por clínica;
+- policies de leitura por papel/assignment; mutations somente por RPC.
+
 ## Evidências executadas
 
-| Verificação                    | Resultado                                                            |
-| ------------------------------ | -------------------------------------------------------------------- |
-| Prettier                       | passou em todo o repositório                                         |
-| ESLint                         | passou sem warnings                                                  |
-| Typecheck                      | passou em todos os workspaces                                        |
-| Unit/component/API integration | 25 testes em 9 arquivos passaram                                     |
-| Build                          | Next.js e NestJS passaram; 14 rotas Next listadas                    |
-| Playwright + axe               | 2 testes Chromium passaram                                           |
-| Revisão visual                 | Score verificado em 1440×1366 com dados sintéticos                   |
-| pgTAP                          | 15 assertions da Fundação + 22 da Fase 2 versionadas; não executadas |
+| Verificação                    | Resultado                                                  |
+| ------------------------------ | ---------------------------------------------------------- |
+| Prettier                       | passou em todo o repositório                               |
+| ESLint                         | passou sem warnings                                        |
+| Typecheck                      | passou em todos os workspaces                              |
+| Unit/component/API integration | 38 testes em 14 arquivos passaram                          |
+| Build                          | Next.js e NestJS passaram; rotas das Fases 1–3 compiladas  |
+| Playwright + axe               | 2 testes Chromium passaram                                 |
+| Revisão visual                 | Portal verificado em 1440 px e 390 px, sem overflow mobile |
+| pgTAP                          | 73 assertions das Fases 1–3 versionadas; não executadas    |
 
 ## Limitações atuais
 
-1. Docker não está disponível; migrations, RPCs, RLS e 37 assertions pgTAP ainda não foram executados.
+1. Docker não está disponível; migrations, RPCs, RLS e 73 assertions pgTAP ainda não foram executados.
 2. `database.types.ts` continua sendo baseline manual e deve ser regenerado após `db:reset` verde.
 3. A fórmula `1.0.0-provisional` está em estado `draft`: pesos e suficiência foram autorizados, mas thresholds de calibração e owner nominal continuam pendentes.
 4. Não existe Supabase remoto, staging, domínio ou deployment autorizado.
-5. O E2E autenticado completo do Radar depende de um usuário sintético provisionado no Supabase local/CI.
+5. O E2E autenticado completo do Radar e Portal depende de usuários sintéticos provisionados no Supabase local/CI.
 6. A fonte oficial de agenda permanece indefinida; inputs de agenda são manuais e declarados.
 7. Helena não possui documentação/sandbox e não realiza chamada alguma.
 
 ## Git
 
-Branch atual: `codex/phase-2-radar-score`. Commits anteriores: `43d8b9a` (Fundação) e `c575294` (plano da Fase 2). Nenhum remoto está configurado.
+Branch atual: `codex/phase-3-client-portal`. Nenhum remoto está configurado.

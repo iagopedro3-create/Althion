@@ -2,13 +2,13 @@
 
 ## Controle de escopo
 
-Este plano foi criado na Fase 0. As Fases 1 e 2 foram autorizadas e implementadas em 16 de julho de 2026. Código, testes e builds locais estão verdes; migrations e 37 assertions pgTAP aguardam execução em Docker/CI antes do aceite final. O planejamento detalhado da Fase 3 foi iniciado, mas código de produto aguarda aprovação do plano e conclusão dos gates de banco.
+Este plano foi criado na Fase 0. As Fases 1, 2 e 3 foram autorizadas e implementadas em 16 de julho de 2026. Código, testes, builds e evidências visuais locais estão verdes; migrations e 73 assertions pgTAP aguardam execução em Docker/CI antes do aceite final. O usuário autorizou avanço contínuo sem novas pausas de aprovação, mas isso não elimina gates técnicos nem amplia o escopo de cada fase.
 
 O repositório começou vazio: sem commits, remoto, stack ou landing page. Portanto, a Fundação será greenfield e não uma migração de código existente.
 
 ## Princípios de execução
 
-- uma fase por aprovação;
+- uma fase por plano e gate técnico; a autorização contínua do usuário substitui novas pausas formais;
 - incrementos pequenos e revisáveis;
 - regra de negócio separada de framework e provedor;
 - modular monolith antes de microserviços;
@@ -247,14 +247,14 @@ Cada plano será detalhado e reapresentado antes da fase.
 
 Plano detalhado: `docs/plans/phase-2-radar-score.md`. Especificação draft: `docs/product/althion-score-v1.md`.
 
-### Fase 3 — Portal
+### Fase 3 — Portal (implementada; validação de banco pendente)
 
 - projeções de dashboard;
 - indicadores, ações, solicitações, plano e integrações;
 - visual responsivo, acessível e orientado a decisão;
 - autorização por rota, caso de uso e RLS.
 
-Plano detalhado: `docs/plans/phase-3-client-portal.md`. Escopo proposto source-backed: Radar/Score, recomendações, solicitações, plano/tarefas, Especialista e estado de integrações. Leads, agenda, Recovery e Quality permanecem indisponíveis enquanto suas fontes e módulos não existirem.
+Plano detalhado: `docs/plans/phase-3-client-portal.md`. Escopo entregue source-backed: Radar/Score, recomendações, solicitações, plano/tarefas, Especialista e estado de integrações. Leads, agenda, Recovery e Quality permanecem indisponíveis enquanto suas fontes e módulos não existirem. Evidências e limitações: `docs/releases/phase-3.md`.
 
 ### Fase 4 — Cockpit
 
@@ -376,17 +376,17 @@ Após confirmar o provedor/remoto:
 9. Quais canais e protocolos de escalonamento humano estão aprovados?
 10. Quais identidade visual, copy e documentos jurídicos devem orientar o site?
 
-## Critérios para encerrar a Fase 2 e planejar a Fase 3
+## Critérios para encerrar a Fase 3 e iniciar a Fase 4
 
-1. Executar `db:start`, `db:reset`, `db:lint` e as 37 assertions pgTAP em host/CI com Docker.
+1. Executar `db:start`, `db:reset`, `db:lint` e as 73 assertions pgTAP em host/CI com Docker.
 2. Regenerar `packages/contracts/src/database.types.ts` pelo schema executado e revisar o diff.
 3. Repetir lint, typecheck, testes, build e E2E após a geração dos tipos.
-4. Provisionar usuário exclusivamente sintético para E2E autenticado do Radar.
+4. Provisionar usuários exclusivamente sintéticos para E2E autenticado do Radar e Portal por papel.
 5. Revisar migrations, functions `security definer`, grants e policies por segunda pessoa.
 6. Manter Helena bloqueada, fórmula `draft` e dados exclusivamente sintéticos.
 7. Definir owner nominal e plano de calibração antes de publicar a fórmula oficial.
-8. Revisar as limitações em `docs/releases/phase-2.md`.
-9. Apresentar plano, arquivos, riscos e critérios detalhados da Fase 3.
-10. Obter aprovação explícita para **iniciar a Fase 3**.
+8. Revisar as limitações em `docs/releases/phase-2.md` e `docs/releases/phase-3.md`.
+9. Definir SLAs, saúde da conta, incidentes, reuniões, complexidade, capacidade e risco do Cockpit.
+10. Criar o plano, arquivos, riscos e critérios detalhados da Fase 4 antes de alterar código desse módulo.
 
-Sem esses gates, o trabalho permitido é corrigir/validar Radar, Score e Fundação; não iniciar o Portal amplo.
+Sem esses gates, o trabalho permitido é corrigir/validar Fundação, Radar, Score e Portal; não iniciar o Cockpit.

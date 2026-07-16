@@ -124,6 +124,20 @@ O bypass de RLS é risco crítico. A service role:
 - `insufficient_data` usa nota nula; ausência de dados não é convertida em zero;
 - fórmula provisória não é benchmark, qualidade clínica ou verdade financeira.
 
+### Portal do Cliente
+
+- feature flag `portal.client.v1` é avaliada no servidor e desabilitada por padrão;
+- leituras usam JWT do usuário e cliente Supabase user-scoped; nenhuma service role vai ao navegador;
+- capabilities na API e RLS no PostgreSQL validam organização, clínica, papel e assignment;
+- `doctor` lê apenas solicitações próprias; `viewer` não altera; `operator` não acessa o Portal;
+- mutations usam RPCs transacionais, transições determinísticas e idempotency key estável desde o navegador;
+- tabelas de histórico são append-only e tabelas de negócio não concedem escrita direta a `authenticated`;
+- FKs compostas impedem relacionar request, plano, tarefa, Score ou recomendação de outro tenant;
+- auditoria de request/plano/tarefa não registra assunto, detalhe ou título livre;
+- formulários alertam contra nome de paciente, diagnóstico, exame, medicamento ou dado clínico;
+- estados ausentes são explícitos; o Portal não fabrica Score, Especialista, agenda, recuperação ou impacto;
+- listas têm limites e paginação keyset por timestamp/UUID para evitar perda/duplicação em empates.
+
 ## Webhooks e integrações
 
 Um webhook só será habilitado após contrato oficial. Controles mínimos:

@@ -1,4 +1,4 @@
-# Evidências de isolamento — Fases 1 e 2
+# Evidências de isolamento — Fases 1, 2 e 3
 
 ## Suíte criada
 
@@ -24,9 +24,22 @@
 - operator e viewer sem mutation;
 - isolamento cross-tenant, FKs compostas e auditoria sanitizada.
 
+`supabase/tests/client_portal_rls.test.sql` adiciona 36 assertions para:
+
+- flag do Portal deny-by-default;
+- criação/transição idempotente de solicitações, planos e tarefas;
+- transições inválidas e unicidade de plano ativo;
+- históricos append-only e timestamps coerentes;
+- owner/manager dentro do escopo;
+- doctor limitado às solicitações próprias;
+- viewer somente leitura e operator sem acesso;
+- Especialista limitado ao assignment ativo;
+- isolamento cross-tenant e FKs compostas;
+- auditoria sem texto livre da solicitação.
+
 ## Execução local
 
-Pendente no ambiente atual. `pnpm db:start` foi repetido após a Fase 2 e falhou porque o pipe `//./pipe/docker_engine` não existe, confirmando que o daemon Docker não está disponível. A Supabase CLI 2.109.1 está fixada no projeto, mas `supabase test db` exige a stack local em runtime Docker compatível. São 37 assertions versionadas e nenhuma foi tratada como aprovada sem execução.
+Pendente no ambiente atual. `docker` não está instalado/disponível e `pnpm db:start` não pode subir a stack local. A Supabase CLI 2.109.1 está fixada no projeto, mas `supabase test db` exige runtime Docker compatível. São 73 assertions versionadas e nenhuma foi tratada como aprovada sem execução.
 
 ## Execução CI
 

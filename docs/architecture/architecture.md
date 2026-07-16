@@ -2,7 +2,7 @@
 
 ## Status
 
-Este documento combina arquitetura implementada e arquitetura-alvo. A Fundação foi materializada na Fase 1 e Radar/Score na Fase 2. Portal amplo, engines, worker, filas e integrações reais continuam condicionados à aprovação das fases correspondentes.
+Este documento combina arquitetura implementada e arquitetura-alvo. A Fundação foi materializada na Fase 1, Radar/Score na Fase 2 e o Portal do Cliente na Fase 3. Cockpit, engines, worker, filas e integrações reais continuam condicionados aos gates das fases correspondentes.
 
 ## Direção arquitetural
 
@@ -97,6 +97,15 @@ flowchart TB
 ```
 
 Cada módulo expõe casos de uso e contratos; acesso a tabelas de outro módulo ocorre por serviço público do módulo ou por projeção de leitura documentada. Controllers não acessam banco diretamente.
+
+### Módulos materializados na Fase 3
+
+- `PortalModule`: projeções source-backed de dashboard, indicadores, oportunidades, pessoas e fontes;
+- `RequestsModule`: lista, detalhe, criação e transições de solicitações;
+- `ImprovementPlansModule`: plano atual, criação, tarefas e transições;
+- `RadarModule` exporta seu repository/service para projeções internas sem duplicar regra de Score;
+- contracts Zod e domínio de estados/transições permanecem fora dos frameworks;
+- web consome somente a API; não consulta tabelas do Portal diretamente.
 
 ## Autenticação e fluxo de autorização
 

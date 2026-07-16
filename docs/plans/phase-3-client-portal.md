@@ -2,9 +2,9 @@
 
 ## Estado e gate
 
-Planejamento iniciado em 16 de julho de 2026 após solicitação explícita para avançar de fase. Este documento não autoriza código de produto: a implementação aguarda aprovação explícita deste plano e a execução dos gates de banco pendentes das Fases 1 e 2.
+Planejamento iniciado e executado em 16 de julho de 2026 após autorização explícita para avançar continuamente. A implementação foi concluída dentro desta fronteira; o aceite de banco permanece pendente porque Docker/CI não está disponível neste host. Evidências e limitações estão em `docs/releases/phase-3.md`.
 
-A feature flag proposta é `portal.client.v1`, desativada por padrão e habilitada apenas para organizações sintéticas até o aceite.
+A feature flag implementada é `portal.client.v1`, desativada por padrão e habilitada apenas para a organização sintética A no seed até o aceite.
 
 ## Objetivo
 
@@ -530,7 +530,7 @@ Refatorações não relacionadas não entram nesses commits.
 - documentação e evidências são atualizadas;
 - nenhuma API Helena fictícia, dado real, campo clínico ou automação é criada.
 
-## Ordem de execução após aprovação
+## Ordem de execução realizada
 
 1. disponibilizar Docker/CI e concluir os gates das Fases 1 e 2;
 2. regenerar e revisar os tipos do banco;
@@ -543,28 +543,26 @@ Refatorações não relacionadas não entram nesses commits.
 9. implementar superfícies de especialista, relatórios, integrações e configurações;
 10. executar todos os gates, inspeção visual e documentação.
 
-## Dúvidas e bloqueios
+## Decisões adotadas e bloqueios remanescentes
 
-1. Docker Desktop ou CI com Supabase continua indisponível; as 37 assertions anteriores ainda não foram executadas.
-2. Confirma-se `organization_owner`/`clinic_manager` como audiência primária?
-3. A taxonomia provisória de solicitações e os estados propostos são aceitáveis?
-4. Doctor pode ver apenas solicitações próprias ou todas da clínica?
-5. Owner, manager e Especialista atribuído podem gerenciar o plano de melhoria?
-6. O card do Especialista deve mostrar somente nome e CTA interno nesta fase?
-7. “Oportunidades” pode ser usado desde que a interface explicite “recomendação do Radar”, reservando “recuperação executada” para a Fase 5?
-8. Existe SLA operacional aprovado para solicitações? Sem definição, o Portal não exibirá prazo prometido.
-9. Existe clínica piloto ou pesquisa de UX para validar a hierarquia do dashboard?
-10. O spike de gráficos pode avaliar Recharts, sem compromisso de instalação até passar acessibilidade e bundle?
+1. Docker/CI com Supabase continua indisponível; 73 assertions das Fases 1–3 ainda não foram executadas.
+2. `organization_owner`/`clinic_manager` são a audiência primária; doctor/viewer têm leitura limitada.
+3. As taxonomias provisórias foram autorizadas pelo usuário e permanecem versionadas.
+4. Doctor vê somente solicitações próprias; owner, manager e Especialista atribuído gerenciam.
+5. O card do Especialista mostra somente nome, papel e CTA interno, sem SLA ou contato inventado.
+6. “Oportunidades” significa recomendação do Radar; recuperação executada permanece na Fase 5.
+7. Sem SLA aprovado, o Portal não exibe prazo prometido.
+8. Recharts foi fixado após typecheck, build, tabela equivalente e inspeção desktop/mobile.
+9. Clínica piloto e pesquisa com gestores/Especialistas continuam pendentes.
 
-## Gate para iniciar código de produto
+## Gate para encerrar a Fase 3
 
-São necessários:
+Permanecem necessários:
 
-1. aprovação explícita deste plano;
-2. aprovação das taxonomias e matriz de acesso provisórias;
-3. aceite da fronteira de fontes e indisponibilidades;
-4. execução verde de migrations, lint do banco e 37 assertions pgTAP das Fases 1 e 2;
-5. tipos do banco regenerados e revisados;
-6. confirmação de que nenhum dado real será usado.
+1. execução verde de migrations, lint do banco e 73 assertions pgTAP das Fases 1–3;
+2. tipos do banco regenerados e revisados;
+3. E2E autenticado por papel com dados exclusivamente sintéticos;
+4. revisão por segunda pessoa das functions `security definer`, grants e policies;
+5. validação da hierarquia com usuários representativos antes de piloto.
 
-Até esse gate, a Fase 3 permanece em planejamento e nenhum código de produto será iniciado.
+Até esse gate, a Fase 3 permanece **implementada e em validação**. A Fase 4 não foi iniciada.
