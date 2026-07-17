@@ -168,6 +168,24 @@ update public.feature_flags
 set default_enabled = true
 where key = 'cockpit.specialist.v1';
 
+-- Fase 5 — Recovery sintético: consentimentos internos dos leads do MockCrmProvider e flag local.
+insert into public.recovery_consents (
+  organization_id, clinic_id, external_lead_ref, state, created_by_profile_id
+)
+select
+  '10000000-0000-4000-8000-000000000001',
+  '20000000-0000-4000-8000-000000000001',
+  lead_ref,
+  'granted',
+  profile.id
+from public.profiles profile
+cross join (values ('mock-lead-unanswered'), ('mock-lead-in-progress')) as leads(lead_ref)
+where profile.auth_user_id = '80000000-0000-4000-8000-000000000004';
+
+update public.feature_flags
+set default_enabled = true
+where key = 'recovery.engine.v1';
+
 insert into public.integrations (organization_id, provider, status, capabilities, last_error_code)
 values
   (

@@ -33,6 +33,13 @@ export interface Database {
       radar_assessments: TableDefinition<RadarAssessmentRow>;
       radar_metric_inputs: TableDefinition<RadarMetricInputRow>;
       radar_recommendations: TableDefinition<RadarRecommendationRow>;
+      recovery_action_status_history: TableDefinition<RecoveryActionStatusHistoryRow>;
+      recovery_actions: TableDefinition<RecoveryActionRow>;
+      recovery_consents: TableDefinition<RecoveryConsentRow>;
+      recovery_opportunities: TableDefinition<RecoveryOpportunityRow>;
+      recovery_opportunity_status_history: TableDefinition<RecoveryOpportunityStatusHistoryRow>;
+      recovery_simulations: TableDefinition<RecoverySimulationRow>;
+      recovery_suppressions: TableDefinition<RecoverySuppressionRow>;
       relationship_assignments: TableDefinition<RelationshipAssignmentRow>;
       relationship_specialists: TableDefinition<RelationshipSpecialistRow>;
       request_status_history: TableDefinition<RequestStatusHistoryRow>;
@@ -89,6 +96,78 @@ export interface Database {
           target_reason_code: string | null;
           target_status: string;
           target_summary: string | null;
+        };
+        Returns: string;
+      };
+      create_recovery_suppression: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_expires_at: string | null;
+          target_external_lead_ref: string;
+          target_organization_id: string;
+          target_reason: string;
+        };
+        Returns: string;
+      };
+      decide_recovery_action: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_action_id: string;
+          target_clinic_id: string;
+          target_decision: string;
+          target_organization_id: string;
+          target_reason_code: string | null;
+        };
+        Returns: string;
+      };
+      decide_recovery_opportunity: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_decision: string;
+          target_opportunity_id: string;
+          target_organization_id: string;
+          target_reason_code: string | null;
+        };
+        Returns: string;
+      };
+      revoke_recovery_suppression: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+          target_suppression_id: string;
+        };
+        Returns: string;
+      };
+      run_recovery_simulation: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_candidates: Json;
+          target_clinic_id: string;
+          target_exclusions: Json;
+          target_leads_evaluated: number;
+          target_organization_id: string;
+          target_policy_version: string;
+          target_window_end: string;
+          target_window_start: string;
+        };
+        Returns: string;
+      };
+      set_recovery_consent: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_external_lead_ref: string;
+          target_organization_id: string;
+          target_state: string;
         };
         Returns: string;
       };
@@ -687,4 +766,105 @@ export interface AccountMeetingStatusHistoryRow extends Record<string, unknown> 
   organization_id: string;
   reason_code: string | null;
   to_status: AccountMeetingRow['status'];
+}
+
+export interface RecoveryConsentRow extends Record<string, unknown> {
+  clinic_id: string;
+  created_at: string;
+  created_by_profile_id: string;
+  external_lead_ref: string;
+  id: string;
+  organization_id: string;
+  state: 'granted' | 'denied';
+  updated_at: string;
+}
+
+export interface RecoverySuppressionRow extends Record<string, unknown> {
+  clinic_id: string;
+  created_at: string;
+  created_by_profile_id: string;
+  expires_at: string | null;
+  external_lead_ref: string;
+  id: string;
+  organization_id: string;
+  reason: 'opt_out' | 'complaint' | 'manual_review' | 'other';
+  revoked_at: string | null;
+  revoked_by_profile_id: string | null;
+  updated_at: string;
+}
+
+export interface RecoverySimulationRow extends Record<string, unknown> {
+  clinic_id: string;
+  created_at: string;
+  created_by_profile_id: string;
+  excluded_frequency: number;
+  excluded_no_consent: number;
+  excluded_suppressed: number;
+  id: string;
+  leads_evaluated: number;
+  opportunities_identified: number;
+  organization_id: string;
+  policy_version: string;
+  provider: 'mock';
+  status: 'completed' | 'failed';
+  window_end: string;
+  window_start: string;
+}
+
+export interface RecoveryOpportunityRow extends Record<string, unknown> {
+  clinic_id: string;
+  created_at: string;
+  decided_at: string | null;
+  decided_by_profile_id: string | null;
+  evidence: Json;
+  expires_at: string;
+  external_lead_ref: string;
+  id: string;
+  lead_label: string | null;
+  organization_id: string;
+  reason_code: string | null;
+  rule_code: 'lead_no_response' | 'attended_no_booking';
+  rule_version: string;
+  simulation_id: string;
+  status: 'identified' | 'approved' | 'discarded' | 'expired';
+  updated_at: string;
+}
+
+export interface RecoveryActionRow extends Record<string, unknown> {
+  action_type: 'contact_lead' | 'offer_booking';
+  clinic_id: string;
+  created_at: string;
+  decided_at: string | null;
+  decided_by_profile_id: string | null;
+  expires_at: string;
+  id: string;
+  opportunity_id: string;
+  organization_id: string;
+  reason_code: string | null;
+  status: 'recommended' | 'approved' | 'rejected' | 'expired';
+  updated_at: string;
+}
+
+export interface RecoveryOpportunityStatusHistoryRow extends Record<string, unknown> {
+  changed_at: string;
+  changed_by_profile_id: string;
+  clinic_id: string;
+  from_status: RecoveryOpportunityRow['status'] | null;
+  id: string;
+  opportunity_id: string;
+  organization_id: string;
+  reason_code: string | null;
+  to_status: RecoveryOpportunityRow['status'];
+}
+
+export interface RecoveryActionStatusHistoryRow extends Record<string, unknown> {
+  action_id: string;
+  changed_at: string;
+  changed_by_profile_id: string;
+  clinic_id: string;
+  from_status: RecoveryActionRow['status'] | null;
+  id: string;
+  organization_id: string;
+  reason_code: string | null;
+  to_status: RecoveryActionRow['status'];
 }
