@@ -7,4 +7,5 @@ export * from './radar';
 export * from './recovery';
 export * from './tenancy';
 export * from './quality';
+export * from './marketing';
 

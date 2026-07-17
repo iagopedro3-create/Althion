@@ -20,6 +20,7 @@ import { RecoveryModule } from './modules/recovery/recovery.module';
 import { RequestsModule } from './modules/requests/requests.module';
 import { TenancyModule } from './modules/tenancy/tenancy.module';
 import { QualityModule } from './modules/quality/quality.module';
+import { GoogleAdsModule } from './modules/google-ads/google-ads.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { QualityModule } from './modules/quality/quality.module';
     RequestsModule,
     TenancyModule,
     QualityModule,
+    GoogleAdsModule,
   ],
   providers: [
     { provide: APP_GUARD, useExisting: ThrottlerGuard },

@@ -51,9 +51,35 @@ export interface Database {
       quality_clinical_flags: TableDefinition<QualityClinicalFlagRow>;
       quality_evaluation_history: TableDefinition<QualityEvaluationHistoryRow>;
       quality_clinical_flag_history: TableDefinition<QualityClinicalFlagHistoryRow>;
+      google_ads_credentials: TableDefinition<GoogleAdsCredentialsRow>;
+      google_ads_campaigns: TableDefinition<GoogleAdsCampaignsRow>;
+      google_ads_metrics: TableDefinition<GoogleAdsMetricsRow>;
     };
     Views: Record<string, never>;
     Functions: {
+      save_google_ads_credentials: {
+        Args: {
+          target_organization_id: string;
+          target_clinic_id: string;
+          target_refresh_token: string;
+          target_developer_token: string;
+          target_customer_id: string;
+          idempotency_key: string;
+          request_id: string;
+        };
+        Returns: string;
+      };
+      sync_google_ads_data: {
+        Args: {
+          target_organization_id: string;
+          target_clinic_id: string;
+          target_campaigns: Json;
+          target_metrics: Json;
+          idempotency_key: string;
+          request_id: string;
+        };
+        Returns: boolean;
+      };
       create_quality_evaluation: {
         Args: {
           target_organization_id: string;
@@ -967,4 +993,44 @@ export interface QualityClinicalFlagHistoryRow extends Record<string, unknown> {
   to_status: QualityClinicalFlagRow['status'];
   changed_by_profile_id: string;
   changed_at: string;
+}
+
+export interface GoogleAdsCredentialsRow extends Record<string, unknown> {
+  id: string;
+  organization_id: string;
+  clinic_id: string;
+  refresh_token: string;
+  developer_token: string;
+  customer_id: string;
+  status: 'active' | 'disabled' | 'error';
+  last_sync_at: string | null;
+  last_error_code: string | null;
+  created_at: string;
+  updated_at: string;
+  created_by_profile_id: string;
+}
+
+export interface GoogleAdsCampaignsRow extends Record<string, unknown> {
+  id: string;
+  organization_id: string;
+  clinic_id: string;
+  campaign_id: string;
+  name: string;
+  status: 'ENABLED' | 'PAUSED' | 'REMOVED' | 'UNKNOWN';
+  budget_micros: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GoogleAdsMetricsRow extends Record<string, unknown> {
+  id: string;
+  organization_id: string;
+  clinic_id: string;
+  campaign_id: string;
+  date: string;
+  clicks: number;
+  impressions: number;
+  cost_micros: number;
+  conversions: number;
+  created_at: string;
 }

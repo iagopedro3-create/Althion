@@ -53,6 +53,8 @@ export const CAPABILITIES = [
   'quality:evaluate',
   'quality:flag',
   'quality:resolve',
+  'google_ads:read',
+  'google_ads:write',
 ] as const;
 
 export type Capability = (typeof CAPABILITIES)[number];
@@ -126,6 +128,8 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'suppression:read',
     'suppression:manage',
     'quality:read',
+    'google_ads:read',
+    'google_ads:write',
   ]),
   doctor: new Set([
     'organization:read',
@@ -189,6 +193,8 @@ const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'quality:evaluate',
   'quality:flag',
   'quality:resolve',
+  'google_ads:read',
+  'google_ads:write',
 ]);
 
 export function isPlatformAdmin(principal: Principal): boolean {

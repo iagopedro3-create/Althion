@@ -280,6 +280,61 @@ describe('authorization', () => {
         'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
       ),
     ).toBe(true);
+    expect(
+      hasCapability(
+        specialist,
+        '11111111-1111-4111-8111-111111111111',
+        'google_ads:read',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        specialist,
+        '11111111-1111-4111-8111-111111111111',
+        'google_ads:write',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+
+    // 4. Clinic Manager has google_ads:read and google_ads:write
+    const manager: Principal = {
+      ...principal,
+      memberships: [
+        {
+          organizationId: '11111111-1111-4111-8111-111111111111',
+          role: 'clinic_manager',
+          scopes: [{ clinicId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', unitId: null }],
+          status: 'active',
+        },
+      ],
+    };
+    expect(
+      hasCapability(
+        manager,
+        '11111111-1111-4111-8111-111111111111',
+        'google_ads:read',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        manager,
+        '11111111-1111-4111-8111-111111111111',
+        'google_ads:write',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+
+    // 5. Doctor does not have google_ads:read or google_ads:write
+    expect(
+      hasCapability(
+        doctor,
+        '11111111-1111-4111-8111-111111111111',
+        'google_ads:read',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(false);
   });
 });
 

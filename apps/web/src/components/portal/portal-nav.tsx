@@ -9,6 +9,7 @@ const ITEMS = [
   { href: '/app/solicitacoes', label: 'Solicitações' },
   { href: '/app/plano-de-melhoria', label: 'Plano' },
   { href: '/app/qualidade', label: 'Qualidade' },
+  { href: '/app/google-ads', label: 'Google Ads' },
   { href: '/app/relatorios', label: 'Relatórios' },
   { href: '/app/especialista', label: 'Especialista' },
   { href: '/app/integracoes', label: 'Integrações' },

@@ -5,3 +5,4 @@ export * from './portal';
 export * from './recovery';
 export * from './score';
 export * from './quality';
+export * from './marketing/attribution';
