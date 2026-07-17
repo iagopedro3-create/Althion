@@ -107,6 +107,8 @@ Não há landing no repositório. Para não alterar a ordem técnica, o site é 
 - implementar em fase aprovada, possivelmente junto da Fase 2;
 - o formulário público do Radar exige rate limit, consentimento/base, antiabuso e segregação de dados.
 
+Plano detalhado: `docs/plans/site-institucional.md`. A execução está bloqueada por marca, conteúdo, base jurídica (LGPD) e destino do lead; até lá, apenas o plano e a arquitetura de segregação são permitidos, sem publicar afirmações de marketing nem coletar dados reais.
+
 ## Marcos de decisão
 
 | Marco                   | Pergunta                                                 |
