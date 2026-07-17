@@ -122,6 +122,9 @@ export default async function CockpitAccountPage({
           <a className="quiet-button" href={`/cockpit/recovery?${portalQuery(context)}`}>
             Recovery
           </a>
+          <a className="quiet-button" href={`/cockpit/quality?${portalQuery(context)}`}>
+            Qualidade
+          </a>
           <a className="quiet-button" href="/cockpit">
             Voltar
           </a>

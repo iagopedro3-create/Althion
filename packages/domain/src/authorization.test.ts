@@ -187,4 +187,99 @@ describe('authorization', () => {
       ),
     ).toBe(false);
   });
+
+  it('keeps quality:evaluate internal to specialists while granting quality:read/flag/resolve to doctors and read to managers', () => {
+    // 1. Manager (principal has clinic_manager membership in assigned clinic)
+    expect(
+      hasCapability(
+        principal,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:read',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        principal,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:evaluate',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(false);
+
+    // 2. Doctor Principal
+    const doctor: Principal = {
+      ...principal,
+      memberships: [
+        {
+          organizationId: '11111111-1111-4111-8111-111111111111',
+          role: 'doctor',
+          scopes: [{ clinicId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', unitId: null }],
+          status: 'active',
+        },
+      ],
+    };
+    expect(
+      hasCapability(
+        doctor,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:read',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        doctor,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:flag',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        doctor,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:resolve',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        doctor,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:evaluate',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(false);
+
+    // 3. Specialist Principal
+    const specialist: Principal = {
+      ...principal,
+      assignments: [
+        {
+          clinicId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+          organizationId: '11111111-1111-4111-8111-111111111111',
+          status: 'active',
+        },
+      ],
+      memberships: [],
+    };
+    expect(
+      hasCapability(
+        specialist,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:read',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        specialist,
+        '11111111-1111-4111-8111-111111111111',
+        'quality:evaluate',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+  });
 });
+

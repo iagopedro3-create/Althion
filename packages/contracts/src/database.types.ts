@@ -46,9 +46,49 @@ export interface Database {
       requests: TableDefinition<PortalRequestRow>;
       task_status_history: TableDefinition<TaskStatusHistoryRow>;
       tasks: TableDefinition<PortalTaskRow>;
+      quality_rubrics: TableDefinition<QualityRubricRow>;
+      quality_evaluations: TableDefinition<QualityEvaluationRow>;
+      quality_clinical_flags: TableDefinition<QualityClinicalFlagRow>;
+      quality_evaluation_history: TableDefinition<QualityEvaluationHistoryRow>;
+      quality_clinical_flag_history: TableDefinition<QualityClinicalFlagHistoryRow>;
     };
     Views: Record<string, never>;
     Functions: {
+      create_quality_evaluation: {
+        Args: {
+          target_organization_id: string;
+          target_clinic_id: string;
+          target_conversation_id: string;
+          target_rubric_version: string;
+          target_scores: Json;
+          target_feedback: string | null;
+          idempotency_key: string;
+          request_id: string;
+        };
+        Returns: string;
+      };
+      flag_clinical_conversation: {
+        Args: {
+          target_organization_id: string;
+          target_clinic_id: string;
+          target_conversation_id: string;
+          target_flag_reason: string;
+          idempotency_key: string;
+          request_id: string;
+        };
+        Returns: string;
+      };
+      resolve_clinical_flag: {
+        Args: {
+          target_organization_id: string;
+          target_clinic_id: string;
+          target_flag_id: string;
+          target_handoff_notes: string;
+          idempotency_key: string;
+          request_id: string;
+        };
+        Returns: string;
+      };
       create_account_incident: {
         Args: {
           idempotency_key: string;
@@ -867,4 +907,64 @@ export interface RecoveryActionStatusHistoryRow extends Record<string, unknown> 
   organization_id: string;
   reason_code: string | null;
   to_status: RecoveryActionRow['status'];
+}
+
+export interface QualityRubricRow extends Record<string, unknown> {
+  version: string;
+  title: string;
+  description: string;
+  criteria: Json;
+  is_active: boolean;
+  created_by_profile_id: string;
+  created_at: string;
+}
+
+export interface QualityEvaluationRow extends Record<string, unknown> {
+  id: string;
+  organization_id: string;
+  clinic_id: string;
+  conversation_id: string;
+  evaluator_id: string;
+  rubric_version: string;
+  scores: Json;
+  total_score: number;
+  feedback: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface QualityClinicalFlagRow extends Record<string, unknown> {
+  id: string;
+  organization_id: string;
+  clinic_id: string;
+  conversation_id: string;
+  flagged_at: string;
+  flagged_by_profile_id: string | null;
+  flag_reason: string;
+  status: 'pending' | 'transferred' | 'resolved';
+  resolved_at: string | null;
+  resolved_by_profile_id: string | null;
+  handoff_notes: string | null;
+}
+
+export interface QualityEvaluationHistoryRow extends Record<string, unknown> {
+  id: string;
+  organization_id: string;
+  clinic_id: string;
+  evaluation_id: string;
+  rubric_version: string;
+  total_score: number;
+  changed_by_profile_id: string;
+  changed_at: string;
+}
+
+export interface QualityClinicalFlagHistoryRow extends Record<string, unknown> {
+  id: string;
+  organization_id: string;
+  clinic_id: string;
+  flag_id: string;
+  from_status: QualityClinicalFlagRow['status'] | null;
+  to_status: QualityClinicalFlagRow['status'];
+  changed_by_profile_id: string;
+  changed_at: string;
 }

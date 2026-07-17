@@ -4,3 +4,4 @@ export * from './crm';
 export * from './portal';
 export * from './recovery';
 export * from './score';
+export * from './quality';

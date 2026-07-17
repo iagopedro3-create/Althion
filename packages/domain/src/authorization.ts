@@ -49,6 +49,10 @@ export const CAPABILITIES = [
   'recovery:decide',
   'suppression:read',
   'suppression:manage',
+  'quality:read',
+  'quality:evaluate',
+  'quality:flag',
+  'quality:resolve',
 ] as const;
 
 export type Capability = (typeof CAPABILITIES)[number];
@@ -61,6 +65,7 @@ const INTERNAL_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'meeting:read',
   'meeting:manage',
   'recovery:simulate',
+  'quality:evaluate',
 ]);
 
 export type MembershipStatus = 'active' | 'invited' | 'revoked' | 'expired';
@@ -120,6 +125,7 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'recovery:decide',
     'suppression:read',
     'suppression:manage',
+    'quality:read',
   ]),
   doctor: new Set([
     'organization:read',
@@ -132,6 +138,9 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'request:create',
     'improvement_plan:read',
     'task:read',
+    'quality:read',
+    'quality:flag',
+    'quality:resolve',
   ]),
   operator: new Set(['organization:read', 'clinic:read', 'feature_flag:read']),
   viewer: new Set([
@@ -176,6 +185,10 @@ const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'recovery:decide',
   'suppression:read',
   'suppression:manage',
+  'quality:read',
+  'quality:evaluate',
+  'quality:flag',
+  'quality:resolve',
 ]);
 
 export function isPlatformAdmin(principal: Principal): boolean {

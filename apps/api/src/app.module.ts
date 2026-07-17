@@ -19,6 +19,7 @@ import { RadarModule } from './modules/radar/radar.module';
 import { RecoveryModule } from './modules/recovery/recovery.module';
 import { RequestsModule } from './modules/requests/requests.module';
 import { TenancyModule } from './modules/tenancy/tenancy.module';
+import { QualityModule } from './modules/quality/quality.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { TenancyModule } from './modules/tenancy/tenancy.module';
     RecoveryModule,
     RequestsModule,
     TenancyModule,
+    QualityModule,
   ],
   providers: [
     { provide: APP_GUARD, useExisting: ThrottlerGuard },
