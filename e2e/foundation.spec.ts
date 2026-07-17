@@ -5,7 +5,7 @@ test('presents the Althion positioning and access path', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Transforme oportunidades em consultas realizadas',
+    'Transforme oportunidades administrativas em consultas realizadas',
   );
   await page.getByRole('link', { name: 'Acessar plataforma' }).focus();
   await expect(page.getByRole('link', { name: 'Acessar plataforma' })).toBeFocused();

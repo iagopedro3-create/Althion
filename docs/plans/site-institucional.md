@@ -104,16 +104,16 @@ Nenhuma tabela tenant-owned nova. Se o lead de contato precisar de persistência
 
 ## Rotas propostas
 
-| Rota                | Entrega                                                        |
-| ------------------- | ------------------------------------------------------------- |
-| `/`                 | home institucional (evolui a página mínima atual)             |
-| `/produto`          | pilares e como funciona, com honestidade de estágio           |
-| `/seguranca`        | segurança, privacidade e ausência de função clínica           |
-| `/sobre`            | quem é a Althion                                               |
-| `/contato`          | formulário de contato comercial                               |
-| `/privacidade`      | política de privacidade **[JURÍDICO]**                        |
-| `/termos`           | termos de uso **[JURÍDICO]**                                  |
-| `/radar`            | formulário público do Radar, publicado só com governança completa |
+| Rota           | Entrega                                                           |
+| -------------- | ----------------------------------------------------------------- |
+| `/`            | home institucional (evolui a página mínima atual)                 |
+| `/produto`     | pilares e como funciona, com honestidade de estágio               |
+| `/seguranca`   | segurança, privacidade e ausência de função clínica               |
+| `/sobre`       | quem é a Althion                                                  |
+| `/contato`     | formulário de contato comercial                                   |
+| `/privacidade` | política de privacidade **[JURÍDICO]**                            |
+| `/termos`      | termos de uso **[JURÍDICO]**                                      |
+| `/radar`       | formulário público do Radar, publicado só com governança completa |
 
 Todas públicas, sem sessão; o portal permanece em `/entrar`, `/app` e `/cockpit`, intocado.
 
@@ -133,16 +133,16 @@ Mesmos padrões já praticados no portal: estrutura semântica, contraste AA, na
 
 ## Riscos e mitigação
 
-| Risco                                                    | Mitigação                                                                 |
-| -------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Copy prometer resultado sem lastro                       | princípio de produto: fato ≠ estimativa; sem número/depoimento inventado  |
-| Site sugerir função clínica                              | linguagem administrativa; página de segurança reforça a ausência clínica  |
-| Formulário público sem base legal virar risco LGPD       | bloquear execução até jurídico aprovar consentimento e retenção           |
-| Lead público contaminar schema tenant                    | segregação: destino fora das tabelas do produto                           |
-| Abuso do formulário público                              | rate limit, antiabuso, validação server-side                             |
-| Acoplar site ao portal e vazar sessão/estado             | grupo de rotas isolado, sem sessão, middleware protegendo só `/app`       |
-| Publicar identidade "de template" antes da marca real    | herdar shell neutro até a marca ser aprovada                              |
-| Analytics de terceiros antes da decisão de privacidade   | nenhuma tag antes do gate jurídico                                        |
+| Risco                                                  | Mitigação                                                                |
+| ------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Copy prometer resultado sem lastro                     | princípio de produto: fato ≠ estimativa; sem número/depoimento inventado |
+| Site sugerir função clínica                            | linguagem administrativa; página de segurança reforça a ausência clínica |
+| Formulário público sem base legal virar risco LGPD     | bloquear execução até jurídico aprovar consentimento e retenção          |
+| Lead público contaminar schema tenant                  | segregação: destino fora das tabelas do produto                          |
+| Abuso do formulário público                            | rate limit, antiabuso, validação server-side                             |
+| Acoplar site ao portal e vazar sessão/estado           | grupo de rotas isolado, sem sessão, middleware protegendo só `/app`      |
+| Publicar identidade "de template" antes da marca real  | herdar shell neutro até a marca ser aprovada                             |
+| Analytics de terceiros antes da decisão de privacidade | nenhuma tag antes do gate jurídico                                       |
 
 ## Estratégia de testes
 
