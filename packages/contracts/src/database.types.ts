@@ -1,5 +1,5 @@
 /**
- * Temporary typed baseline for the Phase 1-3 tables used by the API.
+ * Temporary typed baseline for the Phase 1-4 tables used by the API.
  * Regenerate from the local schema with `pnpm db:types` once Docker is available.
  */
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
@@ -8,6 +8,10 @@ export interface Database {
   __InternalSupabase: { PostgrestVersion: '13.0.4' };
   public: {
     Tables: {
+      account_incident_status_history: TableDefinition<AccountIncidentStatusHistoryRow>;
+      account_incidents: TableDefinition<AccountIncidentRow>;
+      account_meeting_status_history: TableDefinition<AccountMeetingStatusHistoryRow>;
+      account_meetings: TableDefinition<AccountMeetingRow>;
       audit_logs: TableDefinition<AuditLogRow>;
       althion_score_components: TableDefinition<AlthionScoreComponentRow>;
       althion_score_evidence: TableDefinition<AlthionScoreEvidenceRow>;
@@ -38,6 +42,56 @@ export interface Database {
     };
     Views: Record<string, never>;
     Functions: {
+      create_account_incident: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_category: string;
+          target_clinic_id: string;
+          target_details: string;
+          target_organization_id: string;
+          target_severity: string;
+          target_subject: string;
+        };
+        Returns: string;
+      };
+      create_account_meeting: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_organization_id: string;
+          target_purpose: string;
+          target_scheduled_at: string;
+          target_summary: string | null;
+        };
+        Returns: string;
+      };
+      transition_account_incident: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_incident_id: string;
+          target_organization_id: string;
+          target_reason_code: string | null;
+          target_status: string;
+        };
+        Returns: string;
+      };
+      transition_account_meeting: {
+        Args: {
+          idempotency_key: string;
+          request_id: string;
+          target_clinic_id: string;
+          target_meeting_id: string;
+          target_organization_id: string;
+          target_reason_code: string | null;
+          target_status: string;
+          target_summary: string | null;
+        };
+        Returns: string;
+      };
       create_improvement_plan: {
         Args: {
           idempotency_key: string;
@@ -294,6 +348,7 @@ interface RelationshipSpecialistRow extends Record<string, unknown> {
 
 interface RelationshipAssignmentRow extends Record<string, unknown> {
   clinic_id: string | null;
+  complexity: 'low' | 'standard' | 'high';
   created_at: string;
   ends_at: string | null;
   id: string;
@@ -568,4 +623,68 @@ export interface TaskStatusHistoryRow extends Record<string, unknown> {
   reason_code: string | null;
   task_id: string;
   to_status: PortalTaskRow['status'];
+}
+
+export interface AccountIncidentRow extends Record<string, unknown> {
+  acknowledged_at: string | null;
+  assignee_profile_id: string | null;
+  category:
+    | 'integration_failure'
+    | 'data_quality'
+    | 'sla_breach'
+    | 'engagement_risk'
+    | 'operational'
+    | 'other';
+  clinic_id: string;
+  closed_at: string | null;
+  created_at: string;
+  details: string;
+  id: string;
+  mitigated_at: string | null;
+  opened_by_profile_id: string;
+  organization_id: string;
+  resolved_at: string | null;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  status: 'open' | 'investigating' | 'mitigated' | 'resolved' | 'closed';
+  subject: string;
+  updated_at: string;
+}
+
+export interface AccountIncidentStatusHistoryRow extends Record<string, unknown> {
+  changed_at: string;
+  changed_by_profile_id: string;
+  clinic_id: string;
+  from_status: AccountIncidentRow['status'] | null;
+  id: string;
+  incident_id: string;
+  organization_id: string;
+  reason_code: string | null;
+  to_status: AccountIncidentRow['status'];
+}
+
+export interface AccountMeetingRow extends Record<string, unknown> {
+  cancelled_at: string | null;
+  clinic_id: string;
+  completed_at: string | null;
+  created_at: string;
+  id: string;
+  organization_id: string;
+  purpose: 'onboarding' | 'checkin' | 'review' | 'escalation' | 'other';
+  scheduled_at: string;
+  specialist_profile_id: string;
+  status: 'scheduled' | 'completed' | 'cancelled' | 'no_show';
+  summary: string | null;
+  updated_at: string;
+}
+
+export interface AccountMeetingStatusHistoryRow extends Record<string, unknown> {
+  changed_at: string;
+  changed_by_profile_id: string;
+  clinic_id: string;
+  from_status: AccountMeetingRow['status'] | null;
+  id: string;
+  meeting_id: string;
+  organization_id: string;
+  reason_code: string | null;
+  to_status: AccountMeetingRow['status'];
 }

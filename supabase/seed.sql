@@ -89,6 +89,85 @@ select
 from public.feature_flags
 where key = 'portal.client.v1';
 
+-- Fase 4 — Cockpit sintético: capacidade, segunda conta, incidente e reuniões.
+update public.relationship_specialists
+set capacity_limit = 10
+where id = '50000000-0000-4000-8000-000000000001';
+
+insert into public.relationship_assignments (id, organization_id, specialist_id, complexity)
+values (
+  '60000000-0000-4000-8000-000000000002',
+  '10000000-0000-4000-8000-000000000002',
+  '50000000-0000-4000-8000-000000000001',
+  'high'
+);
+
+insert into public.account_incidents (
+  id, organization_id, clinic_id, opened_by_profile_id, category, severity, subject, details
+)
+select
+  '70000000-0000-4000-8000-000000000001',
+  '10000000-0000-4000-8000-000000000001',
+  '20000000-0000-4000-8000-000000000001',
+  profile.id,
+  'data_quality',
+  'high',
+  'Cobertura do Radar em queda',
+  'Cobertura declarada do último Radar caiu sem justificativa administrativa conhecida.'
+from public.profiles profile
+where profile.auth_user_id = '80000000-0000-4000-8000-000000000004';
+
+insert into public.account_incident_status_history (
+  organization_id, clinic_id, incident_id, from_status, to_status, changed_by_profile_id
+)
+select
+  '10000000-0000-4000-8000-000000000001',
+  '20000000-0000-4000-8000-000000000001',
+  '70000000-0000-4000-8000-000000000001',
+  null,
+  'open',
+  profile.id
+from public.profiles profile
+where profile.auth_user_id = '80000000-0000-4000-8000-000000000004';
+
+insert into public.account_meetings (
+  id, organization_id, clinic_id, specialist_profile_id, purpose, status,
+  scheduled_at, completed_at, summary
+)
+select
+  '71000000-0000-4000-8000-000000000001',
+  '10000000-0000-4000-8000-000000000001',
+  '20000000-0000-4000-8000-000000000001',
+  profile.id,
+  'checkin',
+  'completed',
+  now() - interval '10 days',
+  now() - interval '10 days',
+  'Check-in administrativo concluído com plano de acompanhamento revisado.'
+from public.profiles profile
+where profile.auth_user_id = '80000000-0000-4000-8000-000000000004';
+
+insert into public.account_meeting_status_history (
+  organization_id, clinic_id, meeting_id, from_status, to_status, changed_by_profile_id
+)
+select
+  '10000000-0000-4000-8000-000000000001',
+  '20000000-0000-4000-8000-000000000001',
+  '71000000-0000-4000-8000-000000000001',
+  status_change.from_status::public.meeting_status,
+  status_change.to_status::public.meeting_status,
+  profile.id
+from public.profiles profile
+cross join (
+  values (null::text, 'scheduled'), ('scheduled', 'completed')
+) as status_change(from_status, to_status)
+where profile.auth_user_id = '80000000-0000-4000-8000-000000000004';
+
+-- Habilitação sintética local do Cockpit interno (flag global, sem override por organização).
+update public.feature_flags
+set default_enabled = true
+where key = 'cockpit.specialist.v1';
+
 insert into public.integrations (organization_id, provider, status, capabilities, last_error_code)
 values
   (
