@@ -16,7 +16,7 @@ import { IncidentForm } from '@/components/cockpit/incident-form';
 import { MeetingForm } from '@/components/cockpit/meeting-form';
 import { WorkflowButtons, type WorkflowTransition } from '@/components/cockpit/workflow-buttons';
 import { fetchCockpitAccount, type CockpitSlaView } from '@/lib/api/cockpit';
-import { parsePortalContext } from '@/lib/portal-context';
+import { parsePortalContext, portalQuery } from '@/lib/portal-context';
 import { first } from '@/lib/portal-page';
 import { createClient } from '@/lib/supabase/server';
 
@@ -118,9 +118,14 @@ export default async function CockpitAccountPage({
             gerada em {formatDateTime(account.generatedAt)}.
           </p>
         </div>
-        <a className="quiet-button" href="/cockpit">
-          Voltar
-        </a>
+        <div className="profile-actions">
+          <a className="quiet-button" href={`/cockpit/recovery?${portalQuery(context)}`}>
+            Recovery
+          </a>
+          <a className="quiet-button" href="/cockpit">
+            Voltar
+          </a>
+        </div>
       </header>
 
       <section aria-label="Razões da saúde" className="state-card">
