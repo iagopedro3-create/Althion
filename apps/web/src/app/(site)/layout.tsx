@@ -12,47 +12,50 @@ const NAV = [
 export default function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="site-shell">
-      <header className="public-nav" aria-label="Navegação principal">
-        <Link className="brand" href="/">
-          {/* Marca provisória: shell neutro até a identidade visual ser aprovada. [MARCA A DEFINIR] */}
-          <span className="brand-mark">A</span>
-          <span>Althion</span>
-        </Link>
-        <nav aria-label="Seções do site" className="site-nav">
-          {NAV.map((item) => (
-            <Link href={item.href} key={item.href}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <Link className="quiet-button" href="/entrar">
-          Acessar plataforma
-        </Link>
-      </header>
+      <div className="dark-section" style={{ width: '100%' }}>
+        <header className="public-nav" aria-label="Navegação principal">
+          <Link className="brand" href="/">
+            <span className="brand-mark" style={{ background: '#18A987', color: '#061713' }}>A</span>
+            <span>Althion</span>
+          </Link>
+          <nav aria-label="Seções do site" className="site-nav">
+            {NAV.map((item) => (
+              <Link href={item.href} key={item.href}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <Link className="quiet-button" href="/entrar">
+            Acessar plataforma
+          </Link>
+        </header>
+      </div>
 
       {children}
 
-      <footer className="site-footer">
-        <div>
-          <p className="brand">
-            <span className="brand-mark">A</span>
-            <span>Althion</span>
+      <div className="dark-section" style={{ width: '100%', borderTop: '1px solid var(--line)' }}>
+        <footer className="site-footer" style={{ borderTop: 'none', marginTop: 0 }}>
+          <div>
+            <p className="brand">
+              <span className="brand-mark" style={{ background: '#18A987', color: '#061713' }}>A</span>
+              <span>Althion</span>
+            </p>
+            <p>Recuperação e Performance da Agenda para clínicas.</p>
+          </div>
+          <nav aria-label="Links institucionais" className="site-footer-links">
+            <Link href="/produto">Produto</Link>
+            <Link href="/seguranca">Segurança</Link>
+            <Link href="/sobre">Sobre</Link>
+            <Link href="/contato">Contato</Link>
+            <Link href="/privacidade">Privacidade</Link>
+            <Link href="/termos">Termos</Link>
+          </nav>
+          <p className="site-footer-note">
+            Plataforma administrativa. A Althion não oferece diagnóstico, prescrição, prontuário,
+            ou orientação clínica.
           </p>
-          <p>Recuperação e Performance da Agenda para clínicas.</p>
-        </div>
-        <nav aria-label="Links institucionais" className="site-footer-links">
-          <Link href="/produto">Produto</Link>
-          <Link href="/seguranca">Segurança</Link>
-          <Link href="/sobre">Sobre</Link>
-          <Link href="/contato">Contato</Link>
-          <Link href="/privacidade">Privacidade</Link>
-          <Link href="/termos">Termos</Link>
-        </nav>
-        <p className="site-footer-note">
-          Plataforma administrativa. A Althion não oferece diagnóstico, prescrição, prontuário,
-          triagem ou orientação clínica.
-        </p>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }

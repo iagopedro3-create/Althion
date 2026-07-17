@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
 @import 'tailwindcss';
 
 :root {
@@ -2414,3 +2415,95 @@ details.creation-panel > summary {
     grid-template-columns: 1fr;
   }
 }
+
+/* Custom Althion Site Redesign Themes */
+.site-shell {
+  background-color: #FAF9F6;
+  color: #10201B;
+  --background: #F5F7F3;
+  --surface: #FFFFFF;
+  --text: #10201B;
+  --muted: #52635D;
+  --accent: #18A987;
+  --line: rgba(16, 32, 27, 0.08);
+  color-scheme: light;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Header stays light or dark according to context, let's style it transparent */
+.public-nav {
+  width: 100% !important;
+  max-width: 1120px;
+  padding: 20px 20px !important;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-shell .dark-section {
+  background-color: #061713;
+  color: #F3FAF7;
+  --background: #061713;
+  --surface: #0A211B;
+  --text: #F3FAF7;
+  --muted: #A9BBB4;
+  --accent: #29C7A1;
+  --line: rgba(243, 250, 247, 0.1);
+  color-scheme: dark;
+}
+
+.site-shell h1, .site-shell h2, .site-shell h3 {
+  font-family: 'Manrope', 'Inter', system-ui, sans-serif;
+  color: var(--text);
+}
+
+.site-main {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.site-main > section {
+  padding: 80px 20px;
+  width: 100%;
+}
+
+.site-container {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.badge.success {
+  background: rgba(40, 202, 161, 0.1);
+  color: #28CAA1;
+}
+
+.badge.warning {
+  background: rgba(245, 162, 111, 0.1);
+  color: #F5A26F;
+}
+
+.badge.danger {
+  background: rgba(244, 126, 107, 0.1);
+  color: #F47E6B;
+}
+
+.badge.primary {
+  background: rgba(55, 124, 246, 0.1);
+  color: #377CF6;
+}
+
+.badge.muted {
+  background: rgba(169, 187, 180, 0.1);
+  color: #A9BBB4;
+}
+

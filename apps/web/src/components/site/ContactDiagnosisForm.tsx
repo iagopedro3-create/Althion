@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 
 interface DiagnosisState {
   name: string;
+  role: string;
   email: string;
   whatsapp: string;
-  role: string;
   clinicName: string;
   city: string;
   specialty: string;
@@ -15,14 +15,15 @@ interface DiagnosisState {
   mainChannel: string;
   avgResponseTime: string;
   mainDifficulty: string;
+  investsAds: string;
   consent: boolean;
 }
 
 const INITIAL_STATE: DiagnosisState = {
   name: '',
+  role: '',
   email: '',
   whatsapp: '',
-  role: '',
   clinicName: '',
   city: '',
   specialty: '',
@@ -31,6 +32,7 @@ const INITIAL_STATE: DiagnosisState = {
   mainChannel: 'whatsapp',
   avgResponseTime: '',
   mainDifficulty: '',
+  investsAds: 'nao',
   consent: false,
 };
 
@@ -41,10 +43,9 @@ export function ContactDiagnosisForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load draft from localStorage on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('althion_diagnosis_draft');
+      const saved = localStorage.getItem('althion_diagnosis_draft_v2');
       if (saved) {
         setForm(JSON.parse(saved));
       }
@@ -53,12 +54,11 @@ export function ContactDiagnosisForm() {
     }
   }, []);
 
-  // Save draft on change
   const updateField = (field: keyof DiagnosisState, value: string | boolean) => {
     const updated = { ...form, [field]: value };
     setForm(updated);
     try {
-      localStorage.setItem('althion_diagnosis_draft', JSON.stringify(updated));
+      localStorage.setItem('althion_diagnosis_draft_v2', JSON.stringify(updated));
     } catch {
       // Ignore storage errors
     }
@@ -67,18 +67,13 @@ export function ContactDiagnosisForm() {
   const nextStep = () => {
     setError(null);
     if (step === 1) {
-      if (!form.name.trim() || !form.email.trim() || !form.whatsapp.trim() || !form.role.trim()) {
-        setError('Por favor, preencha todos os dados de contato.');
+      if (!form.name.trim() || !form.role.trim() || !form.email.trim() || !form.whatsapp.trim()) {
+        setError('Por favor, preencha todos os campos de contato.');
         return;
       }
     } else if (step === 2) {
-      if (!form.clinicName.trim() || !form.city.trim() || !form.specialty.trim() || !form.professionalsCount) {
-        setError('Por favor, preencha todos os dados da clínica.');
-        return;
-      }
-    } else if (step === 3) {
-      if (!form.monthlyContacts || !form.avgResponseTime || !form.mainDifficulty.trim()) {
-        setError('Por favor, responda às perguntas operacionais.');
+      if (!form.clinicName.trim() || !form.city.trim() || !form.specialty.trim() || !form.professionalsCount.trim()) {
+        setError('Por favor, preencha todos os campos da clínica.');
         return;
       }
     }
@@ -94,20 +89,22 @@ export function ContactDiagnosisForm() {
     e.preventDefault();
     setError(null);
 
+    if (!form.monthlyContacts.trim() || !form.avgResponseTime.trim() || !form.mainDifficulty.trim()) {
+      setError('Por favor, responda às perguntas operacionais.');
+      return;
+    }
+
     if (!form.consent) {
-      setError('É necessário aceitar os termos de consentimento para continuar.');
+      setError('É necessário aceitar os termos de consentimento para enviar.');
       return;
     }
 
     setLoading(true);
-
-    // Simulate sending data to API
     await new Promise((resolve) => setTimeout(resolve, 1500));
-
     setLoading(false);
     setSuccess(true);
     try {
-      localStorage.removeItem('althion_diagnosis_draft');
+      localStorage.removeItem('althion_diagnosis_draft_v2');
     } catch {
       // Ignore storage errors
     }
@@ -115,13 +112,15 @@ export function ContactDiagnosisForm() {
 
   if (success) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px 24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '16px' }}>
-        <span style={{ fontSize: '3rem', display: 'block', marginBottom: '16px' }}>🎉</span>
-        <h2 style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: '0 0 12px 0' }}>
-          Recebemos as informações da sua clínica!
+      <div style={{ textAlign: 'center', padding: '48px 32px', background: '#FFFFFF', border: '1px solid rgba(16, 32, 27, 0.08)', borderRadius: '24px' }}>
+        <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#F4FAF7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: '#18A987' }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: '800', margin: '0 0 12px 0', color: '#10201B' }}>
+          Informações Recebidas
         </h2>
-        <p style={{ color: 'var(--muted)', fontSize: '1rem', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto 24px' }}>
-          Obrigado por enviar os dados operacionais. Nossa equipe de analistas iniciará a auditoria preliminar e o seu Especialista de Relacionamento entrará em contato para agendar a entrega do diagnóstico completo.
+        <p style={{ color: '#52635D', fontSize: '1rem', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto 32px' }}>
+          Nossa equipe analisará os dados operacionais informados. Entraremos em contato em breve para apresentar o diagnóstico preliminar da agenda da sua clínica.
         </p>
         <button
           className="primary-button"
@@ -131,43 +130,53 @@ export function ContactDiagnosisForm() {
             setForm(INITIAL_STATE);
           }}
           type="button"
+          style={{ padding: '12px 24px', background: '#10201B', color: '#FFFFFF', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
         >
-          Enviar Novo Diagnóstico
+          Solicitar Novo Diagnóstico
         </button>
       </div>
     );
   }
 
   return (
-    <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '16px', padding: '32px', maxWidth: '640px', margin: '0 auto' }}>
-      {/* Progress Bar */}
-      <div style={{ marginBottom: '28px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--muted)', fontWeight: '600', marginBottom: '8px' }}>
-          <span>Etapa {step} de 4</span>
+    <div style={{ background: '#FFFFFF', border: '1px solid rgba(16, 32, 27, 0.08)', borderRadius: '24px', padding: '40px', maxWidth: '600px', margin: '0 auto', boxShadow: '0 10px 30px rgba(0,0,0,0.01)' }}>
+      {/* Progress */}
+      <div style={{ marginBottom: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#52635D', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+          <span>Etapa {step} de 3</span>
           <span>
-            {step === 1 && 'Informações de Contato'}
-            {step === 2 && 'Sobre a Clínica'}
-            {step === 3 && 'Diagnóstico da Operação'}
-            {step === 4 && 'Confirmação'}
+            {step === 1 && 'Contato Comercial'}
+            {step === 2 && 'Dados da Clínica'}
+            {step === 3 && 'Diagnóstico Operacional'}
           </span>
         </div>
-        <div style={{ height: '4px', background: 'var(--line)', borderRadius: '2px', overflow: 'hidden' }}>
-          <div style={{ height: '100%', background: 'var(--primary)', width: `${(step / 4) * 100}%`, transition: 'width 0.3s ease' }} />
+        <div style={{ height: '4px', background: '#F5F7F3', borderRadius: '2px', overflow: 'hidden' }}>
+          <div style={{ height: '100%', background: '#10201B', width: `${(step / 3) * 100}%`, transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }} />
         </div>
       </div>
 
       <form className="portal-form" onSubmit={(e) => void submit(e)}>
-        {/* Step 1: Contact Details */}
+        {/* Step 1: Contact */}
         {step === 1 && (
           <div style={{ display: 'grid', gap: '20px' }}>
             <label>
               Nome completo
               <input
                 onChange={(e) => updateField('name', e.target.value)}
-                placeholder="Ex: Dra. Mariana Costa"
+                placeholder="Ex: Mariana Costa"
                 required
                 type="text"
                 value={form.name}
+              />
+            </label>
+            <label>
+              Seu cargo / função na clínica
+              <input
+                onChange={(e) => updateField('role', e.target.value)}
+                placeholder="Ex: Diretora / Gestora / Médica"
+                required
+                type="text"
+                value={form.role}
               />
             </label>
             <label>
@@ -181,7 +190,7 @@ export function ContactDiagnosisForm() {
               />
             </label>
             <label>
-              WhatsApp de contato
+              WhatsApp profissional
               <input
                 onChange={(e) => updateField('whatsapp', e.target.value)}
                 placeholder="Ex: (11) 98888-7777"
@@ -190,20 +199,10 @@ export function ContactDiagnosisForm() {
                 value={form.whatsapp}
               />
             </label>
-            <label>
-              Seu cargo / função na clínica
-              <input
-                onChange={(e) => updateField('role', e.target.value)}
-                placeholder="Ex: Sócia-Diretora / Gestora / Médica"
-                required
-                type="text"
-                value={form.role}
-              />
-            </label>
           </div>
         )}
 
-        {/* Step 2: Clinic Details */}
+        {/* Step 2: Clinic */}
         {step === 2 && (
           <div style={{ display: 'grid', gap: '20px' }}>
             <label>
@@ -220,7 +219,7 @@ export function ContactDiagnosisForm() {
               Cidade / Estado (UF)
               <input
                 onChange={(e) => updateField('city', e.target.value)}
-                placeholder="Ex: São Paulo / SP"
+                placeholder="Ex: Porto Alegre / RS"
                 required
                 type="text"
                 value={form.city}
@@ -230,7 +229,7 @@ export function ContactDiagnosisForm() {
               Especialidade principal
               <input
                 onChange={(e) => updateField('specialty', e.target.value)}
-                placeholder="Ex: Dermatologia / Odontologia Estética"
+                placeholder="Ex: Dermatologia / Ginecologia"
                 required
                 type="text"
                 value={form.specialty}
@@ -240,7 +239,7 @@ export function ContactDiagnosisForm() {
               Quantidade de profissionais de saúde
               <input
                 onChange={(e) => updateField('professionalsCount', e.target.value)}
-                placeholder="Ex: 4 profissionais"
+                placeholder="Ex: 5"
                 required
                 type="text"
                 value={form.professionalsCount}
@@ -249,68 +248,63 @@ export function ContactDiagnosisForm() {
           </div>
         )}
 
-        {/* Step 3: Operational Details */}
+        {/* Step 3: Operation */}
         {step === 3 && (
           <div style={{ display: 'grid', gap: '20px' }}>
             <label>
-              Volume aproximado de novos contatos/leads por mês
+              Volume mensal aproximado de novos contatos / leads
               <input
                 onChange={(e) => updateField('monthlyContacts', e.target.value)}
-                placeholder="Ex: 300 contatos"
+                placeholder="Ex: 250"
                 required
                 type="text"
                 value={form.monthlyContacts}
               />
             </label>
             <label>
-              Canal principal de atração
+              Principal canal de atração de pacientes
               <select
                 onChange={(e) => updateField('mainChannel', e.target.value)}
                 value={form.mainChannel}
               >
-                <option value="whatsapp">WhatsApp direto</option>
-                <option value="instagram">Instagram Direct / Redes Sociais</option>
+                <option value="whatsapp">WhatsApp profissional</option>
+                <option value="redes">Redes Sociais (Direct / Messenger)</option>
                 <option value="site">Site institucional / Landing Pages</option>
-                <option value="indicacao">Indicação / Boca a boca</option>
+                <option value="indicacao">Indicações e convênios</option>
               </select>
             </label>
             <label>
               Tempo médio estimado de resposta da recepção
               <input
                 onChange={(e) => updateField('avgResponseTime', e.target.value)}
-                placeholder="Ex: 1 hora / 15 minutos"
+                placeholder="Ex: 40 minutos"
                 required
                 type="text"
                 value={form.avgResponseTime}
               />
             </label>
             <label>
-              Principal dificuldade ou gargalo operacional identificado
+              Principal dificuldade operacional na agenda
               <textarea
                 onChange={(e) => updateField('mainDifficulty', e.target.value)}
-                placeholder="Ex: Muitos cancelamentos de véspera que não conseguimos preencher."
+                placeholder="Ex: Cancelamentos que deixam a vaga ociosa."
                 required
                 rows={3}
                 value={form.mainDifficulty}
               />
             </label>
-          </div>
-        )}
+            <label>
+              Sua clínica investe em anúncios pagos (Google/Instagram)?
+              <select
+                onChange={(e) => updateField('investsAds', e.target.value)}
+                value={form.investsAds}
+              >
+                <option value="sim">Sim, investimos mensalmente</option>
+                <option value="nao">Não investimos em tráfego pago</option>
+              </select>
+            </label>
 
-        {/* Step 4: Confirmation & Consent */}
-        {step === 4 && (
-          <div style={{ display: 'grid', gap: '20px' }}>
-            <div style={{ background: 'rgba(30, 58, 138, 0.02)', padding: '16px', borderRadius: '12px', border: '1px solid var(--line)' }}>
-              <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 'bold' }}>Resumo Operacional</h4>
-              <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.85rem', color: 'var(--muted)', display: 'grid', gap: '6px' }}>
-                <li>**Contato:** {form.name} ({form.role})</li>
-                <li>**Clínica:** {form.clinicName} — {form.city}</li>
-                <li>**Equipe:** {form.professionalsCount} profissionais</li>
-                <li>**Métrica:** {form.monthlyContacts} contatos/mês, resposta {form.avgResponseTime}</li>
-              </ul>
-            </div>
-
-            <label className="checkbox-field">
+            <label className="checkbox-field" style={{ marginTop: '12px' }}>
               <input
                 checked={form.consent}
                 onChange={(e) => updateField('consent', e.target.checked)}
@@ -318,19 +312,19 @@ export function ContactDiagnosisForm() {
                 type="checkbox"
               />
               <span>
-                Concordo com a coleta e processamento destes dados operacionais da clínica exclusivamente para fins de elaboração do diagnóstico inicial de performance de agenda, em conformidade com as diretrizes da LGPD e Termos de Uso.
+                Concordo com a coleta e uso dos dados operacionais exclusivamente para a análise inicial de performance da agenda, conforme as diretrizes da política de privacidade.
               </span>
             </label>
           </div>
         )}
 
         {error ? (
-          <div style={{ color: 'var(--danger)', fontSize: '0.85rem', marginTop: '12px', fontWeight: '600' }} role="alert">
-            ⚠️ {error}
+          <div style={{ color: '#F47E6B', fontSize: '0.85rem', marginTop: '12px', fontWeight: '700' }} role="alert">
+            {error}
           </div>
         ) : null}
 
-        {/* Navigation Buttons */}
+        {/* Buttons */}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '32px' }}>
           {step > 1 ? (
             <button
@@ -344,19 +338,21 @@ export function ContactDiagnosisForm() {
             <div />
           )}
 
-          {step < 4 ? (
+          {step < 3 ? (
             <button
               className="primary-button"
               onClick={nextStep}
               type="button"
+              style={{ background: '#10201B', color: '#FFFFFF', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
             >
-              Próxima Etapa
+              Avançar
             </button>
           ) : (
             <button
               className="primary-button"
               disabled={loading}
               type="submit"
+              style={{ background: '#10201B', color: '#FFFFFF', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
             >
               {loading ? 'Processando…' : 'Solicitar Diagnóstico'}
             </button>

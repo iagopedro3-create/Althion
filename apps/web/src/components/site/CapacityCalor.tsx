@@ -12,85 +12,95 @@ interface DayCapacity {
 }
 
 const WEEK_DATA: DayCapacity[] = [
-  { day: 'Seg', date: '20 Jul', occupancy: 85, status: 'optimal', leadsWaiting: 2, recommendation: 'Ocupação ideal. Nenhuma ação recomendada.' },
-  { day: 'Ter', date: '21 Jul', occupancy: 42, status: 'low', leadsWaiting: 6, recommendation: 'Baixa ocupação detectada. Sugerido acionar 6 pacientes da fila de espera do tratamento de Implante.' },
-  { day: 'Qua', date: '22 Jul', occupancy: 60, status: 'moderate', leadsWaiting: 1, recommendation: 'Ocupação média. 1 lead qualificado aguardando resposta rápida no CRM.' },
-  { day: 'Qui', date: '23 Jul', occupancy: 90, status: 'optimal', leadsWaiting: 0, recommendation: 'Ocupação ideal. Priorizar estabilidade do fluxo.' },
-  { day: 'Sex', date: '24 Jul', occupancy: 35, status: 'low', leadsWaiting: 8, recommendation: 'Alerta de ociosidade na sexta. Há 8 indicações de retorno estético pendentes.' },
+  { day: 'Segunda', date: '20/07', occupancy: 85, status: 'optimal', leadsWaiting: 2, recommendation: 'Ocupação da agenda está dentro da meta saudável da clínica.' },
+  { day: 'Terça', date: '21/07', occupancy: 42, status: 'low', leadsWaiting: 5, recommendation: 'Baixa ocupação detectada na terça-feira. Mapeados 5 leads na fila de espera com preferência por este dia.' },
+  { day: 'Quarta', date: '22/07', occupancy: 60, status: 'moderate', leadsWaiting: 1, recommendation: 'Ocupação média. 1 contato em aberto aguardando retorno.' },
+  { day: 'Quinta', date: '23/07', occupancy: 90, status: 'optimal', leadsWaiting: 0, recommendation: 'Ocupação ideal. Nenhuma oportunidade de reativação necessária.' },
+  { day: 'Sexta', date: '24/07', occupancy: 35, status: 'low', leadsWaiting: 7, recommendation: 'Janelas ociosas identificadas. Há 7 pacientes elegíveis para contato de acompanhamento periódico.' },
 ];
 
 export function CapacityCalor() {
-  const [selectedIdx, setSelectedIdx] = useState(1); // Default to Terça-feira
+  const [selectedIdx, setSelectedIdx] = useState(1);
   const current = (WEEK_DATA[selectedIdx] ?? WEEK_DATA[0])!;
 
   return (
-    <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '16px', padding: '28px' }}>
-      <div style={{ marginBottom: '20px' }}>
-        <span style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-          Módulo em evolução
-        </span>
-        <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 'bold' }}>Monitor de Capacidade Futura</h3>
+    <div style={{ background: '#FFFFFF', border: '1px solid rgba(16, 32, 27, 0.08)', borderRadius: '24px', padding: '36px', boxShadow: '0 10px 30px rgba(0,0,0,0.01)' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
+        <div>
+          <span style={{ fontSize: '0.75rem', color: '#377CF6', fontWeight: '700', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+            Em Desenvolvimento
+          </span>
+          <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '700', color: '#10201B' }}>Monitor de Ocupação da Agenda</h3>
+        </div>
+        {/* Legend */}
+        <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: '#52635D' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#29C7A1' }} /> Saúdável
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F5A26F' }} /> Médio
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F47E6B' }} /> Ocioso
+          </span>
+        </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '32px' }}>
         {WEEK_DATA.map((day, idx) => (
           <button
             key={day.day}
             onClick={() => setSelectedIdx(idx)}
             style={{
-              background: selectedIdx === idx ? 'rgba(30, 58, 138, 0.05)' : 'transparent',
-              border: selectedIdx === idx ? '2px solid var(--primary)' : '1px solid var(--line)',
-              borderRadius: '12px',
-              padding: '16px 8px',
+              background: selectedIdx === idx ? '#F5F7F3' : '#FFFFFF',
+              border: selectedIdx === idx ? '2px solid #10201B' : '1px solid rgba(16, 32, 27, 0.08)',
+              borderRadius: '16px',
+              padding: '20px 12px',
               cursor: 'pointer',
               textAlign: 'center',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: '8px',
-              transition: 'all 0.2s ease',
+              gap: '12px',
+              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
             type="button"
           >
-            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--muted)' }}>{day.day}</span>
-            <span style={{ fontSize: '0.95rem', fontWeight: 'bold' }}>{day.date}</span>
-            {/* Heat dot */}
+            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: '#52635D' }}>{day.day}</span>
+            <span style={{ fontSize: '1rem', fontWeight: '800', color: '#10201B' }}>{day.date}</span>
             <span
               style={{
-                width: '12px',
-                height: '12px',
+                width: '10px',
+                height: '10px',
                 borderRadius: '50%',
-                background: day.status === 'optimal' ? 'var(--success)' : day.status === 'moderate' ? 'var(--warning)' : 'var(--danger)',
+                background: day.status === 'optimal' ? '#29C7A1' : day.status === 'moderate' ? '#F5A26F' : '#F47E6B',
               }}
             />
-            <span style={{ fontSize: '0.75rem', color: 'var(--text)', fontWeight: '500' }}>{day.occupancy}%</span>
+            <span style={{ fontSize: '0.85rem', color: '#52635D', fontWeight: '700' }}>{day.occupancy}%</span>
           </button>
         ))}
       </div>
 
-      <div style={{ background: 'rgba(30, 58, 138, 0.02)', border: '1px solid var(--line)', borderRadius: '12px', padding: '16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-          <strong style={{ fontSize: '0.9rem' }}>Ações Inteligentes para {current.day} ({current.date})</strong>
+      <div style={{ background: '#F5F7F3', border: '1px solid rgba(16, 32, 27, 0.04)', borderRadius: '16px', padding: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+          <strong style={{ fontSize: '0.95rem', color: '#10201B' }}>Auditoria da Ocupação ({current.day} — {current.date})</strong>
           <span
-            className="badge"
-            style={{
-              background: current.status === 'optimal' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-              color: current.status === 'optimal' ? 'var(--success)' : 'var(--danger)',
-            }}
+            className={`badge ${current.status === 'optimal' ? 'success' : current.status === 'moderate' ? 'warning' : 'danger'}`}
+            style={{ fontSize: '0.75rem' }}
           >
             {current.status === 'optimal' && 'Capacidade Otimizada'}
             {current.status === 'moderate' && 'Capacidade Moderada'}
-            {current.status === 'low' && 'Alerta de Ociosidade'}
+            {current.status === 'low' && 'Baixa Ocupação'}
           </span>
         </div>
-        <p style={{ margin: '0 0 12px 0', fontSize: '0.85rem', color: 'var(--muted)', lineHeight: '1.5' }}>
+        <p style={{ margin: '0 0 16px 0', fontSize: '0.9rem', color: '#52635D', lineHeight: '1.6' }}>
           {current.recommendation}
         </p>
         {current.leadsWaiting > 0 ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--danger)' }} />
-            <small style={{ fontWeight: '600', color: 'var(--danger)' }}>
-              {current.leadsWaiting} paciente(s) da fila de espera possuem preferência por esse dia.
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#F47E6B' }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <small style={{ fontWeight: '700', fontSize: '0.85rem' }}>
+              Há {current.leadsWaiting} paciente(s) elegíveis na fila de espera prioritária para reocupação.
             </small>
           </div>
         ) : null}
