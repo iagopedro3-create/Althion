@@ -16,6 +16,7 @@ import { ImprovementPlansModule } from './modules/improvement-plans/improvement-
 import { IntegrationsModule } from './modules/integrations/integrations.module';
 import { PortalModule } from './modules/portal/portal.module';
 import { RadarModule } from './modules/radar/radar.module';
+import { RecoveryModule } from './modules/recovery/recovery.module';
 import { RequestsModule } from './modules/requests/requests.module';
 import { TenancyModule } from './modules/tenancy/tenancy.module';
 
@@ -50,6 +51,7 @@ import { TenancyModule } from './modules/tenancy/tenancy.module';
     IntegrationsModule,
     PortalModule,
     RadarModule,
+    RecoveryModule,
     RequestsModule,
     TenancyModule,
   ],
