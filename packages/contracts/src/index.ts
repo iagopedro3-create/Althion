@@ -1,5 +1,6 @@
 export * from './api';
 export * from './auth';
+export * from './cockpit';
 export * from './database.types';
 export * from './portal';
 export * from './radar';

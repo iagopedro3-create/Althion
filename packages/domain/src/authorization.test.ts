@@ -69,6 +69,72 @@ describe('authorization', () => {
     ).toBe(false);
   });
 
+  it('keeps Cockpit capabilities away from tenant roles, including owners', () => {
+    const owner: Principal = {
+      ...principal,
+      memberships: [
+        {
+          organizationId: '11111111-1111-4111-8111-111111111111',
+          role: 'organization_owner',
+          scopes: [{ clinicId: null, unitId: null }],
+          status: 'active',
+        },
+      ],
+    };
+    expect(hasCapability(owner, '11111111-1111-4111-8111-111111111111', 'cockpit:read')).toBe(
+      false,
+    );
+    expect(hasCapability(owner, '11111111-1111-4111-8111-111111111111', 'incident:manage')).toBe(
+      false,
+    );
+    expect(hasCapability(owner, '11111111-1111-4111-8111-111111111111', 'request:manage')).toBe(
+      true,
+    );
+  });
+
+  it('grants Cockpit capabilities to a specialist only while the assignment is active', () => {
+    const specialist: Principal = {
+      ...principal,
+      assignments: [
+        {
+          clinicId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+          organizationId: '11111111-1111-4111-8111-111111111111',
+          status: 'active',
+        },
+      ],
+      memberships: [],
+    };
+    expect(
+      hasCapability(
+        specialist,
+        '11111111-1111-4111-8111-111111111111',
+        'incident:manage',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        specialist,
+        '11111111-1111-4111-8111-111111111111',
+        'meeting:manage',
+        'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
+      ),
+    ).toBe(false);
+
+    const ended: Principal = {
+      ...specialist,
+      assignments: [{ ...specialist.assignments[0]!, status: 'ended' }],
+    };
+    expect(
+      hasCapability(
+        ended,
+        '11111111-1111-4111-8111-111111111111',
+        'cockpit:read',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(false);
+  });
+
   it('allows a scoped manager to manage Portal workflows only in the assigned clinic', () => {
     expect(
       hasCapability(

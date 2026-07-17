@@ -142,15 +142,15 @@ Nenhum modelo opaco de churn; nenhuma ação automática. O Cockpit recomenda; o
 
 ## Fontes e disponibilidade
 
-| Informação                          | Fonte                            | Estado quando ausente     |
-| ----------------------------------- | -------------------------------- | ------------------------- |
-| carteira, complexidade, capacidade  | Fundação (assignments/specialists) | `not_assigned`          |
-| Score, cobertura, staleness         | Althion Score                    | `insufficient_data`       |
-| solicitações e SLA                  | Portal (Fase 3)                  | `available` (lista vazia) |
-| plano e tarefas vencidas            | Portal (Fase 3)                  | `available` (sem plano)   |
-| incidentes e reuniões               | módulo próprio da Fase 4         | disponível após migration |
-| integrações                         | Fundação                         | `blocked`/`disabled`      |
-| leads, conversas, agenda, Recovery  | Helena/fases futuras             | `source_blocked`/`module_not_available` |
+| Informação                         | Fonte                              | Estado quando ausente                   |
+| ---------------------------------- | ---------------------------------- | --------------------------------------- |
+| carteira, complexidade, capacidade | Fundação (assignments/specialists) | `not_assigned`                          |
+| Score, cobertura, staleness        | Althion Score                      | `insufficient_data`                     |
+| solicitações e SLA                 | Portal (Fase 3)                    | `available` (lista vazia)               |
+| plano e tarefas vencidas           | Portal (Fase 3)                    | `available` (sem plano)                 |
+| incidentes e reuniões              | módulo próprio da Fase 4           | disponível após migration               |
+| integrações                        | Fundação                           | `blocked`/`disabled`                    |
+| leads, conversas, agenda, Recovery | Helena/fases futuras               | `source_blocked`/`module_not_available` |
 
 ## Modelo de dados
 
@@ -200,19 +200,19 @@ meeting:read
 meeting:manage
 ```
 
-| Perfil                    | Cockpit | Incidentes | Reuniões |
-| ------------------------- | ------- | ---------- | -------- |
-| `platform_admin`          | total e auditado | gerencia | gerencia |
+| Perfil                    | Cockpit                                | Incidentes                  | Reuniões                    |
+| ------------------------- | -------------------------------------- | --------------------------- | --------------------------- |
+| `platform_admin`          | total e auditado                       | gerencia                    | gerencia                    |
 | `relationship_specialist` | lê carteira própria (assignment ativo) | lê e gerencia no assignment | lê e gerencia no assignment |
-| demais papéis tenant      | sem capability | sem capability | sem capability |
+| demais papéis tenant      | sem capability                         | sem capability              | sem capability              |
 
 `organization_owner` deixa de receber automaticamente "todas" as capabilities: o conjunto passa a ser explícito e não inclui as do Cockpit. O Especialista perde acesso imediatamente quando o assignment termina (`ends_at`/status), inclusive nas policies SQL.
 
 ## Rotas web
 
-| Rota             | Entrega                                                                     |
-| ---------------- | --------------------------------------------------------------------------- |
-| `/cockpit`       | carteira: contas com saúde, próxima ação, SLA em risco e capacidade         |
+| Rota             | Entrega                                                                                                   |
+| ---------------- | --------------------------------------------------------------------------------------------------------- |
+| `/cockpit`       | carteira: contas com saúde, próxima ação, SLA em risco e capacidade                                       |
 | `/cockpit/conta` | detalhe por `organizationId`+`clinicId`: razões, ações, SLA, incidentes e reuniões com criação/transições |
 
 Contexto por query string revalidado na API/RLS, como no Portal. Sessão, feature flag e autorização verificadas no servidor; acesso negado explícito para papéis sem capability.
@@ -316,18 +316,18 @@ README.md
 
 ## Riscos e mitigação
 
-| Risco                                                   | Mitigação e evidência exigida                                                  |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| SLA provisório ser lido como compromisso contratual     | rótulo "política provisória 1.0.0" na UI e nos DTOs; sem exibição ao cliente   |
-| saúde/ação parecerem modelo opaco                       | toda razão e ação carrega regra, evidência e versão da política               |
-| Especialista ver conta após fim do assignment           | policies com janela temporal + testes pgTAP de expiração + teste de domínio    |
-| cliente ver incidentes internos                         | nenhuma capability tenant; policies negam; teste negativo por papel            |
-| relógio de SLA impreciso (waiting_customer, comercial)  | aproximação documentada; recálculo sempre derivado, nunca snapshot persistido  |
-| capacidade sem limite configurado virar número inventado| default provisório explícito na UI e no DTO (`limitSource: default`)           |
-| duplicar conceitos de Recovery/Quality                  | incidentes/reuniões são operacionais; nenhuma oportunidade/contato criado      |
-| texto de incidente/resumo conter dado sensível          | limites, aviso não clínico, logs por ID, sem anexos/IA                         |
-| cross-tenant via carteira agregada                      | RLS por linha + FKs compostas + testes negativos tenant B                      |
-| OneDrive/Docker atrasarem validação de banco            | mesma limitação das fases anteriores, registrada no release                    |
+| Risco                                                    | Mitigação e evidência exigida                                                 |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| SLA provisório ser lido como compromisso contratual      | rótulo "política provisória 1.0.0" na UI e nos DTOs; sem exibição ao cliente  |
+| saúde/ação parecerem modelo opaco                        | toda razão e ação carrega regra, evidência e versão da política               |
+| Especialista ver conta após fim do assignment            | policies com janela temporal + testes pgTAP de expiração + teste de domínio   |
+| cliente ver incidentes internos                          | nenhuma capability tenant; policies negam; teste negativo por papel           |
+| relógio de SLA impreciso (waiting_customer, comercial)   | aproximação documentada; recálculo sempre derivado, nunca snapshot persistido |
+| capacidade sem limite configurado virar número inventado | default provisório explícito na UI e no DTO (`limitSource: default`)          |
+| duplicar conceitos de Recovery/Quality                   | incidentes/reuniões são operacionais; nenhuma oportunidade/contato criado     |
+| texto de incidente/resumo conter dado sensível           | limites, aviso não clínico, logs por ID, sem anexos/IA                        |
+| cross-tenant via carteira agregada                       | RLS por linha + FKs compostas + testes negativos tenant B                     |
+| OneDrive/Docker atrasarem validação de banco             | mesma limitação das fases anteriores, registrada no release                   |
 
 ## Estratégia de testes
 

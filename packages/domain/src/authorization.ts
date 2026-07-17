@@ -39,9 +39,22 @@ export const CAPABILITIES = [
   'improvement_plan:manage',
   'task:read',
   'task:manage',
+  'cockpit:read',
+  'incident:read',
+  'incident:manage',
+  'meeting:read',
+  'meeting:manage',
 ] as const;
 
 export type Capability = (typeof CAPABILITIES)[number];
+
+const COCKPIT_CAPABILITIES: ReadonlySet<Capability> = new Set([
+  'cockpit:read',
+  'incident:read',
+  'incident:manage',
+  'meeting:read',
+  'meeting:manage',
+]);
 
 export type MembershipStatus = 'active' | 'invited' | 'revoked' | 'expired';
 
@@ -72,7 +85,9 @@ export interface Principal {
 }
 
 const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> = {
-  organization_owner: new Set(CAPABILITIES),
+  organization_owner: new Set(
+    CAPABILITIES.filter((capability) => !COCKPIT_CAPABILITIES.has(capability)),
+  ),
   clinic_manager: new Set([
     'organization:read',
     'clinic:read',
@@ -140,6 +155,11 @@ const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'improvement_plan:manage',
   'task:read',
   'task:manage',
+  'cockpit:read',
+  'incident:read',
+  'incident:manage',
+  'meeting:read',
+  'meeting:manage',
 ]);
 
 export function isPlatformAdmin(principal: Principal): boolean {
