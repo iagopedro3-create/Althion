@@ -16,13 +16,13 @@ O site não deve ser construído antes de:
 2. **Conteúdo institucional aprovado** — texto de posicionamento, descrição de produto e provas. A visão em `docs/product/vision.md` fornece a base factual, mas a copy de marketing precisa de revisão de quem responde pela empresa. **[CONTEÚDO A APROVAR]**
 3. **Base jurídica e privacidade** — política de privacidade, base legal LGPD para o formulário público, texto de consentimento, retenção e encarregado (DPO). Bloqueio externo nº 3 do `IMPLEMENTATION_PLAN.md`. **[JURÍDICO A APROVAR]**
 4. **Definição do formulário público** — quais dados coletar, para onde vão e quem os opera. Sem isso, nenhum campo é criado.
-5. **Domínio e hospedagem** — domínio próprio, ambiente e ownership. Bloqueio externo nº 4 (infraestrutura). **[INFRA A DEFINIR]**
+5. **Domínio** — domínio próprio e ownership. A hospedagem está resolvida: o site **compartilha o deploy do portal** (mesma aplicação Next.js), então não há ambiente separado a provisionar; resta apenas o domínio. Bloqueio externo nº 4 (infraestrutura) fica reduzido ao domínio. **[DOMÍNIO A DEFINIR]**
 
 Enquanto (1)–(4) não existirem, o trabalho permitido é: este plano, a arquitetura de rotas/segregação e um esqueleto de conteúdo com marcadores — sem publicar afirmações de marketing nem coletar dados reais.
 
 ## Objetivo
 
-Apresentar a Althion publicamente e capturar interesse qualificado (clínicas e gestores), sem prometer o que o produto ainda não entrega e sem tocar no domínio clínico. A conversão principal proposta é **agendar uma conversa/diagnóstico** (lead B2B), não venda direta.
+Apresentar a Althion publicamente e capturar interesse qualificado (clínicas e gestores), sem prometer o que o produto ainda não entrega e sem tocar no domínio clínico. A conversão principal é **agendar uma conversa/diagnóstico** (lead B2B), não venda direta (decisão aprovada).
 
 O site deve responder, nesta ordem:
 
@@ -61,13 +61,13 @@ Captura de interesse comercial (B2B), **separado do formulário público do Rada
 - validação server-side (Zod), honeypot/CAPTCHA conforme decisão antiabuso;
 - segregação: leads públicos **não** entram nas tabelas tenant-owned do produto sem processo aprovado; destino inicial é um canal de contato, não o schema multi-tenant.
 
-### 3. Formulário público do Radar (opcional, trilha própria)
+### 3. Formulário público do Radar
 
-O roadmap prevê um formulário público do Radar. Ele tem exigências mais fortes que o formulário de contato e **só entra com fonte, base legal e antiabuso definidos**:
+Faz parte do site institucional (decisão aprovada). Tem exigências mais fortes que o formulário de contato e **só é publicado com fonte, base legal e antiabuso definidos** — a inclusão no escopo não antecipa esses gates:
 
 - rate limit, consentimento/base aplicável, antiabuso e **segregação de dados** obrigatórios;
-- não pode escrever direto nas tabelas do produto autenticado sem isolamento;
-- fica fora do primeiro corte do site até (3) e (4) das dependências estarem aprovados. **[ESCOPO A CONFIRMAR: incluir no site institucional ou tratar como fase própria junto da Fase 2]**
+- não pode escrever direto nas tabelas do produto autenticado sem isolamento; o resultado do Radar público entra por um caminho próprio, revisável, sem tocar no schema tenant-owned até haver processo aprovado;
+- é o último item da ordem de execução: publicado depois das páginas institucionais e do formulário de contato, quando a base legal específica (item 3 das dependências) estiver aprovada.
 
 ## Fora de escopo
 
@@ -80,7 +80,7 @@ O roadmap prevê um formulário público do Radar. Ele tem exigências mais fort
 
 ## Arquitetura proposta
 
-Reutilizar a fundação Next.js **sem acoplar o site ao portal autenticado**:
+O site **compartilha o deploy do portal** (mesma aplicação `apps/web`, decisão aprovada), mas permanece **desacoplado em código e roteamento** — compartilhar o build não é compartilhar sessão nem estado:
 
 - rotas públicas em um grupo próprio (ex.: `apps/web/src/app/(site)/`), isoladas do grupo autenticado `(app)`/`/cockpit`;
 - o `proxy.ts`/middleware já deixa rotas públicas passarem e só protege `/app`; manter esse contrato e garantir que nenhuma rota do site exija sessão;
@@ -113,7 +113,7 @@ Nenhuma tabela tenant-owned nova. Se o lead de contato precisar de persistência
 | `/contato`          | formulário de contato comercial                               |
 | `/privacidade`      | política de privacidade **[JURÍDICO]**                        |
 | `/termos`           | termos de uso **[JURÍDICO]**                                  |
-| `/radar` (opcional) | formulário público do Radar, só com governança completa       |
+| `/radar`            | formulário público do Radar, publicado só com governança completa |
 
 Todas públicas, sem sessão; o portal permanece em `/entrar`, `/app` e `/cockpit`, intocado.
 
@@ -170,7 +170,7 @@ Mesmos padrões já praticados no portal: estrutura semântica, contraste AA, na
 4. implementar o formulário de contato com governança (rate limit, consentimento, segregação);
 5. aplicar identidade visual e SEO;
 6. rodar gates, acessibilidade e revisão de privacidade;
-7. avaliar, separadamente, o formulário público do Radar (fonte, base legal, antiabuso) — possivelmente como trilha própria junto da Fase 2.
+7. publicar o formulário público do Radar (fonte, base legal específica, antiabuso e segregação) como último item, dentro do próprio site.
 
 ## Pendências a confirmar
 
@@ -179,6 +179,6 @@ Mesmos padrões já praticados no portal: estrutura semântica, contraste AA, na
 - **Jurídico:** política de privacidade, base legal do formulário, texto de consentimento, retenção, DPO, decisão sobre analytics.
 - **Prova social:** há clientes/depoimentos/números autorizados? Se não, permanecem como marcadores.
 - **Lead:** destino (e-mail, CRM comercial, storage segregado) e responsável pela operação.
-- **Radar público:** entra no site institucional ou vira trilha própria junto da Fase 2?
-- **Infra:** domínio, hospedagem e ambiente do site (compartilha deploy do portal ou separado?).
-- **Conversão:** "agendar diagnóstico/conversa" é a ação principal aprovada?
+- **Infra:** domínio próprio (hospedagem já resolvida — deploy compartilhado com o portal).
+
+Decisões já aprovadas (17/07/2026): conversão principal = "agendar diagnóstico/conversa"; formulário público do Radar faz parte do site; o site compartilha o deploy do portal.
