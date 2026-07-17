@@ -74,3 +74,10 @@ Não existe operação real na Fase 1. Nenhum erro autoriza criar endpoint, cred
 ## Backup e restore
 
 A Fundação versiona migrations e seed sintético. Backup/restore de ambiente remoto depende da escolha do projeto Supabase e deve ser exercitado antes do piloto; ainda não há ambiente remoto autorizado.
+
+## Fase 4 — Cockpit (17/07/2026)
+
+- Flag `cockpit.specialist.v1` é global (sem override por organização); ligar apenas quando a operação de Especialistas estiver treinada na política provisória.
+- Política operacional (SLA, saúde, capacidade, próxima ação) versionada em `packages/domain/src/cockpit/policy.ts`; qualquer recalibração exige nova versão e atualização do plano.
+- Incidentes/reuniões: texto livre limitado e proibido de conter dado clínico; auditoria registra apenas metadados. Em caso de inserção indevida, tratar como incidente de privacidade (ver seção correspondente).
+- Capacidade usa `relationship_specialists.capacity_limit`; nulo aplica default provisório de 12 pontos e a UI marca a origem do limite.

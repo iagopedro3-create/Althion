@@ -141,3 +141,23 @@ A rota de webhook proposta é uma rota da Althion; ela não presume URL, evento,
 ## Rotas proibidas
 
 Não serão criados namespaces de prontuário, diagnóstico, prescrição, exames, urgência, telemedicina ou tratamento clínico. Dados de outro tenant nunca serão acessíveis por parâmetro alternativo, query string ou ID externo.
+
+## Fase 4 — Cockpit do Especialista (17/07/2026)
+
+Web (sessão + flag global `cockpit.specialist.v1` + autorização por principal/RLS):
+
+| Rota web         | Entrega                                                                     |
+| ---------------- | --------------------------------------------------------------------------- |
+| `/cockpit`       | carteira do Especialista: saúde, SLA, capacidade e próxima ação             |
+| `/cockpit/conta` | conta por `organizationId`+`clinicId`: razões, ações, incidentes e reuniões |
+
+API:
+
+```text
+GET  /api/v1/cockpit/portfolio                     # autorização pelo principal; linhas via RLS
+GET  /api/v1/organizations/:orgId/clinics/:clinicId/cockpit/account   # cockpit:read
+GET|POST /api/v1/organizations/:orgId/clinics/:clinicId/incidents     # incident:read|manage
+POST /api/v1/organizations/:orgId/clinics/:clinicId/incidents/:id/transitions
+GET|POST /api/v1/organizations/:orgId/clinics/:clinicId/meetings      # meeting:read|manage
+POST /api/v1/organizations/:orgId/clinics/:clinicId/meetings/:id/transitions
+```

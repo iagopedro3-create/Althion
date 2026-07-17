@@ -132,3 +132,12 @@ Dimensões iniciais: `speed`, `conversion`, `continuity`, `occupancy`, `attendan
 - retenção e base legal por entidade;
 - owner nominal e thresholds de calibração da fórmula oficial do Score;
 - definição operacional de slot, ocupação, recuperação e comparecimento.
+
+## Fase 4 — Cockpit (17/07/2026)
+
+- `relationship_assignments.complexity`: complexidade operacional da conta para capacidade (pesos: low 1, standard 2, high 3; política provisória).
+- `account_incidents`: incidente operacional interno da conta (invisível a papéis do cliente). `severity` significa impacto operacional, nunca urgência clínica. `subject`/`details` limitados e proibidos de conter dados de pacientes; nunca entram em logs/auditoria.
+- `account_incident_status_history`: trilha append-only de transições de incidente com `reason_code` opcional.
+- `account_meetings`: registro declarativo de reunião do Especialista com a conta; `summary` opcional (5–500) sem conteúdo clínico.
+- `account_meeting_status_history`: trilha append-only de transições de reunião.
+- Flag `cockpit.specialist.v1`: habilita o Cockpit; global, sem override por organização.

@@ -133,3 +133,7 @@ As rotas fundacionais permanecem documentadas em `docs/architecture/route-map.md
 ## Git
 
 Branch atual: `codex/phase-3-client-portal`. Nenhum remoto está configurado.
+
+## Atualização — Fase 4 (17/07/2026)
+
+Cockpit do Especialista implementado no branch `codex/phase-4-cockpit`: domínio explicável em `packages/domain/src/cockpit` (SLA, saúde, capacidade, próxima ação, política `1.0.0-provisional`), tabelas `account_incidents`/`account_meetings` com históricos append-only e RLS exclusivo de Especialista/platform_admin, API em `/api/v1/cockpit/*` e `/incidents`/`/meetings`, e web em `/cockpit`. Papéis do cliente não acessam o Cockpit. Validação PostgreSQL/pgTAP (100 assertions das Fases 1–4) segue pendente de Docker/CI. Detalhes: `docs/releases/phase-4.md`.

@@ -2,7 +2,7 @@
 
 ## Controle de escopo
 
-Este plano foi criado na Fase 0. As Fases 1, 2 e 3 foram autorizadas e implementadas em 16 de julho de 2026. Código, testes, builds e evidências visuais locais estão verdes; migrations e 73 assertions pgTAP aguardam execução em Docker/CI antes do aceite final. O usuário autorizou avanço contínuo sem novas pausas de aprovação, mas isso não elimina gates técnicos nem amplia o escopo de cada fase.
+Este plano foi criado na Fase 0. As Fases 1, 2 e 3 foram autorizadas e implementadas em 16 de julho de 2026; a Fase 4 (Cockpit) foi implementada em 17 de julho de 2026 sob a mesma autorização de avanço contínuo. Código, testes e builds locais estão verdes; migrations e 100 assertions pgTAP (Fases 1–4) aguardam execução em Docker/CI antes do aceite final. A autorização contínua não elimina gates técnicos nem amplia o escopo de cada fase.
 
 O repositório começou vazio: sem commits, remoto, stack ou landing page. Portanto, a Fundação será greenfield e não uma migração de código existente.
 
@@ -256,11 +256,13 @@ Plano detalhado: `docs/plans/phase-2-radar-score.md`. Especificação draft: `do
 
 Plano detalhado: `docs/plans/phase-3-client-portal.md`. Escopo entregue source-backed: Radar/Score, recomendações, solicitações, plano/tarefas, Especialista e estado de integrações. Leads, agenda, Recovery e Quality permanecem indisponíveis enquanto suas fontes e módulos não existirem. Evidências e limitações: `docs/releases/phase-3.md`.
 
-### Fase 4 — Cockpit
+### Fase 4 — Cockpit (implementada; validação de banco pendente)
 
 - assignments, saúde, SLA, incidentes, tarefas e capacidade da carteira;
 - próxima melhor ação baseada em regra explicável;
 - testes de acesso do Especialista e expiração do assignment.
+
+Plano detalhado: `docs/plans/phase-4-cockpit.md`. Política operacional versionada `1.0.0-provisional` (SLA, saúde da conta, complexidade/capacidade, nove regras de próxima ação); incidentes e reuniões como registros internos com RLS exclusivo do Especialista/platform_admin. Evidências e limitações: `docs/releases/phase-4.md`.
 
 ### Fase 5 — Recovery
 
@@ -389,4 +391,4 @@ Após confirmar o provedor/remoto:
 9. Definir SLAs, saúde da conta, incidentes, reuniões, complexidade, capacidade e risco do Cockpit.
 10. Criar o plano, arquivos, riscos e critérios detalhados da Fase 4 antes de alterar código desse módulo.
 
-Sem esses gates, o trabalho permitido é corrigir/validar Fundação, Radar, Score e Portal; não iniciar o Cockpit.
+Atualização de 17 de julho de 2026: sob a autorização de avanço contínuo, a Fase 4 foi planejada (`docs/plans/phase-4-cockpit.md`) e implementada com os gates de banco ainda pendentes — as definições do item 9 foram adotadas como política provisória versionada e o item 10 foi cumprido antes de qualquer código do módulo. Os gates 1–8 permanecem obrigatórios para o aceite final das Fases 1–4 e agora somam 100 assertions pgTAP.

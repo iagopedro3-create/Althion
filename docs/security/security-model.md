@@ -240,3 +240,11 @@ Não são prazos finais; são classes a serem preenchidas por jurídico/negócio
 - documentação de acesso, revogação, backup e incidente;
 - nenhuma rota/tabela/campo clínico;
 - revisão manual de headers, cookies e fluxos de autenticação.
+
+## Fase 4 — Cockpit (17/07/2026)
+
+- Novas capabilities: `cockpit:read`, `incident:read`, `incident:manage`, `meeting:read`, `meeting:manage`. Concedidas apenas a `relationship_specialist` (via assignment ativo) e implícitas para `platform_admin`. `organization_owner` deixou de receber o conjunto completo automaticamente: o conjunto do papel é explícito e exclui o Cockpit.
+- `app_private.can_access_cockpit(org, clinic)` = `is_platform_admin()` OU `is_assigned_specialist(org, clinic)` (status ativo + janela `starts_at`/`ends_at`); o fim do assignment revoga leitura e escrita imediatamente.
+- Incidentes e reuniões são registros operacionais internos: nenhum papel tenant lê ou escreve (decisão provisória documentada em `docs/plans/phase-4-cockpit.md`).
+- RPCs `security definer` com `search_path = ''`, idempotência (escopos `cockpit.*`), históricos append-only e auditoria sem `subject`/`details`/`summary`.
+- `/api/v1/cockpit/portfolio` não usa capability por rota (sem organizationId); autoriza pelo principal e delega cada linha ao RLS.

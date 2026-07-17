@@ -263,3 +263,16 @@ Padrões a materializar por fase, guiados por consulta real:
 6. Taxonomia de motivos de perda e estados de lead/agendamento.
 
 O [dicionário de dados](../data/data-dictionary.md) detalha os campos mínimos propostos.
+
+## Fase 4 — Cockpit (17/07/2026)
+
+Aditivo: `relationship_assignments.complexity` (`account_complexity`: low|standard|high, default standard).
+
+Novas tabelas (todas com FK composta para `clinics(organization_id, id)`, uniques `(organization_id, id)` e `(organization_id, clinic_id, id)`, RLS deny-by-default restrita a `app_private.can_access_cockpit`):
+
+- `account_incidents`: opened_by/assignee, category (integration_failure|data_quality|sla_breach|engagement_risk|operational|other), severity (low|medium|high|critical), status (open|investigating|mitigated|resolved|closed), subject 5–160, details 10–1000, timestamps por estado com checks;
+- `account_incident_status_history`: append-only por trigger;
+- `account_meetings`: specialist_profile_id, purpose (onboarding|checkin|review|escalation|other), status (scheduled|completed|cancelled|no_show), scheduled_at, completed_at/cancelled_at com checks, summary 5–500 opcional;
+- `account_meeting_status_history`: append-only por trigger.
+
+Saúde, SLA, capacidade e próxima melhor ação são projeções derivadas em tempo de leitura (nenhum snapshot persistido nesta fase).

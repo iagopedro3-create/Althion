@@ -46,3 +46,7 @@ Pendente no ambiente atual. `docker` não está instalado/disponível e `pnpm db
 O job `database` em `.github/workflows/ci.yml` sobe Supabase local, recria o banco pelas migrations, executa lint e pgTAP. O job deverá estar verde antes de merge/deploy.
 
 Esta pendência não deve ser confundida com teste aprovado. A evidência será atualizada com data, commit e saída quando Docker local ou CI remoto estiver disponível.
+
+## Fase 4 — Cockpit (17/07/2026)
+
+`supabase/tests/cockpit_rls.test.sql` adiciona 27 assertions (total do repositório: 100): flag deny-by-default; default de complexidade; criação/idempotência/conflito de incidente; transições válidas e inválidas; reunião agendada/concluída/terminal; negação de owner, manager, doctor, viewer e operator em leitura e escrita; negação cross-tenant e FK composta; históricos append-only; auditoria sem texto livre; registros de idempotência; e revogação imediata com assignment encerrado. Execução pendente de Docker/CI, como nas fases anteriores.
