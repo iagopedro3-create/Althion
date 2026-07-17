@@ -1,198 +1,210 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
+import { HeroInteractiveFlow } from '@/components/site/HeroInteractiveFlow';
+import { AlthionScoreDial } from '@/components/site/AlthionScoreDial';
+import { RecoveryOpportunityFila } from '@/components/site/RecoveryOpportunityFila';
+import { CapacityCalor } from '@/components/site/CapacityCalor';
+import { FAQAccordions } from '@/components/site/FAQAccordions';
+
 export const metadata: Metadata = {
   description:
-    'Infraestrutura administrativa para clínicas particulares. Identifique perdas silenciosas na agenda, automatize a recuperação de pacientes e aumente a eficiência operacional — com segurança e conformidade à LGPD.',
-  title: 'Althion | Recuperação e Performance de Agenda para Clínicas',
+    'Infraestrutura administrativa inteligente para clínicas de saúde. A Althion conecta IA, automações, agenda e Especialistas de Relacionamento para recuperar consultas ociosas e aumentar a previsibilidade operacional.',
+  title: 'Althion | Recuperação e Performance da Agenda para Clínicas',
 };
 
 export default function SiteHome() {
   return (
     <main className="site-main">
-      {/* 1. Hero Section */}
-      <section className="hero" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center', padding: '80px 0' }}>
+      {/* 1. Header & Hero Section */}
+      <section className="hero" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '60px', alignItems: 'center', padding: '100px 0 80px 0' }}>
         <div>
-          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-            Performance Administrativa para Clínicas
+          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.85rem' }}>
+            Recuperação e Performance da Agenda
           </p>
-          <h1 style={{ fontSize: '3rem', lineHeight: '1.2', margin: '16px 0', fontWeight: 'bold' }}>
-            Recupere horários ociosos e transforme leads em consultas realizadas.
+          <h1 style={{ fontSize: '3.2rem', lineHeight: '1.15', margin: '20px 0', fontWeight: 'bold', letterSpacing: '-0.02em', color: 'var(--text)' }}>
+            Transforme oportunidades perdidas em consultas realizadas.
           </h1>
-          <p className="hero-copy" style={{ fontSize: '1.15rem', color: 'var(--muted)', lineHeight: '1.6', marginBottom: '32px' }}>
-            A Althion integra seu CRM, canais de atendimento e agenda para monitorar gargalos operacionais em tempo real. Identificamos onde sua clínica perde oportunidades, orientamos a equipe e automatizamos a recuperação de pacientes ociosos — sem interferir na decisão médica.
+          <p className="hero-copy" style={{ fontSize: '1.2rem', color: 'var(--muted)', lineHeight: '1.6', marginBottom: '36px' }}>
+            A Althion conecta inteligência artificial, automações integradas ao WhatsApp, CRM, agenda e um Especialista de Relacionamento para mapear gargalos e preencher horários ociosos de forma previsível e segura.
           </p>
-          <div className="hero-actions" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <Link className="primary-link" href="/contato" style={{ background: 'var(--primary)', color: '#fff', padding: '12px 24px', borderRadius: '8px', fontWeight: '600', textDecoration: 'none' }}>
-              Agendar um Diagnóstico
+          <div className="hero-actions" style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+            <Link className="primary-link" href="/diagnostico" style={{ background: 'var(--primary)', color: '#fff', padding: '14px 28px', borderRadius: '8px', fontWeight: '600', textDecoration: 'none', fontSize: '1.05rem', transition: 'all 0.2s ease' }}>
+              Solicitar Diagnóstico
             </Link>
-            <Link href="/produto" style={{ color: 'var(--text)', fontWeight: '600', textDecoration: 'none' }}>
+            <Link href="/produto" style={{ color: 'var(--text)', fontWeight: '600', textDecoration: 'none', fontSize: '1.05rem' }}>
               Ver como funciona →
             </Link>
           </div>
+          <small style={{ display: 'block', marginTop: '16px', color: 'var(--muted)', fontSize: '0.85rem' }}>
+            🔒 Diagnóstico inicial da operação. Sem compromisso comercial.
+          </small>
         </div>
 
-        <aside className="foundation-panel" aria-label="Princípios da plataforma" style={{ background: 'var(--surface)', border: '1px solid var(--line)', padding: '32px', borderRadius: '16px' }}>
-          <div className="panel-signal" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', color: 'var(--success)', marginBottom: '20px' }}>
-            <span style={{ width: '8px', height: '8px', background: 'var(--success)', borderRadius: '50%' }} />
-            Fundação Segura e Homologada
-          </div>
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '16px' }}>
-            <li style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <strong>Isolamento Multitenant Absoluto</strong>
-              <small style={{ color: 'var(--muted)' }}>Banco de dados estruturado para garantir que as informações da sua clínica estejam blindadas e isoladas.</small>
-            </li>
-            <li style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <strong>Decisões 100% Explicáveis</strong>
-              <small style={{ color: 'var(--muted)' }}>Nenhum algoritmo "caixa-preta". Todas as métricas de performance e recomendações trazem justificativas claras e auditáveis.</small>
-            </li>
-            <li style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <strong>Zero Interferência Clínica</strong>
-              <small style={{ color: 'var(--muted)' }}>Atuamos exclusivamente na jornada administrativa. Não tocamos em diagnósticos, prescrições ou prontuários.</small>
-            </li>
-            <li style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <strong>Integração via CRM (Helena)</strong>
-              <small style={{ color: 'var(--muted)' }}>Substituição modular e transparente com o CRM Helena para sincronizar leads e contatos sem fricção.</small>
-            </li>
-          </ul>
-        </aside>
-      </section>
-
-      {/* 2. O Problema Section */}
-      <section className="site-section" aria-labelledby="problem-title" style={{ padding: '72px 0', borderTop: '1px solid var(--line)' }}>
-        <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>O Custo da Ociosidade</p>
-        <h2 id="problem-title" style={{ fontSize: '2.2rem', margin: '16px 0', fontWeight: 'bold' }}>
-          Onde a sua clínica perde receita todos os dias de forma silenciosa?
-        </h2>
-        <p className="lead-copy" style={{ fontSize: '1.1rem', color: 'var(--muted)', maxWidth: '800px', marginBottom: '40px' }}>
-          Muitas clínicas investem milhares de reais em marketing para atrair novos pacientes, mas sofrem com falhas no fluxo administrativo que destroem o retorno financeiro.
-        </p>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
-          <div style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', fontWeight: '600' }}>1. Leads sem Resposta</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
-              Contatos de potenciais pacientes chegam via redes sociais ou WhatsApp, mas demoram horas (ou dias) para receber um retorno da recepção. A maior parte desiste ou agenda com o concorrente.
-            </p>
-          </div>
-          <div style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', fontWeight: '600' }}>2. Desistências de Última Hora</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
-              Pacientes cancelam de véspera ou simplesmente faltam à consulta (no-show). O horário fica vago e a equipe não possui tempo ou ferramentas ágeis para encaixar outra pessoa da fila de espera.
-            </p>
-          </div>
-          <div style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', fontWeight: '600' }}>3. Pacientes Esquecidos (Inatividade)</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.95rem', lineHeight: '1.5' }}>
-              Pacientes que realizaram procedimentos estéticos ou consultas de rotina concluem o tratamento, mas nunca mais são contatados para retorno ou manutenção preventiva periódica.
-            </p>
-          </div>
+        <div>
+          <HeroInteractiveFlow />
         </div>
       </section>
 
-      {/* 3. A Solução (Os 5 Pilares) */}
-      <section className="site-section" aria-labelledby="pilares-title" style={{ padding: '72px 0', borderTop: '1px solid var(--line)' }}>
-        <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>O Método Althion</p>
-        <h2 id="pilares-title" style={{ fontSize: '2.2rem', margin: '16px 0', fontWeight: 'bold' }}>
-          Uma infraestrutura de performance em 5 pilares complementares.
-        </h2>
-        <p className="lead-copy" style={{ fontSize: '1.1rem', color: 'var(--muted)', maxWidth: '800px', marginBottom: '48px' }}>
-          Ao invés de planilhas complexas e processos manuais de cobrança, a Althion cria uma trilha automatizada e auditável de ponta a ponta.
+      {/* 2. Faixa de Conexão */}
+      <section style={{ padding: '32px', background: 'rgba(30, 58, 138, 0.03)', border: '1px solid var(--line)', borderRadius: '16px', margin: '40px 0 80px 0', textAlign: 'center' }}>
+        <p style={{ margin: '0 0 16px 0', fontSize: '1.1rem', fontWeight: '600', color: 'var(--text)' }}>
+          Sua clínica não precisa apenas de mais leads. Precisa aproveitar melhor as oportunidades que já chegam.
         </p>
-
-        <div className="site-card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
-          <article className="site-card" style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: '600' }}>Pilar 1</span>
-            <h3 style={{ margin: '8px 0 12px', fontSize: '1.3rem', fontWeight: '700' }}>Radar</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-              Varre sua agenda e o CRM em busca de vazamentos de receita (leads frios, no-shows sem remarcação e janelas ociosas).
-            </p>
-          </article>
-
-          <article className="site-card" style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: '600' }}>Pilar 2</span>
-            <h3 style={{ margin: '8px 0 12px', fontSize: '1.3rem', fontWeight: '700' }}>Score</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-              Mede a saúde operacional da sua clínica em uma nota consolidada baseada em dados reais e fórmulas matemáticas versionadas.
-            </p>
-          </article>
-
-          <article className="site-card" style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: '600' }}>Pilar 3</span>
-            <h3 style={{ margin: '8px 0 12px', fontSize: '1.3rem', fontWeight: '700' }}>Portal</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-              Dashboard completo para gestores e proprietários visualizarem o funil de atração, conversões e os planos de melhoria sugeridos.
-            </p>
-          </article>
-
-          <article className="site-card" style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: '600' }}>Pilar 4</span>
-            <h3 style={{ margin: '8px 0 12px', fontSize: '1.3rem', fontWeight: '700' }}>Especialista</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-              Sua clínica conta com um especialista em relacionamento humano dedicado para apoiar o treinamento da equipe e calibrar a ferramenta.
-            </p>
-          </article>
-
-          <article className="site-card" style={{ padding: '24px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--primary)', fontWeight: '600' }}>Pilar 5</span>
-            <h3 style={{ margin: '8px 0 12px', fontSize: '1.3rem', fontWeight: '700' }}>Recovery</h3>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-              Dispara contatos de reengajamento automatizados para pacientes baseando-se em regras determinísticas e consentidas.
-            </p>
-          </article>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', flexWrap: 'wrap', fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '600' }}>
+          <span>Contato</span>
+          <span>→</span>
+          <span>Atendimento</span>
+          <span>→</span>
+          <span>Agendamento</span>
+          <span>→</span>
+          <span>Confirmação</span>
+          <span>→</span>
+          <span style={{ color: 'var(--success)' }}>Comparecimento Concluído</span>
         </div>
-
-        <p className="site-note" style={{ marginTop: '24px', fontSize: '0.9rem', color: 'var(--muted)' }}>
-          * O nível de desenvolvimento e disponibilidade operacional de cada pilar da Althion está detalhado em nossa página de <Link href="/produto" style={{ color: 'var(--primary)' }}>Produto</Link>.
-        </p>
       </section>
 
-      {/* 4. Segurança e Privacidade por Design */}
-      <section className="site-section" aria-labelledby="security-title" style={{ padding: '72px 0', borderTop: '1px solid var(--line)', background: 'rgba(255, 255, 255, 0.02)' }}>
+      {/* 3. Seção do Problema (O Custo da Ociosidade) */}
+      <section className="site-section" aria-labelledby="problem-title" style={{ padding: '80px 0', borderTop: '1px solid var(--line)' }}>
+        <div style={{ maxWidth: '800px', marginBottom: '48px' }}>
+          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>O Custo da Ociosidade</p>
+          <h2 id="problem-title" style={{ fontSize: '2.5rem', margin: '16px 0', fontWeight: 'bold' }}>
+            A maior parte das perdas acontece entre uma etapa e outra da recepção.
+          </h2>
+          <p className="lead-copy" style={{ fontSize: '1.15rem', color: 'var(--muted)', lineHeight: '1.6' }}>
+            Mesmo com marketing ativo, as clínicas sofrem com perdas operacionais silenciosas que comprometem o faturamento por dependerem de processos manuais ou da memória da equipe.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+          <div style={{ padding: '28px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
+            <span style={{ fontSize: '2rem', display: 'block', marginBottom: '16px' }}>⏳</span>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '12px', fontWeight: '600' }}>Tempo de Resposta Alto</h3>
+            <p style={{ color: 'var(--muted)', fontSize: '0.95rem', lineHeight: '1.6' }}>
+              Novos contatos qualificados chegam via redes sociais ou WhatsApp, mas a recepção ocupada demora horas para dar retorno. A lead esfria e agenda com outra clínica.
+            </p>
+          </div>
+          <div style={{ padding: '28px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
+            <span style={{ fontSize: '2rem', display: 'block', marginBottom: '16px' }}>📭</span>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '12px', fontWeight: '600' }}>Cancelamentos Ociosos</h3>
+            <p style={{ color: 'var(--muted)', fontSize: '0.95rem', lineHeight: '1.6' }}>
+              Quando um paciente desmarca em cima da hora, a vaga permanece vazia por falta de ferramentas ágeis para contatar a lista de espera ou propor horários de encaixe imediatamente.
+            </p>
+          </div>
+          <div style={{ padding: '28px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '12px' }}>
+            <span style={{ fontSize: '2rem', display: 'block', marginBottom: '16px' }}>🔄</span>
+            <h3 style={{ fontSize: '1.3rem', marginBottom: '12px', fontWeight: '600' }}>Falta de Acompanhamento</h3>
+            <p style={{ color: 'var(--muted)', fontSize: '0.95rem', lineHeight: '1.6' }}>
+              Pacientes que realizaram procedimentos ou consultas de rotina concluem o primeiro ciclo, mas são esquecidos sem um fluxo planejado para retornos periódicos de manutenção.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Althion Radar & Score */}
+      <section className="site-section" aria-labelledby="radar-title" style={{ padding: '80px 0', borderTop: '1px solid var(--line)' }}>
+        <div style={{ maxWidth: '800px', marginBottom: '48px' }}>
+          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>Auditoria Operacional</p>
+          <h2 id="radar-title" style={{ fontSize: '2.5rem', margin: '16px 0', fontWeight: 'bold' }}>
+            Descubra onde sua clínica está perdendo oportunidades.
+          </h2>
+          <p className="lead-copy" style={{ fontSize: '1.15rem', color: 'var(--muted)', lineHeight: '1.6' }}>
+            O Althion Radar mapeia os principais indicadores da agenda e do CRM, avaliando pontos críticos da jornada de atendimento e gerando o **Althion Score** da clínica.
+          </p>
+        </div>
+
+        <AlthionScoreDial />
+      </section>
+
+      {/* 5. Recovery Engine */}
+      <section className="site-section" aria-labelledby="recovery-title" style={{ padding: '80px 0', borderTop: '1px solid var(--line)' }}>
+        <div style={{ maxWidth: '800px', marginBottom: '48px' }}>
+          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>Automação Determinística</p>
+          <h2 id="recovery-title" style={{ fontSize: '2.5rem', margin: '16px 0', fontWeight: 'bold' }}>
+            A Althion não apenas registra perdas. Ela ajuda a agir sobre elas.
+          </h2>
+          <p className="lead-copy" style={{ fontSize: '1.15rem', color: 'var(--muted)', lineHeight: '1.6' }}>
+            Nossas regras determinísticas monitoram incidentes operacionais de agenda vazia e disparam ações ágeis de reengajamento com pacientes.
+          </p>
+        </div>
+
+        <RecoveryOpportunityFila />
+      </section>
+
+      {/* 6. Capacity Engine */}
+      <section className="site-section" aria-labelledby="capacity-title" style={{ padding: '80px 0', borderTop: '1px solid var(--line)' }}>
+        <div style={{ maxWidth: '800px', marginBottom: '48px' }}>
+          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>Inteligência de Capacidade</p>
+          <h2 id="capacity-title" style={{ fontSize: '2.5rem', margin: '16px 0', fontWeight: 'bold' }}>
+            A agenda mostra o espaço. A Althion ajuda a decidir o que fazer.
+          </h2>
+          <p className="lead-copy" style={{ fontSize: '1.15rem', color: 'var(--muted)', lineHeight: '1.6' }}>
+            Conectamos a capacidade ociosa futura de profissionais médicos com a lista de espera compatível e leads do CRM para equilibrar oferta e demanda.
+          </p>
+        </div>
+
+        <CapacityCalor />
+      </section>
+
+      {/* 7. Especialista de Relacionamento */}
+      <section className="site-section" aria-labelledby="specialist-title" style={{ padding: '80px 0', borderTop: '1px solid var(--line)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px', alignItems: 'center' }}>
           <div>
-            <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>Segurança & LGPD</p>
-            <h2 id="security-title" style={{ fontSize: '2.2rem', margin: '16px 0', fontWeight: 'bold' }}>
-              Privacidade em primeiro lugar. RLS e barreiras de acesso clínico.
+            <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>Acompanhamento Humano</p>
+            <h2 id="specialist-title" style={{ fontSize: '2.5rem', margin: '16px 0', fontWeight: 'bold' }}>
+              Sua clínica terá tecnologia. E também uma pessoa responsável pela operação.
             </h2>
-            <p className="lead-copy" style={{ color: 'var(--muted)', lineHeight: '1.6', fontSize: '1.05rem', marginBottom: '24px' }}>
-              Garantir a conformidade legal e o sigilo de dados é um compromisso da nossa fundação tecnológica. Desenvolvemos o sistema respeitando o sigilo médico e as normas éticas.
+            <p className="lead-copy" style={{ color: 'var(--muted)', lineHeight: '1.6', fontSize: '1.1rem', marginBottom: '24px' }}>
+              Você não precisará lidar com robôs frios ou atendentes de suporte genéricos. Cada clínica conta com um **Especialista de Relacionamento** dedicado da Althion, encarregado de calibrar regras, propor planos de melhoria operacionais e treinar seu time de recepção.
             </p>
-            <Link className="primary-link" href="/seguranca" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>
-              Leia nossa política de segurança →
-            </Link>
+            <blockquote style={{ borderLeft: '3px solid var(--primary)', paddingLeft: '16px', margin: '20px 0', fontStyle: 'italic', color: 'var(--muted)' }}>
+              "IA para velocidade. Especialistas para confiança. Processos para escala. Dados para performance."
+            </blockquote>
           </div>
 
-          <div style={{ display: 'grid', gap: '16px' }}>
-            <div style={{ padding: '20px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '8px' }}>
-              <strong>🔒 RLS (Row Level Security) Multi-Inquilino</strong>
-              <p style={{ margin: '6px 0 0 0', color: 'var(--muted)', fontSize: '0.9rem' }}>
-                Os dados financeiros e de performance de anúncios de cada inquilino são separados no nível do banco de dados, impedindo acessos cruzados.
-              </p>
-            </div>
-            <div style={{ padding: '20px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '8px' }}>
-              <strong>🛡️ Barreiras de Acesso para Conteúdo Médico</strong>
-              <p style={{ margin: '6px 0 0 0', color: 'var(--muted)', fontSize: '0.9rem' }}>
-                Somente profissionais médicos autenticados e autorizados podem acessar flags clínicos contendo informações de saúde de pacientes. Gestores administrativos visualizam apenas números consolidados.
-              </p>
-            </div>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '16px', padding: '32px' }}>
+            <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', fontWeight: 'bold' }}>Responsabilidades do Especialista</h3>
+            <ul style={{ paddingLeft: '20px', display: 'grid', gap: '12px', fontSize: '0.95rem', color: 'var(--text)' }}>
+              <li>Auditar e ajustar as respostas e automações da IA da clínica.</li>
+              <li>Apresentar relatórios mensais detalhando o funil de agendamento e ROI.</li>
+              <li>Montar o plano de melhoria operacional baseado nos gargalos apontados pelo Score.</li>
+              <li>Garantir a integridade jurídica e o respeito ao sigilo médico da clínica.</li>
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* 5. CTA Section */}
-      <section aria-labelledby="cta-title" className="site-cta" style={{ textAlign: 'center', padding: '80px 0', borderTop: '1px solid var(--line)' }}>
-        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>Dê o primeiro passo</p>
-          <h2 id="cta-title" style={{ fontSize: '2.5rem', margin: '16px 0', fontWeight: 'bold' }}>
-            Vamos mapear as perdas administrativas da sua clínica?
-          </h2>
-          <p className="lead-copy" style={{ color: 'var(--muted)', fontSize: '1.1rem', marginBottom: '32px' }}>
-            Agende uma conversa inicial para entender se o método Althion faz sentido para a estrutura atual da sua clínica médica. É rápido, consultivo e sem compromisso comercial.
+      {/* 8. FAQ Section */}
+      <section className="site-section" aria-labelledby="faq-title" style={{ padding: '80px 0', borderTop: '1px solid var(--line)' }}>
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '600', textTransform: 'uppercase' }}>Dúvidas Frequentes</p>
+          <h2 id="faq-title" style={{ fontSize: '2.5rem', margin: '12px 0', fontWeight: 'bold' }}>Perguntas e Respostas</h2>
+          <p className="lead-copy" style={{ color: 'var(--muted)', fontSize: '1.1rem' }}>
+            Saiba mais sobre a implantação, a segurança dos dados e o funcionamento técnico da Althion.
           </p>
-          <Link className="primary-link" href="/contato" style={{ background: 'var(--primary)', color: '#fff', padding: '14px 28px', borderRadius: '8px', fontWeight: '600', textDecoration: 'none', fontSize: '1.1rem' }}>
-            Agendar Conversa de Diagnóstico
-          </Link>
+        </div>
+
+        <FAQAccordions />
+      </section>
+
+      {/* 9. CTA Final */}
+      <section className="site-cta" aria-labelledby="cta-final-title" style={{ padding: '100px 0', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '24px', textAlign: 'center', margin: '60px 0' }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <p className="eyebrow" style={{ color: 'var(--primary)', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Diagnóstico Althion</p>
+          <h2 id="cta-final-title" style={{ fontSize: '2.8rem', margin: '20px 0', fontWeight: 'bold', letterSpacing: '-0.01em' }}>
+            Descubra onde sua clínica está perdendo oportunidades.
+          </h2>
+          <p className="lead-copy" style={{ fontSize: '1.2rem', color: 'var(--muted)', lineHeight: '1.6', marginBottom: '36px' }}>
+            Solicite uma análise preliminar da jornada de atendimento, conversão e aproveitamento de agenda da sua clínica de saúde com um especialista.
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+            <Link className="primary-link" href="/diagnostico" style={{ background: 'var(--primary)', color: '#fff', padding: '14px 28px', borderRadius: '8px', fontWeight: '600', textDecoration: 'none', fontSize: '1.1rem' }}>
+              Solicitar Diagnóstico
+            </Link>
+            <Link className="quiet-button" href="/contato" style={{ border: '1px solid var(--line)', padding: '14px 28px', borderRadius: '8px', fontWeight: '600', textDecoration: 'none', fontSize: '1.1rem', background: '#fff' }}>
+              Falar com a Althion
+            </Link>
+          </div>
         </div>
       </section>
     </main>
