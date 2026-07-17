@@ -44,16 +44,23 @@ export const CAPABILITIES = [
   'incident:manage',
   'meeting:read',
   'meeting:manage',
+  'recovery:read',
+  'recovery:simulate',
+  'recovery:decide',
+  'suppression:read',
+  'suppression:manage',
 ] as const;
 
 export type Capability = (typeof CAPABILITIES)[number];
 
-const COCKPIT_CAPABILITIES: ReadonlySet<Capability> = new Set([
+// Capabilities internas da operação Althion: nunca concedidas automaticamente a papéis tenant.
+const INTERNAL_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'cockpit:read',
   'incident:read',
   'incident:manage',
   'meeting:read',
   'meeting:manage',
+  'recovery:simulate',
 ]);
 
 export type MembershipStatus = 'active' | 'invited' | 'revoked' | 'expired';
@@ -86,7 +93,7 @@ export interface Principal {
 
 const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> = {
   organization_owner: new Set(
-    CAPABILITIES.filter((capability) => !COCKPIT_CAPABILITIES.has(capability)),
+    CAPABILITIES.filter((capability) => !INTERNAL_CAPABILITIES.has(capability)),
   ),
   clinic_manager: new Set([
     'organization:read',
@@ -109,6 +116,10 @@ const ROLE_CAPABILITIES: Readonly<Record<TenantRole, ReadonlySet<Capability>>> =
     'improvement_plan:manage',
     'task:read',
     'task:manage',
+    'recovery:read',
+    'recovery:decide',
+    'suppression:read',
+    'suppression:manage',
   ]),
   doctor: new Set([
     'organization:read',
@@ -160,6 +171,11 @@ const SPECIALIST_CAPABILITIES: ReadonlySet<Capability> = new Set([
   'incident:manage',
   'meeting:read',
   'meeting:manage',
+  'recovery:read',
+  'recovery:simulate',
+  'recovery:decide',
+  'suppression:read',
+  'suppression:manage',
 ]);
 
 export function isPlatformAdmin(principal: Principal): boolean {

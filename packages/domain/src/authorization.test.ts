@@ -135,6 +135,40 @@ describe('authorization', () => {
     ).toBe(false);
   });
 
+  it('keeps recovery simulation internal while letting managers decide', () => {
+    expect(
+      hasCapability(
+        principal,
+        '11111111-1111-4111-8111-111111111111',
+        'recovery:decide',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(true);
+    expect(
+      hasCapability(
+        principal,
+        '11111111-1111-4111-8111-111111111111',
+        'recovery:simulate',
+        'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      ),
+    ).toBe(false);
+
+    const specialist: Principal = {
+      ...principal,
+      assignments: [
+        {
+          clinicId: null,
+          organizationId: '11111111-1111-4111-8111-111111111111',
+          status: 'active',
+        },
+      ],
+      memberships: [],
+    };
+    expect(
+      hasCapability(specialist, '11111111-1111-4111-8111-111111111111', 'recovery:simulate'),
+    ).toBe(true);
+  });
+
   it('allows a scoped manager to manage Portal workflows only in the assigned clinic', () => {
     expect(
       hasCapability(
