@@ -276,3 +276,16 @@ Novas tabelas (todas com FK composta para `clinics(organization_id, id)`, unique
 - `account_meeting_status_history`: append-only por trigger.
 
 Saúde, SLA, capacidade e próxima melhor ação são projeções derivadas em tempo de leitura (nenhum snapshot persistido nesta fase).
+
+## Fase 5 — Recovery (17/07/2026)
+
+Novas tabelas (FK composta para `clinics(organization_id, id)`, uniques `(organization_id, id)` e `(organization_id, clinic_id, id)`, RLS deny-by-default via `app_private.can_read_recovery`):
+
+- `recovery_consents`: estado interno de consentimento por lead sintético (`granted|denied`), único por (org, clinic, external_lead_ref);
+- `recovery_suppressions`: opt-out/reclamação/revisão por lead, com `expires_at` e revogação; índice único parcial garante uma supressão ativa por lead;
+- `recovery_simulations`: run com `policy_version`, provider `mock`, janela e contadores (`leads_evaluated`, `opportunities_identified`, `excluded_no_consent`, `excluded_suppressed`, `excluded_frequency`);
+- `recovery_opportunities`: regra, versão, referência e rótulo do lead sintético, `evidence` jsonb, status (`identified|approved|discarded|expired`), decisor, `expires_at`; unique por (org, clinic, simulation_id, rule_code, external_lead_ref);
+- `recovery_actions`: `contact_lead|offer_booking`, status (`recommended|approved|rejected|expired`) — **não existe estado de execução**;
+- `recovery_opportunity_status_history` e `recovery_action_status_history`: append-only por trigger.
+
+A avaliação das regras é derivada no domínio TypeScript; o RPC `run_recovery_simulation` persiste transacionalmente e revalida consentimento, supressão e frequência antes de inserir cada oportunidade.

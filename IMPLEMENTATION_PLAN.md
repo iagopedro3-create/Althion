@@ -2,7 +2,7 @@
 
 ## Controle de escopo
 
-Este plano foi criado na Fase 0. As Fases 1, 2 e 3 foram autorizadas e implementadas em 16 de julho de 2026; a Fase 4 (Cockpit) foi implementada em 17 de julho de 2026 sob a mesma autorização de avanço contínuo. Código, testes e builds locais estão verdes; migrations e 100 assertions pgTAP (Fases 1–4) aguardam execução em Docker/CI antes do aceite final. A autorização contínua não elimina gates técnicos nem amplia o escopo de cada fase.
+Este plano foi criado na Fase 0. As Fases 1, 2 e 3 foram autorizadas e implementadas em 16 de julho de 2026; as Fases 4 (Cockpit) e 5 (Recovery sem execução) foram implementadas em 17 de julho de 2026 sob a mesma autorização de avanço contínuo. Código, testes e builds locais estão verdes; migrations e 128 assertions pgTAP (Fases 1–5) aguardam execução em Docker/CI antes do aceite final. A autorização contínua não elimina gates técnicos nem amplia o escopo de cada fase.
 
 O repositório começou vazio: sem commits, remoto, stack ou landing page. Portanto, a Fundação será greenfield e não uma migração de código existente.
 
@@ -264,11 +264,13 @@ Plano detalhado: `docs/plans/phase-3-client-portal.md`. Escopo entregue source-b
 
 Plano detalhado: `docs/plans/phase-4-cockpit.md`. Política operacional versionada `1.0.0-provisional` (SLA, saúde da conta, complexidade/capacidade, nove regras de próxima ação); incidentes e reuniões como registros internos com RLS exclusivo do Especialista/platform_admin. Evidências e limitações: `docs/releases/phase-4.md`.
 
-### Fase 5 — Recovery
+### Fase 5 — Recovery (implementada; validação de banco pendente)
 
 - regra/versão, simulação, run, oportunidade e ação;
 - consentimento, supressão, frequência, aprovação e idempotência;
 - sem execução Helena até a Fase 6 desbloqueada.
+
+Plano detalhado: `docs/plans/phase-5-recovery.md`. Política `1.0.0-provisional` com duas regras determinísticas sobre o `MockCrmProvider`; consentimento deny-by-default, supressão e frequência revalidados no banco; nenhuma execução de contato (o estado `executed` não existe no schema). Evidências e limitações: `docs/releases/phase-5.md`.
 
 ### Fase 6 — Helena
 

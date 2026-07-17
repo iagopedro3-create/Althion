@@ -4,7 +4,7 @@ Fundação técnica da plataforma de Recuperação e Performance da Agenda para 
 
 ## Estado
 
-Fase 4 — Cockpit do Especialista implementado sobre a Fundação e o Portal: carteira com saúde explicável, SLA provisório, incidentes/reuniões internos, capacidade e próxima melhor ação (política `1.0.0-provisional`). Fases 1–3 (Fundação, Radar/Score, Portal) implementadas com dados exclusivamente sintéticos. A integração Helena está bloqueada até a entrega da documentação oficial. A validação PostgreSQL/pgTAP (100 assertions) depende de Docker/CI.
+Fase 5 — Recovery Engine implementado **sem execução de contato**: regras determinísticas versionadas sobre dados sintéticos do mock, com consentimento, supressão, frequência e decisão humana obrigatória. Fases 1–4 (Fundação, Radar/Score, Portal, Cockpit) implementadas com dados exclusivamente sintéticos. A integração Helena está bloqueada até a entrega da documentação oficial. A validação PostgreSQL/pgTAP (128 assertions) depende de Docker/CI.
 
 ## Requisitos
 

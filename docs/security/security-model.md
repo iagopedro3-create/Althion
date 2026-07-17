@@ -248,3 +248,12 @@ Não são prazos finais; são classes a serem preenchidas por jurídico/negócio
 - Incidentes e reuniões são registros operacionais internos: nenhum papel tenant lê ou escreve (decisão provisória documentada em `docs/plans/phase-4-cockpit.md`).
 - RPCs `security definer` com `search_path = ''`, idempotência (escopos `cockpit.*`), históricos append-only e auditoria sem `subject`/`details`/`summary`.
 - `/api/v1/cockpit/portfolio` não usa capability por rota (sem organizationId); autoriza pelo principal e delega cada linha ao RLS.
+
+## Fase 5 — Recovery (17/07/2026)
+
+- Novas capabilities: `recovery:read`, `recovery:simulate`, `recovery:decide`, `suppression:read`, `suppression:manage`. `recovery:simulate` integra o conjunto interno (com as do Cockpit) que nunca é concedido automaticamente a papéis tenant; `organization_owner` e `clinic_manager` leem, decidem e gerenciam supressões, mas não simulam. `doctor`, `viewer` e `operator` não possuem nenhuma.
+- `app_private.can_read_recovery` = platform_admin OU Especialista com assignment ativo OU owner/manager com acesso à clínica; `app_private.can_simulate_recovery` = platform_admin OU Especialista com assignment ativo.
+- Defesa em profundidade: `run_recovery_simulation` revalida consentimento (`granted` obrigatório), supressão ativa e limites de frequência no banco antes de persistir cada candidato — uma API comprometida não consegue burlar a governança.
+- Aprovar uma ação exige oportunidade aprovada; decisões são terminais, expiram em 14 dias e exigem `decided_by`.
+- Auditoria registra apenas metadados (regra, decisão, contadores); rótulo do lead, evidência e referência externa nunca entram em `audit_logs`.
+- Nenhuma superfície executa contato: o estado `executed` não existe no schema desta fase.

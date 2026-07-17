@@ -141,3 +141,12 @@ Dimensões iniciais: `speed`, `conversion`, `continuity`, `occupancy`, `attendan
 - `account_meetings`: registro declarativo de reunião do Especialista com a conta; `summary` opcional (5–500) sem conteúdo clínico.
 - `account_meeting_status_history`: trilha append-only de transições de reunião.
 - Flag `cockpit.specialist.v1`: habilita o Cockpit; global, sem override por organização.
+
+## Fase 5 — Recovery (17/07/2026)
+
+- `recovery_consents.state`: consentimento interno do lead sintético para contato administrativo. Deny-by-default: sem registro `granted`, o lead nunca vira oportunidade. Base legal e texto de coleta reais pendentes de aprovação jurídica.
+- `recovery_suppressions.reason`: `opt_out` (pedido de não contato), `complaint`, `manual_review`, `other`. Supressão ativa exclui o lead de novas oportunidades imediatamente.
+- `recovery_simulations.*`: contadores explicáveis de uma execução de regras; `provider` é sempre `mock` nesta fase.
+- `recovery_opportunities.evidence`: valores e timestamps usados pela regra (sem PII real); `rule_version` fixa a política aplicada.
+- `recovery_actions.action_type`: ação **recomendada** (`contact_lead`, `offer_booking`). Aprovar registra a decisão; nenhum envio ocorre.
+- Flag `recovery.engine.v1`: habilita o Recovery; global, sem override por organização.

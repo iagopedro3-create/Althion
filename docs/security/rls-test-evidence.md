@@ -50,3 +50,7 @@ Esta pendência não deve ser confundida com teste aprovado. A evidência será 
 ## Fase 4 — Cockpit (17/07/2026)
 
 `supabase/tests/cockpit_rls.test.sql` adiciona 27 assertions (total do repositório: 100): flag deny-by-default; default de complexidade; criação/idempotência/conflito de incidente; transições válidas e inválidas; reunião agendada/concluída/terminal; negação de owner, manager, doctor, viewer e operator em leitura e escrita; negação cross-tenant e FK composta; históricos append-only; auditoria sem texto livre; registros de idempotência; e revogação imediata com assignment encerrado. Execução pendente de Docker/CI, como nas fases anteriores.
+
+## Fase 5 — Recovery (17/07/2026)
+
+`supabase/tests/recovery_rls.test.sql` adiciona 28 assertions (total do repositório: 128): flag deny-by-default; consentimento e simulação pelo Especialista; idempotência da simulação; revalidação de consentimento e supressão no banco (erros `Candidate without granted consent` e `Candidate is suppressed`); owner lê e decide mas não simula; decisões terminais; unicidade de supressão ativa; negação de doctor, viewer, operator e tenant B; FK composta cross-tenant; histórico append-only; auditoria sem payload de lead; registros de idempotência; e revogação imediata de acesso com assignment encerrado. Execução pendente de Docker/CI.

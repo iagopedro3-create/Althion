@@ -137,3 +137,7 @@ Branch atual: `codex/phase-3-client-portal`. Nenhum remoto está configurado.
 ## Atualização — Fase 4 (17/07/2026)
 
 Cockpit do Especialista implementado no branch `codex/phase-4-cockpit`: domínio explicável em `packages/domain/src/cockpit` (SLA, saúde, capacidade, próxima ação, política `1.0.0-provisional`), tabelas `account_incidents`/`account_meetings` com históricos append-only e RLS exclusivo de Especialista/platform_admin, API em `/api/v1/cockpit/*` e `/incidents`/`/meetings`, e web em `/cockpit`. Papéis do cliente não acessam o Cockpit. Validação PostgreSQL/pgTAP (100 assertions das Fases 1–4) segue pendente de Docker/CI. Detalhes: `docs/releases/phase-4.md`.
+
+## Atualização — Fase 5 (17/07/2026)
+
+Recovery Engine implementado no branch `codex/phase-5-recovery`, **sem execução de contato**: domínio em `packages/domain/src/recovery` (política `1.0.0-provisional`, regras `lead_no_response` e `attended_no_booking`, governança de consentimento/supressão/frequência), tabelas `recovery_*` com históricos append-only e RLS por papel, RPCs que revalidam a governança no banco, API em `/api/v1/.../recovery/*` e web em `/cockpit/recovery`. Fonte de leads exclusivamente o `MockCrmProvider`; Helena segue bloqueada. Validação pgTAP (128 assertions das Fases 1–5) pendente de Docker/CI. Detalhes: `docs/releases/phase-5.md`.

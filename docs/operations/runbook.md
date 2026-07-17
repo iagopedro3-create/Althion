@@ -81,3 +81,11 @@ A Fundação versiona migrations e seed sintético. Backup/restore de ambiente r
 - Política operacional (SLA, saúde, capacidade, próxima ação) versionada em `packages/domain/src/cockpit/policy.ts`; qualquer recalibração exige nova versão e atualização do plano.
 - Incidentes/reuniões: texto livre limitado e proibido de conter dado clínico; auditoria registra apenas metadados. Em caso de inserção indevida, tratar como incidente de privacidade (ver seção correspondente).
 - Capacidade usa `relationship_specialists.capacity_limit`; nulo aplica default provisório de 12 pontos e a UI marca a origem do limite.
+
+## Fase 5 — Recovery (17/07/2026)
+
+- Flag `recovery.engine.v1` é global; **não habilitar em ambiente com dados reais** até aprovação jurídica da base legal do consentimento e calibração da política.
+- Política em `packages/domain/src/recovery/policy.ts` (janelas, frequência, expiração de 14 dias); recalibrar exige nova versão e atualização do plano.
+- A simulação lê apenas o `MockCrmProvider`. Se uma fonte real for conectada sem os gates da Fase 6, tratar como incidente de conformidade.
+- Opt-out: registrar supressão pela tela de Recovery; efeito é imediato e o lead sai de qualquer nova simulação.
+- Nenhum contato é enviado pela plataforma nesta fase. Se alguém relatar recebimento de mensagem "da Althion", investigar como incidente — não há caminho de execução no sistema.

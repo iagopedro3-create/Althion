@@ -161,3 +161,24 @@ POST /api/v1/organizations/:orgId/clinics/:clinicId/incidents/:id/transitions
 GET|POST /api/v1/organizations/:orgId/clinics/:clinicId/meetings      # meeting:read|manage
 POST /api/v1/organizations/:orgId/clinics/:clinicId/meetings/:id/transitions
 ```
+
+## Fase 5 — Recovery (17/07/2026)
+
+Web (sessão + flag global `recovery.engine.v1` + capability + RLS):
+
+| Rota                | Entrega                                                                    |
+| ------------------- | -------------------------------------------------------------------------- |
+| `/cockpit/recovery` | simulações, fila de oportunidades/ações e supressões por conta (sintético) |
+
+API:
+
+```text
+GET  /api/v1/organizations/:orgId/clinics/:clinicId/recovery/queue        # recovery:read
+POST /api/v1/organizations/:orgId/clinics/:clinicId/recovery/simulations  # recovery:simulate
+POST .../recovery/opportunities/:opportunityId/decisions                  # recovery:decide
+POST .../recovery/actions/:actionId/decisions                             # recovery:decide
+POST .../recovery/suppressions                                            # suppression:manage
+POST .../recovery/suppressions/:suppressionId/revoke                      # suppression:manage
+```
+
+Nenhuma rota executa contato: o resultado final de uma ação é `approved`, `rejected` ou `expired`.

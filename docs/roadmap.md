@@ -4,7 +4,7 @@
 
 Cada fase é um gate. Antes de iniciar: plano detalhado, arquivos, riscos, critérios de aceite e aprovação explícita. Depois: lint, typecheck, testes, build, E2E relevante, revisão visual/acessibilidade, documentação, evidências, limitações e próximos passos.
 
-As Fases 2 e 3 foram implementadas em 16 de julho de 2026 e a Fase 4 em 17 de julho de 2026, sob autorização de avanço contínuo do usuário. O aceite técnico permanece condicionado aos gates de banco documentados (100 assertions pgTAP pendentes de Docker/CI).
+As Fases 2 e 3 foram implementadas em 16 de julho de 2026 e as Fases 4 e 5 em 17 de julho de 2026, sob autorização de avanço contínuo do usuário. O aceite técnico permanece condicionado aos gates de banco documentados (128 assertions pgTAP pendentes de Docker/CI).
 
 ## Sequência
 
@@ -15,7 +15,7 @@ As Fases 2 e 3 foram implementadas em 16 de julho de 2026 e a Fase 4 em 17 de ju
 | 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Execução das migrations e 37 assertions pgTAP                                   | Em validação         |
 | 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Execução das migrations e 73 assertions pgTAP                                   | Em validação         |
 | 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Execução das migrations e 100 assertions pgTAP; validação do modelo operacional | Em validação         |
-| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Consentimento, supressão, frequência e fontes definidas                         | Não iniciada         |
+| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Execução das migrations e 128 assertions pgTAP; base legal do consentimento     | Em validação         |
 | 6. Helena              | Sync real, webhooks, normalização e monitoramento                               | Documentação oficial, sandbox e contrato; atualmente bloqueada                  | Bloqueada            |
 | 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | Política de conteúdo/IA e avaliação de privacidade                              | Não iniciada         |
 | 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Fonte oficial de agenda e definição de slot                                     | Bloqueada pela fonte |
@@ -79,6 +79,8 @@ Ordem interna recomendada:
 6. paciente inativo.
 
 Os dois últimos dependem de fontes e definições ainda ausentes. Toda execução respeita aprovação, finalidade, consentimento/base aplicável, supressão e frequência.
+
+Plano detalhado: `docs/plans/phase-5-recovery.md`. Implementada sem execução de contato: os cenários 1 e 2 rodam sobre o `MockCrmProvider` com política `1.0.0-provisional`, governança revalidada no banco e decisão humana obrigatória. Os cenários 3 a 6 seguem bloqueados pela fonte de agenda. Entrega e limitações: `docs/releases/phase-5.md`.
 
 ## Fase 6 — Helena
 
