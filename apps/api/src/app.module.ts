@@ -9,6 +9,7 @@ import { ApiConfigModule } from './config/api-config.module';
 import { ApiConfigService } from './config/api-config.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
+import { CockpitModule } from './modules/cockpit/cockpit.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { HealthModule } from './modules/health/health.module';
 import { ImprovementPlansModule } from './modules/improvement-plans/improvement-plans.module';
@@ -43,6 +44,7 @@ import { TenancyModule } from './modules/tenancy/tenancy.module';
     }),
     ThrottlerModule.forRoot([{ limit: 100, ttl: 60_000 }]),
     AuthModule,
+    CockpitModule,
     HealthModule,
     ImprovementPlansModule,
     IntegrationsModule,
