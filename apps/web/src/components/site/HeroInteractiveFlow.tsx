@@ -1,153 +1,294 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 
-type FlowStep = 'incoming' | 'parse' | 'funnel' | 'alerts' | 'recovered';
+// ─── Tipos ────────────────────────────────────────────────────────────────────
+
+interface JourneyStep {
+  id: number;
+  label: string;
+  status: 'pending' | 'active' | 'done';
+  origin: string;
+  action: string;
+  responsible: 'ia' | 'humano' | 'sistema';
+  elapsed: string;
+}
+
+// ─── Dados das 10 etapas da jornada ───────────────────────────────────────────
+
+const JOURNEY_STEPS: JourneyStep[] = [
+  {
+    id: 1,
+    label: 'Novo contato',
+    status: 'done',
+    origin: 'WhatsApp',
+    action: 'Primeiro atendimento iniciado',
+    responsible: 'ia',
+    elapsed: 'Imediato',
+  },
+  {
+    id: 2,
+    label: 'Necessidade identificada',
+    status: 'done',
+    origin: 'IA',
+    action: 'Reagendamento solicitado',
+    responsible: 'ia',
+    elapsed: '12 s',
+  },
+  {
+    id: 3,
+    label: 'Atendimento iniciado',
+    status: 'done',
+    origin: 'Fluxo IA',
+    action: 'Opções de horário apresentadas',
+    responsible: 'ia',
+    elapsed: '1 min',
+  },
+  {
+    id: 4,
+    label: 'Agendamento realizado',
+    status: 'done',
+    origin: 'Agenda',
+    action: 'Vaga confirmada',
+    responsible: 'sistema',
+    elapsed: '3 min',
+  },
+  {
+    id: 5,
+    label: 'Confirmação enviada',
+    status: 'done',
+    origin: 'WhatsApp',
+    action: 'Lembrete automático agendado',
+    responsible: 'sistema',
+    elapsed: '3 min',
+  },
+  {
+    id: 6,
+    label: 'Cancelamento detectado',
+    status: 'active',
+    origin: 'Agenda',
+    action: 'Vaga liberada — recuperação iniciada',
+    responsible: 'sistema',
+    elapsed: '2 dias',
+  },
+  {
+    id: 7,
+    label: 'Reagendamento oferecido',
+    status: 'pending',
+    origin: 'Recovery Engine',
+    action: 'Contato da fila de espera acionado',
+    responsible: 'ia',
+    elapsed: 'Aguardando',
+  },
+  {
+    id: 8,
+    label: 'Horário recuperado',
+    status: 'pending',
+    origin: 'Agenda',
+    action: 'Nova confirmação enviada',
+    responsible: 'sistema',
+    elapsed: '-',
+  },
+  {
+    id: 9,
+    label: 'Especialista informado',
+    status: 'pending',
+    origin: 'Cockpit',
+    action: 'Indicador de recuperação atualizado',
+    responsible: 'humano',
+    elapsed: '-',
+  },
+  {
+    id: 10,
+    label: 'Indicador atualizado',
+    status: 'pending',
+    origin: 'Radar',
+    action: 'Score recalculado',
+    responsible: 'sistema',
+    elapsed: '-',
+  },
+];
+
+// ─── Reducer de estado ────────────────────────────────────────────────────────
+
+function stepsReducer(
+  state: { active: number; paused: boolean },
+  action: { type: 'advance' | 'pause' | 'resume' | 'jump'; payload?: number },
+) {
+  switch (action.type) {
+    case 'advance':
+      if (state.paused) return state;
+      return { ...state, active: (state.active + 1) % JOURNEY_STEPS.length };
+    case 'pause':
+      return { ...state, paused: true };
+    case 'resume':
+      return { ...state, paused: false };
+    case 'jump':
+      return { active: action.payload ?? 0, paused: true };
+    default:
+      return state;
+  }
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const RESPONSIBLE_LABEL: Record<JourneyStep['responsible'], string> = {
+  ia: 'Inteligência artificial',
+  humano: 'Especialista',
+  sistema: 'Sistema',
+};
+
+const STATUS_COLOR: Record<JourneyStep['status'], string> = {
+  done: '#18A987',
+  active: '#F5A26F',
+  pending: 'rgba(169, 187, 180, 0.3)',
+};
+
+const STATUS_LABEL: Record<JourneyStep['status'], string> = {
+  done: 'Concluído',
+  active: 'Em andamento',
+  pending: 'Aguardando',
+};
+
+// ─── Componente principal ─────────────────────────────────────────────────────
 
 export function HeroInteractiveFlow() {
-  const [step, setStep] = useState<FlowStep>('incoming');
+  const [state, dispatch] = useReducer(stepsReducer, { active: 5, paused: false });
 
+  // Avança automaticamente a cada 3.5 s (respeita reduced-motion suspendendo)
   useEffect(() => {
-    const timer = setInterval(() => {
-      setStep((prev) => {
-        if (prev === 'incoming') return 'parse';
-        if (prev === 'parse') return 'funnel';
-        if (prev === 'funnel') return 'alerts';
-        if (prev === 'alerts') return 'recovered';
-        return 'incoming';
-      });
-    }, 4500);
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return; // Sem auto-play em reduced-motion
+
+    const timer = setInterval(() => dispatch({ type: 'advance' }), 3500);
     return () => clearInterval(timer);
   }, []);
 
+  // state.active is always within [0, JOURNEY_STEPS.length) — bounded by modulo in the reducer
+  const activeStep = JOURNEY_STEPS[state.active] as JourneyStep;
+  const visibleIndices = getVisibleWindow(state.active, JOURNEY_STEPS.length, 3);
+
   return (
     <div
-      style={{
-        background: '#0A211B',
-        border: '1px solid rgba(243, 250, 247, 0.1)',
-        borderRadius: '24px',
-        padding: '32px',
-        height: '100%',
-        minHeight: '420px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        position: 'relative',
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.25)',
-      }}
+      className="hero-flow"
+      onMouseEnter={() => dispatch({ type: 'pause' })}
+      onMouseLeave={() => dispatch({ type: 'resume' })}
+      onFocus={() => dispatch({ type: 'pause' })}
+      onBlur={() => dispatch({ type: 'resume' })}
+      aria-label="Demonstração do fluxo da jornada administrativa"
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(243, 250, 247, 0.08)', paddingBottom: '16px' }}>
-        <span style={{ fontSize: '0.75rem', color: '#A9BBB4', fontWeight: '700', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-          Fluxo de Jornada Administrativa
+      {/* Cabeçalho */}
+      <div className="hero-flow-header">
+        <span className="hero-flow-eyebrow">Jornada administrativa — dado ilustrativo</span>
+        <span
+          className={`badge ${activeStep.status === 'active' ? 'warning' : activeStep.status === 'done' ? 'success' : 'muted'}`}
+          style={{ fontSize: '0.72rem' }}
+        >
+          {STATUS_LABEL[activeStep.status]}
         </span>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span
-            className={`badge ${step === 'recovered' ? 'success' : 'primary'}`}
-            style={{ fontSize: '0.75rem', padding: '4px 10px' }}
-          >
-            {step === 'incoming' && 'Novo Contato'}
-            {step === 'parse' && 'Análise de Necessidade'}
-            {step === 'funnel' && 'Funil Integrado'}
-            {step === 'alerts' && 'Oportunidade Ativa'}
-            {step === 'recovered' && 'Recuperação Concluída'}
-          </span>
+      </div>
+
+      {/* Card principal ativo */}
+      <div className="hero-flow-main-card" aria-live="polite" aria-atomic="true">
+        <div className="hero-flow-step-badge">
+          Etapa {activeStep.id} de {JOURNEY_STEPS.length}
+        </div>
+        <h3 className="hero-flow-step-title">{activeStep.label}</h3>
+        <div className="hero-flow-meta">
+          <div className="hero-flow-meta-row">
+            <span className="hero-flow-meta-label">Ação</span>
+            <span className="hero-flow-meta-value">{activeStep.action}</span>
+          </div>
+          <div className="hero-flow-meta-row">
+            <span className="hero-flow-meta-label">Origem</span>
+            <span className="hero-flow-meta-value">{activeStep.origin}</span>
+          </div>
+          <div className="hero-flow-meta-row">
+            <span className="hero-flow-meta-label">Responsável</span>
+            <span className="hero-flow-meta-value">
+              {RESPONSIBLE_LABEL[activeStep.responsible]}
+            </span>
+          </div>
+          <div className="hero-flow-meta-row">
+            <span className="hero-flow-meta-label">Tempo</span>
+            <span className="hero-flow-meta-value">{activeStep.elapsed}</span>
+          </div>
         </div>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px', margin: '24px 0' }}>
-        {/* Step 1: Incoming Contact */}
-        <div
-          style={{
-            background: '#081C17',
-            border: '1px solid rgba(243, 250, 247, 0.06)',
-            borderRadius: '16px',
-            padding: '16px 20px',
-            transform: `translateY(${step === 'incoming' ? '0' : '-6px'}) scale(${step === 'incoming' ? '1' : '0.98'})`,
-            opacity: step === 'incoming' ? 1 : 0.4,
-            boxShadow: step === 'incoming' ? '0 10px 20px rgba(0,0,0,0.15)' : 'none',
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'center' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: '700', color: '#F3FAF7' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              Mensagem de Contato
-            </span>
-            <small style={{ color: '#A9BBB4', fontSize: '0.75rem' }}>Agora mesmo</small>
-          </div>
-          <p style={{ margin: 0, fontSize: '0.88rem', color: '#A9BBB4', fontStyle: 'italic', lineHeight: '1.4' }}>
-            "Olá, preciso reagendar meu retorno administrativo da próxima semana."
-          </p>
-        </div>
-
-        {/* Step 2: Intent Classification */}
-        <div
-          style={{
-            background: 'rgba(41, 199, 161, 0.04)',
-            border: `1px solid ${step === 'parse' ? 'rgba(41, 199, 161, 0.3)' : 'rgba(243, 250, 247, 0.06)'}`,
-            borderRadius: '16px',
-            padding: '16px 20px',
-            transform: `translateY(${step === 'parse' ? '0' : '-6px'}) scale(${step === 'parse' ? '1' : '0.98'})`,
-            opacity: step === 'parse' ? 1 : 0.3,
-            boxShadow: step === 'parse' ? '0 10px 20px rgba(0,0,0,0.15)' : 'none',
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'center' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: '700', color: '#29C7A1' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-              Identificação da Necessidade
-            </span>
-            <span style={{ fontSize: '0.75rem', color: '#29C7A1', fontWeight: '600' }}>Processado</span>
-          </div>
-          <p style={{ margin: 0, fontSize: '0.85rem', color: '#A9BBB4', lineHeight: '1.4' }}>
-            Ação mapeada: <strong style={{ color: '#F3FAF7' }}>Reagendamento de Consulta</strong>. Detalhes repassados à esteira de confirmações.
-          </p>
-        </div>
-
-        {/* Step 3: Action & Resolution */}
-        <div
-          style={{
-            background: '#081C17',
-            border: '1px solid rgba(243, 250, 247, 0.06)',
-            borderRadius: '16px',
-            padding: '16px 20px',
-            transform: `translateY(${step === 'recovered' ? '0' : '-6px'}) scale(${step === 'recovered' ? '1' : '0.98'})`,
-            opacity: step === 'recovered' ? 1 : 0.3,
-            boxShadow: step === 'recovered' ? '0 10px 20px rgba(41, 199, 161, 0.1)' : 'none',
-            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', alignItems: 'center' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: '700', color: '#F3FAF7' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              Oportunidade Recuperada
-            </span>
-            <small style={{ color: '#29C7A1', fontSize: '0.75rem', fontWeight: '600' }}>Fila de Espera Atualizada</small>
-          </div>
-          <p style={{ margin: 0, fontSize: '0.85rem', color: '#A9BBB4', lineHeight: '1.4' }}>
-            Vaga liberada foi realocada para paciente **M. C.** da fila de espera. Novo agendamento confirmado no Portal.
-          </p>
-        </div>
+      {/* Miniaturas das etapas adjacentes */}
+      <div className="hero-flow-steps" aria-label="Etapas da jornada">
+        {visibleIndices.map((idx) => {
+          const step = JOURNEY_STEPS[idx]!;
+          const isActive = idx === state.active;
+          return (
+            <button
+              aria-label={`Ir para etapa ${step.id}: ${step.label}`}
+              aria-pressed={isActive}
+              className={`hero-flow-step-btn${isActive ? ' hero-flow-step-btn--active' : ''}`}
+              key={step.id}
+              onClick={() => dispatch({ type: 'jump', payload: idx })}
+              type="button"
+            >
+              <span
+                className="hero-flow-step-dot"
+                style={{ background: STATUS_COLOR[step.status] }}
+              />
+              <span className="hero-flow-step-label">{step.label}</span>
+            </button>
+          );
+        })}
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(243, 250, 247, 0.08)', paddingTop: '16px', fontSize: '0.75rem', color: '#A9BBB4' }}>
-        <span>Etapa {step === 'incoming' ? '1' : step === 'parse' ? '2' : step === 'funnel' ? '3' : step === 'alerts' ? '4' : '5'} de 5</span>
-        <div style={{ display: 'flex', gap: '4px' }}>
-          {(['incoming', 'parse', 'funnel', 'alerts', 'recovered'] as const).map((s) => (
-            <span
-              key={s}
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                background: step === s ? '#29C7A1' : 'rgba(243, 250, 247, 0.2)',
-                transition: 'background 0.3s ease',
-              }}
+      {/* Barra de progresso e navegação */}
+      <div className="hero-flow-footer">
+        <div className="hero-flow-progress" role="progressbar" aria-valuenow={state.active + 1} aria-valuemin={1} aria-valuemax={JOURNEY_STEPS.length} aria-label="Progresso da jornada">
+          {JOURNEY_STEPS.map((s, i) => (
+            <button
+              aria-label={`Etapa ${s.id}`}
+              className={`hero-flow-dot${i === state.active ? ' hero-flow-dot--active' : ''}`}
+              key={s.id}
+              onClick={() => dispatch({ type: 'jump', payload: i })}
+              type="button"
             />
           ))}
+        </div>
+        <div className="hero-flow-nav">
+          <button
+            aria-label="Etapa anterior"
+            className="hero-flow-nav-btn"
+            onClick={() =>
+              dispatch({
+                type: 'jump',
+                payload: (state.active - 1 + JOURNEY_STEPS.length) % JOURNEY_STEPS.length,
+              })
+            }
+            type="button"
+          >
+            &#8592;
+          </button>
+          <button
+            aria-label="Próxima etapa"
+            className="hero-flow-nav-btn"
+            onClick={() =>
+              dispatch({ type: 'jump', payload: (state.active + 1) % JOURNEY_STEPS.length })
+            }
+            type="button"
+          >
+            &#8594;
+          </button>
         </div>
       </div>
     </div>
   );
+}
+
+// ─── Utilitário: janela deslizante de índices visíveis ────────────────────────
+
+function getVisibleWindow(active: number, total: number, window: number): number[] {
+  const half = Math.floor(window / 2);
+  return Array.from({ length: window }, (_, i) => {
+    const raw = active - half + i;
+    return ((raw % total) + total) % total;
+  });
 }
