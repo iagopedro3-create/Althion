@@ -136,13 +136,13 @@ export default function SiteHome() {
                 Althion Radar
               </span>
               <h2 className="section-headline" id="radar-heading">
-                Veja onde sua operacao esta perdendo oportunidades.
+                Veja onde sua operação está perdendo oportunidades.
               </h2>
             </div>
             <p className="section-lead radar-section-lead">
-              O Althion Radar reune indicadores da jornada, identifica gargalos e transforma
-              dados operacionais em prioridades claras. As 8 dimensoes abaixo sao exemplos
-              ilustrativos do tipo de diagnostico que a plataforma realiza.
+              O Althion Radar reúne indicadores da jornada, identifica gargalos e transforma
+              dados operacionais em prioridades claras. As 8 dimensões abaixo são exemplos
+              ilustrativos do tipo de diagnóstico que a plataforma realiza.
             </p>
           </div>
 

@@ -2,176 +2,302 @@
 
 import { useState } from 'react';
 
-interface ScoreDimension {
+// ─── Tipos ────────────────────────────────────────────────────────────────────
+
+interface Dimension {
+  key: string;
   title: string;
+  shortLabel: string;
   score: number;
+  status: 'critical' | 'warning' | 'healthy';
   description: string;
-  problem: string;
-  recommendation: string;
-  badge: 'success' | 'warning' | 'danger';
-  badgeText: string;
+  bottleneck: string;
+  action: string;
 }
 
-const DIMENSIONS: Record<'velocidade' | 'conversao' | 'comparecimento' | 'recuperacao', ScoreDimension> = {
-  velocidade: {
-    title: 'Velocidade de Resposta',
-    score: 64,
-    description: 'Avalia o tempo de resposta aos contatos iniciados. A demora no retorno administrativo reduz drasticamente a chance de agendamento.',
-    problem: 'O tempo médio atual de resposta ultrapassa 3 horas em períodos de pico de atendimento.',
-    recommendation: 'Encaminhar fluxos de perguntas frequentes para a triagem administrativa automática.',
-    badge: 'warning',
-    badgeText: 'Atenção',
+// ─── 8 Dimensões do Althion Radar ────────────────────────────────────────────
+// Todos os scores são dados ilustrativos — não representam métricas reais.
+
+const DIMENSIONS: Dimension[] = [
+  {
+    key: 'resposta',
+    title: 'Velocidade de resposta',
+    shortLabel: 'Resposta',
+    score: 41,
+    status: 'critical',
+    description:
+      'Avalia o tempo entre o primeiro contato e o retorno administrativo. Demoras superiores a 15 minutos reduzem significativamente a chance de agendamento.',
+    bottleneck:
+      'Conversas acumulam sem priorização. A recepção responde em ordem de chegada, sem triagem por intenção.',
+    action:
+      'Configurar fluxo de triagem automática para identificar contatos com intenção de agendamento e notificar a equipe.',
   },
-  conversao: {
-    title: 'Conversão em Agendamento',
-    score: 72,
-    description: 'Analisa a porcentagem de contatos qualificados que manifestam interesse em agendar e concluem o processo.',
-    problem: 'Muitos contatos interessados são abandonados após a primeira cotação de horários.',
-    recommendation: 'Utilizar lembretes automáticos e ofertas ativas de encaixes disponíveis na agenda.',
-    badge: 'success',
-    badgeText: 'Saudável',
+  {
+    key: 'conversao',
+    title: 'Conversão em agendamento',
+    shortLabel: 'Conversão',
+    score: 67,
+    status: 'warning',
+    description:
+      'Mede a proporção de contatos qualificados que avançam até a confirmação de um horário.',
+    bottleneck:
+      'Muitos interessados recebem opções de horário, mas não são acompanhados até a confirmação.',
+    action:
+      'Disparar mensagens de confirmação com link de agendamento direto após 30 minutos sem resposta.',
   },
-  comparecimento: {
-    title: 'Taxa de Comparecimento',
-    score: 82,
-    description: 'Mede o índice de ausências e cancelamentos de última hora sem a devida realocação de horários.',
-    problem: 'As confirmações são coletadas tardiamente, inviabilizando encaixes rápidos.',
-    recommendation: 'Disparar mensagens de confirmação integradas via WhatsApp com 48h de antecedência.',
-    badge: 'success',
-    badgeText: 'Saudável',
+  {
+    key: 'comparecimento',
+    title: 'Taxa de comparecimento',
+    shortLabel: 'Comparec.',
+    score: 78,
+    status: 'healthy',
+    description:
+      'Analisa o índice de ausências e cancelamentos de última hora sem realocação de horário.',
+    bottleneck:
+      'Confirmações são feitas com menos de 12 horas de antecedência, inviabilizando encaixes rápidos.',
+    action:
+      'Antecipar confirmações para 48 h antes e acionar a lista de espera assim que surgir cancelamento.',
   },
-  recuperacao: {
-    title: 'Recuperação de Oportunidades',
-    score: 45,
-    description: 'Mede a capacidade de identificar leads frios e cancelamentos recentes e convertê-los de volta à agenda.',
-    problem: 'Os cancelamentos diários viram vagas vazias sem tentativa estruturada de contato.',
-    recommendation: 'Ativar o acionamento imediato da lista de espera pré-cadastrada.',
-    badge: 'danger',
-    badgeText: 'Atenção Crítica',
+  {
+    key: 'recuperacao',
+    title: 'Recuperação de vagas',
+    shortLabel: 'Recuperação',
+    score: 34,
+    status: 'critical',
+    description:
+      'Mede a capacidade de identificar cancelamentos e oferecer a vaga a contatos da fila de espera no mesmo dia.',
+    bottleneck:
+      'Cancelamentos diários se tornam vagas ociosas sem tentativa estruturada de reposição.',
+    action: 'Ativar acionamento imediato da fila de espera ao detectar cancelamento na agenda.',
   },
+  {
+    key: 'followup',
+    title: 'Seguimento ativo',
+    shortLabel: 'Follow-up',
+    score: 29,
+    status: 'critical',
+    description:
+      'Avalia se leads que demonstraram interesse sem agendar recebem contato proativo em 24–72 horas.',
+    bottleneck:
+      'Leads frios ficam nas conversas sem próxima ação definida e sem alerta para a equipe.',
+    action:
+      'Criar fila de follow-up automático com cadência de 24 h, 48 h e 72 h para contatos sem agendamento.',
+  },
+  {
+    key: 'retorno',
+    title: 'Retorno de pacientes',
+    shortLabel: 'Retorno',
+    score: 55,
+    status: 'warning',
+    description:
+      'Mede se pacientes de procedimentos recorrentes recebem convite ativo para o próximo agendamento.',
+    bottleneck:
+      'Pacientes concluem uma etapa de tratamento sem receber proposta de retorno preventivo.',
+    action:
+      'Configurar gatilho de lembrete de retorno baseado no tipo de procedimento e ciclo médio.',
+  },
+  {
+    key: 'capacidade',
+    title: 'Aproveitamento de agenda',
+    shortLabel: 'Agenda',
+    score: 61,
+    status: 'warning',
+    description:
+      'Analisa a proporção de horários disponíveis que são efetivamente preenchidos ao longo da semana.',
+    bottleneck:
+      'Horários liberados por cancelamentos permanecem ociosos por falta de comunicação proativa.',
+    action:
+      'Monitorar disponibilidade da agenda em tempo real e acionar lista de encaixe automaticamente.',
+  },
+  {
+    key: 'visibilidade',
+    title: 'Visibilidade da operação',
+    shortLabel: 'Visibilidade',
+    score: 48,
+    status: 'warning',
+    description:
+      'Avalia se o gestor tem acesso consolidado às métricas de conversão, perda e desempenho operacional.',
+    bottleneck:
+      'Dados de atendimento, cancelamento e recuperação estão dispersos em diferentes sistemas sem consolidação.',
+    action:
+      'Centralizar indicadores no painel unificado com atualização diária e alertas de variação.',
+  },
+];
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const STATUS_COLOR: Record<Dimension['status'], string> = {
+  critical: '#F47E6B',
+  warning: '#F5A26F',
+  healthy: '#18A987',
 };
 
-export function AlthionScoreDial() {
-  const [selected, setSelected] = useState<keyof typeof DIMENSIONS>('velocidade');
-  const current = DIMENSIONS[selected] ?? DIMENSIONS.velocidade;
+const STATUS_LABEL: Record<Dimension['status'], string> = {
+  critical: 'Atenção crítica',
+  warning: 'Requer atenção',
+  healthy: 'Saudável',
+};
+
+const STATUS_BADGE: Record<Dimension['status'], string> = {
+  critical: 'danger',
+  warning: 'warning',
+  healthy: 'success',
+};
+
+function getOverallScore(dims: Dimension[]): number {
+  const sum = dims.reduce((acc, d) => acc + d.score, 0);
+  return Math.round(sum / dims.length);
+}
+
+// Semi-anel SVG (180°)
+function ScoreRing({ score, color }: { score: number; color: string }) {
+  // Circunferência do semi-círculo: raio 80, π × r = ~251
+  const circ = Math.PI * 80; // ~251.3
+  const offset = circ - circ * (score / 100);
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1.2fr',
-        gap: '40px',
-        alignItems: 'center',
-        background: '#FFFFFF',
-        border: '1px solid rgba(16, 32, 27, 0.08)',
-        borderRadius: '24px',
-        padding: '40px',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.02)',
-      }}
+    <svg
+      aria-hidden="true"
+      height="116"
+      style={{ display: 'block' }}
+      viewBox="0 0 200 116"
+      width="200"
     >
-      {/* Visual Dial Column */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-        <span style={{ fontSize: '0.75rem', color: '#52635D', fontWeight: '700', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '24px' }}>
-          Althion Score — Exemplo de Diagnóstico
-        </span>
+      {/* Trilha */}
+      <path
+        d="M 20 100 A 80 80 0 0 1 180 100"
+        fill="none"
+        stroke="#EEF1EE"
+        strokeLinecap="round"
+        strokeWidth="14"
+      />
+      {/* Score */}
+      <path
+        d="M 20 100 A 80 80 0 0 1 180 100"
+        fill="none"
+        pathLength={circ}
+        stroke={color}
+        strokeDasharray={`${circ - offset} ${offset}`}
+        strokeLinecap="round"
+        strokeWidth="14"
+        style={{
+          transition: 'stroke-dasharray 0.6s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.35s ease',
+        }}
+      />
+    </svg>
+  );
+}
 
-        <div style={{ position: 'relative', width: '200px', height: '120px', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', overflow: 'hidden' }}>
-          <svg width="200" height="200" style={{ position: 'absolute', bottom: 0 }}>
-            {/* Background Arc */}
-            <circle
-              cx="100"
-              cy="100"
-              r="80"
-              fill="none"
-              stroke="#F5F7F3"
-              strokeWidth="12"
-              strokeDasharray="251 251"
-              strokeDashoffset="251"
-              transform="rotate(-180 100 100)"
-            />
-            {/* Active Arc */}
-            <circle
-              cx="100"
-              cy="100"
-              r="80"
-              fill="none"
-              stroke={current.badge === 'danger' ? '#F47E6B' : current.badge === 'warning' ? '#F5A26F' : '#18A987'}
-              strokeWidth="12"
-              strokeDasharray="251 251"
-              strokeDashoffset={251 - (251 * (current.score / 100))}
-              transform="rotate(-180 100 100)"
-              style={{ transition: 'stroke-dashoffset 0.6s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.4s ease' }}
-            />
-          </svg>
+// ─── Componente principal ─────────────────────────────────────────────────────
 
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingBottom: '10px' }}>
-            <span style={{ fontSize: '3.2rem', fontWeight: '800', lineHeight: '1', color: '#10201B' }}>
-              {current.score}
-            </span>
-            <span style={{ fontSize: '0.8rem', color: '#52635D', fontWeight: '600' }}>pontos</span>
+export function AlthionScoreDial() {
+  const [selectedKey, setSelectedKey] = useState(DIMENSIONS[0]!.key);
+  const current = DIMENSIONS.find((d) => d.key === selectedKey) ?? DIMENSIONS[0]!;
+  const overall = getOverallScore(DIMENSIONS);
+  const overallColor =
+    overall >= 70 ? STATUS_COLOR.healthy : overall >= 50 ? STATUS_COLOR.warning : STATUS_COLOR.critical;
+
+  return (
+    <div className="radar-shell">
+      {/* ── Coluna esquerda: anel + grade de dimensões ────────────────── */}
+      <div className="radar-left">
+        {/* Score global */}
+        <div className="radar-ring-wrap">
+          <ScoreRing color={overallColor} score={overall} />
+          <div className="radar-ring-center">
+            <span className="radar-score-number">{overall}</span>
+            <span className="radar-score-unit">/ 100</span>
           </div>
+          <p className="radar-score-label">Score geral — dado ilustrativo</p>
         </div>
 
-        <span
-          className={`badge ${current.badge}`}
-          style={{ marginTop: '20px', fontSize: '0.75rem' }}
-        >
-          {current.badgeText}
-        </span>
-      </div>
-
-      {/* Details Column */}
-      <div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '24px' }}>
-          {(Object.keys(DIMENSIONS) as Array<keyof typeof DIMENSIONS>).map((key) => (
+        {/* Grade 2×4 de dimensões */}
+        <div className="radar-grid" role="group" aria-label="Dimensões do Althion Radar">
+          {DIMENSIONS.map((dim) => (
             <button
-              key={key}
-              onClick={() => setSelected(key)}
-              style={{
-                background: selected === key ? '#10201B' : '#FFFFFF',
-                color: selected === key ? '#FFFFFF' : '#10201B',
-                border: '1px solid rgba(16, 32, 27, 0.08)',
-                padding: '10px 18px',
-                borderRadius: '999px',
-                fontSize: '0.85rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
+              aria-label={`${dim.title}: ${dim.score} pontos — ${STATUS_LABEL[dim.status]}`}
+              aria-pressed={dim.key === selectedKey}
+              className={`radar-dim-btn${dim.key === selectedKey ? ' radar-dim-btn--active' : ''}`}
+              key={dim.key}
+              onClick={() => setSelectedKey(dim.key)}
               type="button"
             >
-              {DIMENSIONS[key].title.split(' ')[0]}
+              {/* Mini score bar */}
+              <div className="radar-dim-bar-wrap">
+                <div
+                  className="radar-dim-bar-fill"
+                  style={{
+                    width: `${dim.score}%`,
+                    background: STATUS_COLOR[dim.status],
+                  }}
+                />
+              </div>
+              <span className="radar-dim-label">{dim.shortLabel}</span>
+              <span
+                className="radar-dim-score"
+                style={{ color: STATUS_COLOR[dim.status] }}
+              >
+                {dim.score}
+              </span>
             </button>
           ))}
         </div>
+      </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* ── Coluna direita: detalhe da dimensão ─────────────────────────*/}
+      <div className="radar-detail" aria-live="polite" aria-atomic="true">
+        {/* Cabeçalho */}
+        <div className="radar-detail-header">
           <div>
-            <h4 style={{ margin: '0 0 6px 0', fontSize: '1.25rem', fontWeight: '700', color: '#10201B' }}>
-              {current.title}
-            </h4>
-            <p style={{ margin: 0, fontSize: '0.92rem', color: '#52635D', lineHeight: '1.6' }}>
-              {current.description}
-            </p>
-          </div>
-
-          <div style={{ padding: '14px 18px', background: '#FFF7F6', borderLeft: '4px solid #F47E6B', borderRadius: '8px' }}>
-            <span style={{ fontSize: '0.75rem', color: '#F47E6B', fontWeight: '700', textTransform: 'uppercase', display: 'block', marginBottom: '4px', letterSpacing: '0.05em' }}>
-              Gargalo Identificado
+            <span className={`badge ${STATUS_BADGE[current.status]}`} style={{ fontSize: '0.72rem' }}>
+              {STATUS_LABEL[current.status]}
             </span>
-            <p style={{ margin: 0, fontSize: '0.88rem', color: '#10201B', lineHeight: '1.5' }}>
-              {current.problem}
-            </p>
+            <h3 className="radar-detail-title">{current.title}</h3>
           </div>
-
-          <div style={{ padding: '14px 18px', background: '#F4FAF7', borderLeft: '4px solid #18A987', borderRadius: '8px' }}>
-            <span style={{ fontSize: '0.75rem', color: '#18A987', fontWeight: '700', textTransform: 'uppercase', display: 'block', marginBottom: '4px', letterSpacing: '0.05em' }}>
-              Próxima Ação Sugerida
+          <div className="radar-detail-score-wrap">
+            <span
+              className="radar-detail-score"
+              style={{ color: STATUS_COLOR[current.status] }}
+            >
+              {current.score}
             </span>
-            <p style={{ margin: 0, fontSize: '0.88rem', color: '#10201B', lineHeight: '1.5' }}>
-              {current.recommendation}
-            </p>
+            <span className="radar-detail-score-max">/ 100</span>
           </div>
+        </div>
+
+        {/* Barra de score detalhada */}
+        <div className="radar-detail-bar-wrap" aria-label={`Score: ${current.score} de 100`}>
+          <div className="radar-detail-bar-bg">
+            <div
+              className="radar-detail-bar-fill"
+              style={{
+                width: `${current.score}%`,
+                background: STATUS_COLOR[current.status],
+              }}
+            />
+          </div>
+          <span className="radar-detail-bar-note">Dado ilustrativo</span>
+        </div>
+
+        {/* Descrição */}
+        <p className="radar-detail-desc">{current.description}</p>
+
+        {/* Gargalo */}
+        <div
+          className="radar-insight radar-insight--bottleneck"
+          aria-label="Gargalo identificado"
+        >
+          <span className="radar-insight-label">Gargalo identificado</span>
+          <p className="radar-insight-text">{current.bottleneck}</p>
+        </div>
+
+        {/* Acao sugerida */}
+        <div
+          className="radar-insight radar-insight--action"
+          aria-label="Proxima acao sugerida"
+        >
+          <span className="radar-insight-label">Proxima acao sugerida</span>
+          <p className="radar-insight-text">{current.action}</p>
         </div>
       </div>
     </div>

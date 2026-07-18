@@ -3620,7 +3620,7 @@ details.creation-panel > summary {
 
 .radar-score-label {
   font-size: 0.7rem;
-  color: rgba(82, 99, 93, 0.6);
+  color: #52635d;
   font-style: italic;
   margin: 8px 0 0;
   text-align: center;
@@ -3766,7 +3766,7 @@ details.creation-panel > summary {
 
 .radar-detail-bar-note {
   font-size: 0.68rem;
-  color: rgba(82, 99, 93, 0.55);
+  color: #52635d;
   font-style: italic;
   white-space: nowrap;
   flex-shrink: 0;
