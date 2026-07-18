@@ -28,30 +28,33 @@ sistema hospitalar, protótipo.
 
 ## 4. Correções pendentes identificadas na auditoria
 
-| Local | Problema | Ação |
-| --- | --- | --- |
-| Heading do Radar (`page.tsx`) | acentos ausentes ("operacao", "esta", "dimensoes"…) | reescrever com acento |
-| `HowItWorksSection` (dataset STEPS) | todo o texto sem acento | reescrever |
-| `HeroInteractiveFlow` (labels) | "Acao", "Responsavel", "Proxima" | acentuar |
-| `AlthionScoreDial` (status) | "Atenção critica", "Requer atencao", "Saudavel" | acentuar |
-| `CapacityCalor` | typo "Saúdável" | → "Saudável" |
-| `diagnostico/page.tsx` | "Em conformidade com a LGPD e o sigilo médico" | trocar por linguagem de intenção |
-| Painel do Especialista | nome inventado "Juliana S." + "94%" + data | anonimizar ou rotular claramente como demo |
-| Mockups (HowItWorks) | nomes de pacientes sem disclaimer uniforme | adicionar nota de dado fictício |
+| Local                               | Problema                                            | Ação                                       |
+| ----------------------------------- | --------------------------------------------------- | ------------------------------------------ |
+| Heading do Radar (`page.tsx`)       | acentos ausentes ("operacao", "esta", "dimensoes"…) | reescrever com acento                      |
+| `HowItWorksSection` (dataset STEPS) | todo o texto sem acento                             | reescrever                                 |
+| `HeroInteractiveFlow` (labels)      | "Acao", "Responsavel", "Proxima"                    | acentuar                                   |
+| `AlthionScoreDial` (status)         | "Atenção critica", "Requer atencao", "Saudavel"     | acentuar                                   |
+| `CapacityCalor`                     | typo "Saúdável"                                     | → "Saudável"                               |
+| `diagnostico/page.tsx`              | "Em conformidade com a LGPD e o sigilo médico"      | trocar por linguagem de intenção           |
+| Painel do Especialista              | nome inventado "Juliana S." + "94%" + data          | anonimizar ou rotular claramente como demo |
+| Mockups (HowItWorks)                | nomes de pacientes sem disclaimer uniforme          | adicionar nota de dado fictício            |
 
 ## 5. Fórmulas de rótulo aprovadas
 
 **Dado ilustrativo:**
+
 - "Dado ilustrativo."
 - "Percentuais são dados ilustrativos baseados em padrões operacionais observados no setor."
 - "Exemplo de diagnóstico — não representa métricas reais."
 - "Estimativa baseada em premissas."
 
 **Módulo futuro:**
+
 - "Em desenvolvimento." / "Em implantação." / "Acesso antecipado." / "Roadmap."
 - Nunca: "disponível agora", "já faz", quando não estiver pronto.
 
 **Conformidade (linguagem de intenção, não de fato):**
+
 - "Construída com princípios de segurança, minimização de dados e controle de acesso."
 - "A documentação definitiva será revisada juridicamente antes da operação comercial."
 

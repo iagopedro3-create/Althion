@@ -8,6 +8,7 @@ Premium = contido. Preferir poucas animações bem executadas a muitas competind
 ## 2. `prefers-reduced-motion` (obrigatório — rule 19)
 
 Estado atual:
+
 - CSS: coberto por dois blocos `@media (prefers-reduced-motion: reduce)` (consolidar em um).
 - `HeroInteractiveFlow`: respeita — desliga autoplay. ✔
 - `ProblemSection` / `HowItWorksSection`: respeitam via checagem de `matchMedia`. ✔
@@ -25,20 +26,20 @@ tanto no CSS quanto nos timers JS.
 
 ## 4. Padrões aprovados (já existentes)
 
-| Padrão | Onde | Manter? |
-| --- | --- | --- |
-| Fade-in on scroll (IntersectionObserver) | ProblemSection | sim |
-| Sticky + troca de mockup por scroll | HowItWorksSection | sim (após ganhar CSS) |
-| Header shrink/blur ao rolar | SiteHeader | sim |
-| Anel de score animado (stroke-dasharray) | AlthionScoreDial | sim |
-| Barra de progresso do formulário | ContactDiagnosisForm | sim |
+| Padrão                                   | Onde                 | Manter?               |
+| ---------------------------------------- | -------------------- | --------------------- |
+| Fade-in on scroll (IntersectionObserver) | ProblemSection       | sim                   |
+| Sticky + troca de mockup por scroll      | HowItWorksSection    | sim (após ganhar CSS) |
+| Header shrink/blur ao rolar              | SiteHeader           | sim                   |
+| Anel de score animado (stroke-dasharray) | AlthionScoreDial     | sim                   |
+| Barra de progresso do formulário         | ContactDiagnosisForm | sim                   |
 
 ## 5. Padrões a revisar
 
-| Padrão | Problema | Ação |
-| --- | --- | --- |
-| Leak strip scroll infinito (38s) | ok, mas competindo com o hero acima | manter, garantir pausa em reduced-motion (já via CSS) |
-| Hero autoplay 3,5s + Fila 5s | **dois loops simultâneos** na mesma página | escalonar: só um elemento em auto-movimento por viewport; Fila só anima quando visível e sem reduced-motion |
+| Padrão                           | Problema                                   | Ação                                                                                                        |
+| -------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Leak strip scroll infinito (38s) | ok, mas competindo com o hero acima        | manter, garantir pausa em reduced-motion (já via CSS)                                                       |
+| Hero autoplay 3,5s + Fila 5s     | **dois loops simultâneos** na mesma página | escalonar: só um elemento em auto-movimento por viewport; Fila só anima quando visível e sem reduced-motion |
 
 ## 6. Regra de "um movimento por viewport"
 

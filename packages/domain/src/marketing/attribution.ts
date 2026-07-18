@@ -61,7 +61,8 @@ export function calculateAttribution(
       lead.utmSource === 'google_ads' ||
       (lead.utmSource === 'google' &&
         lead.utmCampaign !== null &&
-        (campaignsMap.has(lead.utmCampaign) || Array.from(campaignsMap.values()).includes(lead.utmCampaign)));
+        (campaignsMap.has(lead.utmCampaign) ||
+          Array.from(campaignsMap.values()).includes(lead.utmCampaign)));
 
     if (isGoogleAdAttributed) {
       matchedLeadsCount++;
@@ -74,13 +75,17 @@ export function calculateAttribution(
     }
   }
 
-  const coverageRatio = totalLeadsCount > 0 ? Number((matchedLeadsCount / totalLeadsCount).toFixed(4)) : 0;
+  const coverageRatio =
+    totalLeadsCount > 0 ? Number((matchedLeadsCount / totalLeadsCount).toFixed(4)) : 0;
   const uncertaintyRatio =
     totalLeadsCount > 0 ? Number((organicGoogleLeadsWithoutGclid / totalLeadsCount).toFixed(4)) : 0;
 
-  const costPerMatchedLead = matchedLeadsCount > 0 ? Number((totalAdSpend / matchedLeadsCount).toFixed(2)) : 0;
+  const costPerMatchedLead =
+    matchedLeadsCount > 0 ? Number((totalAdSpend / matchedLeadsCount).toFixed(2)) : 0;
   const costPerConsultation =
-    matchedConsultationsCount > 0 ? Number((totalAdSpend / matchedConsultationsCount).toFixed(2)) : 0;
+    matchedConsultationsCount > 0
+      ? Number((totalAdSpend / matchedConsultationsCount).toFixed(2))
+      : 0;
 
   return {
     totalAdSpend,

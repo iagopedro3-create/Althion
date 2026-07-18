@@ -136,13 +136,7 @@ export const createQualityEvaluation = (
   input: unknown,
   idempotencyKey: string,
 ) =>
-  writeApi(
-    `${basePath(context)}/evaluations`,
-    token,
-    input,
-    idempotencyKey,
-    commandResponseSchema,
-  );
+  writeApi(`${basePath(context)}/evaluations`, token, input, idempotencyKey, commandResponseSchema);
 
 export const flagClinicalConversation = (
   token: string,

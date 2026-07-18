@@ -128,13 +128,7 @@ export const saveGoogleAdsCredentials = (
   input: unknown,
   idempotencyKey: string,
 ) =>
-  writeApi(
-    `${basePath(context)}/credentials`,
-    token,
-    input,
-    idempotencyKey,
-    commandResponseSchema,
-  );
+  writeApi(`${basePath(context)}/credentials`, token, input, idempotencyKey, commandResponseSchema);
 
 export const fetchGoogleAdsCampaigns = (token: string, context: PortalContext) =>
   readApi(`${basePath(context)}/campaigns`, token, z.array(campaignSchema));
@@ -142,15 +136,5 @@ export const fetchGoogleAdsCampaigns = (token: string, context: PortalContext) =
 export const fetchGoogleAdsAttribution = (token: string, context: PortalContext) =>
   readApi(`${basePath(context)}/attribution`, token, attributionSummarySchema);
 
-export const syncGoogleAds = (
-  token: string,
-  context: PortalContext,
-  idempotencyKey: string,
-) =>
-  writeApi(
-    `${basePath(context)}/sync`,
-    token,
-    {},
-    idempotencyKey,
-    syncResultSchema,
-  );
+export const syncGoogleAds = (token: string, context: PortalContext, idempotencyKey: string) =>
+  writeApi(`${basePath(context)}/sync`, token, {}, idempotencyKey, syncResultSchema);

@@ -16,33 +16,36 @@
 ## 2. Cores (extraídas do código atual)
 
 ### Tema light (`.site-shell`)
-| Token | Valor | Uso |
-| --- | --- | --- |
-| `--bg` | `#FAF9F6` / `#F5F7F3` | fundo base |
-| `--surface` | `#FFFFFF` | cards |
-| `--surface-soft` | `#F8FAF7` | faixas alternadas |
-| `--text` | `#10201B` | títulos/corpo |
-| `--muted` | `#52635D` | texto secundário |
-| `--accent` | `#18A987` | marca/ação positiva |
-| `--line` | `rgba(16,32,27,0.08)` | bordas |
+
+| Token            | Valor                 | Uso                 |
+| ---------------- | --------------------- | ------------------- |
+| `--bg`           | `#FAF9F6` / `#F5F7F3` | fundo base          |
+| `--surface`      | `#FFFFFF`             | cards               |
+| `--surface-soft` | `#F8FAF7`             | faixas alternadas   |
+| `--text`         | `#10201B`             | títulos/corpo       |
+| `--muted`        | `#52635D`             | texto secundário    |
+| `--accent`       | `#18A987`             | marca/ação positiva |
+| `--line`         | `rgba(16,32,27,0.08)` | bordas              |
 
 ### Tema dark (`.dark-section`)
-| Token | Valor | Uso |
-| --- | --- | --- |
-| `--bg` | `#061713` | fundo |
-| `--surface` | `#0A211B` | cards |
-| `--text` | `#F3FAF7` | títulos |
-| `--muted` | `#A9BBB4` | secundário |
-| `--accent` | `#29C7A1` | marca (mais claro p/ contraste) |
-| `--line` | `rgba(243,250,247,0.1)` | bordas |
+
+| Token       | Valor                   | Uso                             |
+| ----------- | ----------------------- | ------------------------------- |
+| `--bg`      | `#061713`               | fundo                           |
+| `--surface` | `#0A211B`               | cards                           |
+| `--text`    | `#F3FAF7`               | títulos                         |
+| `--muted`   | `#A9BBB4`               | secundário                      |
+| `--accent`  | `#29C7A1`               | marca (mais claro p/ contraste) |
+| `--line`    | `rgba(243,250,247,0.1)` | bordas                          |
 
 ### Semânticas (status)
-| Papel | Cor | Onde |
-| --- | --- | --- |
-| Positivo / confirmado | `#18A987` (light) / `#29C7A1` (dark) | badges success, saudável |
-| Atenção | `#F5A26F` / `#EBB94A` | warning |
-| Perda / crítico | `#F47E6B` | danger, gargalos |
-| Ação / informação | `#377CF6` | impacto, "em desenvolvimento" |
+
+| Papel                 | Cor                                  | Onde                          |
+| --------------------- | ------------------------------------ | ----------------------------- |
+| Positivo / confirmado | `#18A987` (light) / `#29C7A1` (dark) | badges success, saudável      |
+| Atenção               | `#F5A26F` / `#EBB94A`                | warning                       |
+| Perda / crítico       | `#F47E6B`                            | danger, gargalos              |
+| Ação / informação     | `#377CF6`                            | impacto, "em desenvolvimento" |
 
 > Recomendação: validar todos os pares texto/fundo em AA (4.5:1). Notas em opacidade < 0.65 tendem a reprovar.
 
@@ -53,15 +56,16 @@
 - Migrar de `@import` Google Fonts → `next/font/google` (self-host, sem render-block).
 
 Escala atual (manter e tokenizar):
-| Papel | Tamanho |
-| --- | --- |
-| Hero H1 | `clamp(2.4rem, 4.5vw, 3.8rem)` |
-| Section H2 | `clamp(1.9rem, 3.2vw, 2.8rem)` |
-| Card title | `1.1–1.4rem` |
-| Lead | `clamp(0.95rem, 1.4vw, 1.08rem)` |
-| Corpo | `0.9–1.15rem` |
-| Eyebrow | `0.72rem`, `letter-spacing 0.1em`, uppercase |
-| Nota/legenda | `0.68–0.82rem` |
+
+| Papel        | Tamanho                                      |
+| ------------ | -------------------------------------------- |
+| Hero H1      | `clamp(2.4rem, 4.5vw, 3.8rem)`               |
+| Section H2   | `clamp(1.9rem, 3.2vw, 2.8rem)`               |
+| Card title   | `1.1–1.4rem`                                 |
+| Lead         | `clamp(0.95rem, 1.4vw, 1.08rem)`             |
+| Corpo        | `0.9–1.15rem`                                |
+| Eyebrow      | `0.72rem`, `letter-spacing 0.1em`, uppercase |
+| Nota/legenda | `0.68–0.82rem`                               |
 
 Tracking de títulos: `-0.03em`. Line-height títulos: `1.1`; corpo: `1.6–1.65`.
 
@@ -74,13 +78,13 @@ Tracking de títulos: `-0.03em`. Line-height títulos: `1.1`; corpo: `1.6–1.65
 
 ## 5. Componentes-alvo (a extrair)
 
-| Componente | Substitui | Notas |
-| --- | --- | --- |
-| `SectionHeader` (eyebrow + h2 + lead) | ~8 repetições inline | props: eyebrow, título, lead, alinhamento |
-| `SectionShell` (faixa light/dark + padding) | wrappers inline | tema por prop |
-| `StatCard` / `ValueCard` | cards inline de Segurança/IA/Implantação | tokens de cor |
-| `Badge` | já existe (`.badge` + variantes) | manter, reusar |
-| `IllustrativeNote` | notas soltas | rótulo padronizado de dado ilustrativo |
+| Componente                                  | Substitui                                | Notas                                     |
+| ------------------------------------------- | ---------------------------------------- | ----------------------------------------- |
+| `SectionHeader` (eyebrow + h2 + lead)       | ~8 repetições inline                     | props: eyebrow, título, lead, alinhamento |
+| `SectionShell` (faixa light/dark + padding) | wrappers inline                          | tema por prop                             |
+| `StatCard` / `ValueCard`                    | cards inline de Segurança/IA/Implantação | tokens de cor                             |
+| `Badge`                                     | já existe (`.badge` + variantes)         | manter, reusar                            |
+| `IllustrativeNote`                          | notas soltas                             | rótulo padronizado de dado ilustrativo    |
 
 ## 6. Botões (já em CSS — manter)
 

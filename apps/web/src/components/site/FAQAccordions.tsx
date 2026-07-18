@@ -46,7 +46,9 @@ export function FAQAccordions() {
   };
 
   return (
-    <div style={{ display: 'grid', gap: '16px', width: '100%', maxWidth: '720px', margin: '0 auto' }}>
+    <div
+      style={{ display: 'grid', gap: '16px', width: '100%', maxWidth: '720px', margin: '0 auto' }}
+    >
       {FAQ_ITEMS.map((item, idx) => {
         const isOpen = openIdx === idx;
         return (
@@ -81,7 +83,16 @@ export function FAQAccordions() {
               type="button"
             >
               <span>{item.q}</span>
-              <span style={{ fontSize: '1.2rem', color: '#52635D', transform: isOpen ? 'rotate(45deg)' : 'none', transition: 'transform 0.2s ease', display: 'inline-block', lineHeight: 1 }}>
+              <span
+                style={{
+                  fontSize: '1.2rem',
+                  color: '#52635D',
+                  transform: isOpen ? 'rotate(45deg)' : 'none',
+                  transition: 'transform 0.2s ease',
+                  display: 'inline-block',
+                  lineHeight: 1,
+                }}
+              >
                 +
               </span>
             </button>

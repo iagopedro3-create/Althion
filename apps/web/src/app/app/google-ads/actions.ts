@@ -29,7 +29,8 @@ export async function saveCredentialsAction(input: {
   );
 
   if (result.kind === 'success') return { ok: true };
-  if (result.kind === 'denied') return { error: 'Acesso negado para salvar credenciais.', ok: false };
+  if (result.kind === 'denied')
+    return { error: 'Acesso negado para salvar credenciais.', ok: false };
   if (result.kind === 'invalid') return { error: 'Formato de credenciais inválido.', ok: false };
   return { error: 'Serviço do Google Ads indisponível.', ok: false };
 }

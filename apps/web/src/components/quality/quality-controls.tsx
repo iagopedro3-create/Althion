@@ -249,7 +249,11 @@ export function ResolveFlagForm({
   };
 
   return (
-    <form className="portal-form" onSubmit={(e) => void submit(e)} style={{ border: 'none', padding: 0 }}>
+    <form
+      className="portal-form"
+      onSubmit={(e) => void submit(e)}
+      style={{ border: 'none', padding: 0 }}
+    >
       <label>
         Notas de Resolução / Handoff
         <textarea
@@ -266,7 +270,11 @@ export function ResolveFlagForm({
           {pending ? 'Resolvendo…' : 'Resolver Flag Clínico'}
         </button>
         {message ? (
-          <span aria-live="polite" className="form-message" style={{ display: 'block', marginTop: '4px' }}>
+          <span
+            aria-live="polite"
+            className="form-message"
+            style={{ display: 'block', marginTop: '4px' }}
+          >
             {message}
           </span>
         ) : null}

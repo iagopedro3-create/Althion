@@ -337,4 +337,3 @@ describe('authorization', () => {
     ).toBe(false);
   });
 });
-

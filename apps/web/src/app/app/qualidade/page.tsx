@@ -73,7 +73,8 @@ export default async function ClientQualityPage({
 
   // Calculate average quality score
   const totalScoreSum = evaluations.reduce((sum, item) => sum + Number(item.total_score), 0);
-  const averageScore = evaluations.length > 0 ? (totalScoreSum / evaluations.length).toFixed(1) : '—';
+  const averageScore =
+    evaluations.length > 0 ? (totalScoreSum / evaluations.length).toFixed(1) : '—';
 
   return (
     <main className="portal-main">
@@ -87,7 +88,14 @@ export default async function ClientQualityPage({
         </div>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px', marginBottom: '24px' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '20px',
+          marginBottom: '24px',
+        }}
+      >
         <section className="state-card" aria-label="Score Geral">
           <h2>Score Médio de Qualidade</h2>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '16px 0' }}>
@@ -106,7 +114,9 @@ export default async function ClientQualityPage({
           {primaryRubric ? (
             <div style={{ marginTop: '12px' }}>
               <strong>{primaryRubric.title}</strong> (v{primaryRubric.version})
-              <p className="lead-copy" style={{ margin: '8px 0' }}>{primaryRubric.description}</p>
+              <p className="lead-copy" style={{ margin: '8px 0' }}>
+                {primaryRubric.description}
+              </p>
               <small style={{ color: 'var(--muted)' }}>
                 {primaryRubric.criteria.length} critérios operacionais avaliados.
               </small>
@@ -119,7 +129,13 @@ export default async function ClientQualityPage({
         <section className="state-card" aria-label="Incidentes Clínicos">
           <h2>Segurança e Guardrails</h2>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '16px 0' }}>
-            <span style={{ fontSize: '3rem', fontWeight: 'bold', color: flagsRes.kind === 'denied' ? 'var(--muted)' : 'var(--warning)' }}>
+            <span
+              style={{
+                fontSize: '3rem',
+                fontWeight: 'bold',
+                color: flagsRes.kind === 'denied' ? 'var(--muted)' : 'var(--warning)',
+              }}
+            >
               {flags ? flags.filter((f) => f.status !== 'resolved').length : '—'}
             </span>
             <small style={{ color: 'var(--muted)' }}>pendentes de handoff</small>
@@ -130,7 +146,13 @@ export default async function ClientQualityPage({
         </section>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '24px',
+        }}
+      >
         <section className="state-card" aria-label="Histórico de Avaliações">
           <h2>Histórico de Avaliações</h2>
           {evaluations.length === 0 ? (
@@ -138,8 +160,22 @@ export default async function ClientQualityPage({
           ) : (
             <div style={{ display: 'grid', gap: '16px', marginTop: '12px' }}>
               {evaluations.map((evalItem) => (
-                <div key={evalItem.id} style={{ padding: '16px', border: '1px solid var(--line)', borderRadius: '12px', background: 'var(--surface)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div
+                  key={evalItem.id}
+                  style={{
+                    padding: '16px',
+                    border: '1px solid var(--line)',
+                    borderRadius: '12px',
+                    background: 'var(--surface)',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '8px',
+                    }}
+                  >
                     <strong>Conversa: {evalItem.conversation_id}</strong>
                     <span className="badge success">{evalItem.total_score}%</span>
                   </div>
@@ -164,7 +200,8 @@ export default async function ClientQualityPage({
               <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🔒</div>
               <strong>Acesso Restrito a Médicos</strong>
               <p className="lead-copy" style={{ marginTop: '8px' }}>
-                Em conformidade com o sigilo médico e LGPD, a visualização dos dados clínicos de pacientes é restrita aos profissionais médicos.
+                Em conformidade com o sigilo médico e LGPD, a visualização dos dados clínicos de
+                pacientes é restrita aos profissionais médicos.
               </p>
             </div>
           ) : flags && flags.length === 0 ? (
@@ -179,10 +216,19 @@ export default async function ClientQualityPage({
                     border: '1px solid var(--line)',
                     borderRadius: '12px',
                     background: 'var(--surface)',
-                    borderLeft: flag.status === 'resolved' ? '4px solid var(--success)' : '4px solid var(--warning)',
+                    borderLeft:
+                      flag.status === 'resolved'
+                        ? '4px solid var(--success)'
+                        : '4px solid var(--warning)',
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      marginBottom: '8px',
+                    }}
+                  >
                     <strong>Conversa: {flag.conversation_id}</strong>
                     <span className={`badge ${flag.status === 'resolved' ? 'success' : 'warning'}`}>
                       {flag.status === 'resolved' ? 'Resolvido' : 'Pendente'}
@@ -192,7 +238,14 @@ export default async function ClientQualityPage({
                     <strong>Motivo:</strong> {flag.flag_reason}
                   </p>
                   {flag.status === 'resolved' && flag.handoff_notes ? (
-                    <p style={{ margin: '8px 0', fontSize: '0.9rem', color: 'var(--muted)', fontStyle: 'italic' }}>
+                    <p
+                      style={{
+                        margin: '8px 0',
+                        fontSize: '0.9rem',
+                        color: 'var(--muted)',
+                        fontStyle: 'italic',
+                      }}
+                    >
                       <strong>Resolução:</strong> "{flag.handoff_notes}"
                     </p>
                   ) : null}
@@ -200,7 +253,13 @@ export default async function ClientQualityPage({
                     Sinalizado em: {formatDateTime(flag.flagged_at)}
                   </small>
                   {flag.status === 'pending' ? (
-                    <div style={{ borderTop: '1px solid var(--line)', paddingTop: '12px', marginTop: '12px' }}>
+                    <div
+                      style={{
+                        borderTop: '1px solid var(--line)',
+                        paddingTop: '12px',
+                        marginTop: '12px',
+                      }}
+                    >
                       <ResolveFlagForm context={context} flagId={flag.id} />
                     </div>
                   ) : null}

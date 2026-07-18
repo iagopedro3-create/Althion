@@ -5,7 +5,10 @@ export const saveGoogleAdsCredentialsSchema = z.object({
   developer_token: z.string().min(1, 'Token de desenvolvedor (developer token) é obrigatório'),
   customer_id: z
     .string()
-    .regex(/^[0-9-]+$/, 'Identificador de cliente do Google Ads deve conter apenas números e traços')
+    .regex(
+      /^[0-9-]+$/,
+      'Identificador de cliente do Google Ads deve conter apenas números e traços',
+    )
     .min(1, 'Identificador de cliente (Customer ID) é obrigatório'),
 });
 

@@ -141,13 +141,7 @@ function useFadeIn() {
 
 // ─── Componente de card de problema ───────────────────────────────────────────
 
-function ProblemCard({
-  problem,
-  index,
-}: {
-  problem: (typeof PROBLEMS)[number];
-  index: number;
-}) {
+function ProblemCard({ problem, index }: { problem: (typeof PROBLEMS)[number]; index: number }) {
   const { ref, visible } = useFadeIn();
 
   return (
@@ -173,7 +167,10 @@ function ProblemCard({
         <p className="problem-card-desc">{problem.description}</p>
 
         {/* Indicador de perda */}
-        <div className="problem-card-loss" aria-label={`${problem.lossLabel}: ${problem.lossValue} — dado ilustrativo`}>
+        <div
+          className="problem-card-loss"
+          aria-label={`${problem.lossLabel}: ${problem.lossValue} — dado ilustrativo`}
+        >
           <span className="problem-card-loss-value" style={{ color: problem.lossColor }}>
             {problem.lossValue}
           </span>
@@ -193,11 +190,7 @@ export function ProblemSection() {
   const { ref: headingRef, visible: headingVisible } = useFadeIn();
 
   return (
-    <section
-      aria-labelledby="problem-section-heading"
-      className="problem-section"
-      id="problema"
-    >
+    <section aria-labelledby="problem-section-heading" className="problem-section" id="problema">
       <div className="site-container problem-section-inner">
         {/* Coluna esquerda — heading e chamada */}
         <div
@@ -213,9 +206,9 @@ export function ProblemSection() {
           </h2>
 
           <p className="problem-lead">
-            Leads esfriam, cancelamentos viram horários vazios e pacientes deixam de retornar
-            quando a operação depende de tarefas manuais, informações dispersas e acompanhamentos
-            sem próxima ação definida.
+            Leads esfriam, cancelamentos viram horários vazios e pacientes deixam de retornar quando
+            a operação depende de tarefas manuais, informações dispersas e acompanhamentos sem
+            próxima ação definida.
           </p>
 
           {/* Linha conectora visual */}

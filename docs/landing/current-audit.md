@@ -5,15 +5,15 @@
 
 ## 1. Stack
 
-| Camada | Tecnologia | Observação |
-| --- | --- | --- |
-| Framework | Next.js 16.2 (App Router, RSC) | `apps/web` |
-| UI | React 19.2 | Componentes de site em `use client` quando interativos |
-| Estilo | CSS global único (`globals.css`, 3846 linhas) + Tailwind v4 importado | Tailwind praticamente **não é usado** na landing; predominam classes CSS próprias e `style` inline |
-| Fontes | Google Fonts via `@import url()` no topo do CSS | Inter + Manrope. Render-blocking, sem `next/font` |
-| Formulários | `react-hook-form` + `zod` + `@hookform/resolvers` disponíveis | A landing **não os usa**; o formulário de diagnóstico é `useState` manual |
-| Gráficos | `recharts` | Usado no portal, não na landing |
-| Backend | Supabase SSR | Não é exercido pela home; `/contato` tem server action real, `/diagnostico` não |
+| Camada      | Tecnologia                                                            | Observação                                                                                         |
+| ----------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Framework   | Next.js 16.2 (App Router, RSC)                                        | `apps/web`                                                                                         |
+| UI          | React 19.2                                                            | Componentes de site em `use client` quando interativos                                             |
+| Estilo      | CSS global único (`globals.css`, 3846 linhas) + Tailwind v4 importado | Tailwind praticamente **não é usado** na landing; predominam classes CSS próprias e `style` inline |
+| Fontes      | Google Fonts via `@import url()` no topo do CSS                       | Inter + Manrope. Render-blocking, sem `next/font`                                                  |
+| Formulários | `react-hook-form` + `zod` + `@hookform/resolvers` disponíveis         | A landing **não os usa**; o formulário de diagnóstico é `useState` manual                          |
+| Gráficos    | `recharts`                                                            | Usado no portal, não na landing                                                                    |
+| Backend     | Supabase SSR                                                          | Não é exercido pela home; `/contato` tem server action real, `/diagnostico` não                    |
 
 Veredito: a stack é adequada e **não precisa ser trocada**. O problema não é tecnologia, é organização de estilo e consistência de implementação.
 
@@ -35,21 +35,21 @@ Componentes em `apps/web/src/components/site/`:
 
 ## 3. Anatomia da home (`page.tsx`)
 
-| Act | Seção | Tema | Implementação de estilo |
-| --- | --- | --- | --- |
-| 1 | Hero + fluxo interativo | dark | **Classe CSS** (bom) |
-| 2 | Faixa de posicionamento + leak strip | light | **Classe CSS** (bom) |
-| 3 | Problema (4 cards) | light | **Classe CSS** (bom) |
-| 4 | Althion Radar + Score | light | **Classe CSS** (bom) |
-| 5 | Como funciona (scrollytelling) | light | **SEM CSS — ver problema crítico #1** |
-| 6 | Recovery Engine (tabela) | light | **`style` inline** |
-| 7 | Capacity Engine | light | **`style` inline** |
-| 8 | IA vs Humano | light | **`style` inline** |
-| 9 | Especialista de Relacionamento | light | **`style` inline** |
-| 10 | Segurança & Privacidade | dark | **`style` inline** (+ emojis) |
-| 11 | Implantação (3 passos) | light | **`style` inline** |
-| 12 | FAQ | light | **`style` inline** |
-| 13 | CTA final | dark | **`style` inline** |
+| Act | Seção                                | Tema  | Implementação de estilo               |
+| --- | ------------------------------------ | ----- | ------------------------------------- |
+| 1   | Hero + fluxo interativo              | dark  | **Classe CSS** (bom)                  |
+| 2   | Faixa de posicionamento + leak strip | light | **Classe CSS** (bom)                  |
+| 3   | Problema (4 cards)                   | light | **Classe CSS** (bom)                  |
+| 4   | Althion Radar + Score                | light | **Classe CSS** (bom)                  |
+| 5   | Como funciona (scrollytelling)       | light | **SEM CSS — ver problema crítico #1** |
+| 6   | Recovery Engine (tabela)             | light | **`style` inline**                    |
+| 7   | Capacity Engine                      | light | **`style` inline**                    |
+| 8   | IA vs Humano                         | light | **`style` inline**                    |
+| 9   | Especialista de Relacionamento       | light | **`style` inline**                    |
+| 10  | Segurança & Privacidade              | dark  | **`style` inline** (+ emojis)         |
+| 11  | Implantação (3 passos)               | light | **`style` inline**                    |
+| 12  | FAQ                                  | light | **`style` inline**                    |
+| 13  | CTA final                            | dark  | **`style` inline**                    |
 
 O corte entre "Acts 1–4 bem feitos por classe" e "Acts 5–13 improvisados" é a fratura central da página.
 

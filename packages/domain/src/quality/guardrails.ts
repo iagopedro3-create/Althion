@@ -42,9 +42,7 @@ export function scanForClinicalContent(text: string): {
     .replace(/[\u0300-\u036f]/g, ''); // strip diacritics
 
   for (const keyword of CLINICAL_KEYWORDS) {
-    const normalizedKeyword = keyword
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
+    const normalizedKeyword = keyword.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
     // Match word boundaries to prevent matching inside words like "adorar" matching "dor"
     // Since JS regex word boundaries \b don't handle accented characters perfectly, normalization helps.

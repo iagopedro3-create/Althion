@@ -119,16 +119,14 @@ export class QualityRepository {
     idempotencyKey: string,
     requestId: string,
   ): Promise<string> {
-    const result = await this.clients
-      .createUserScoped(accessToken)
-      .rpc('resolve_clinical_flag', {
-        idempotency_key: idempotencyKey,
-        request_id: requestId,
-        target_clinic_id: clinicId,
-        target_flag_id: flagId,
-        target_handoff_notes: input.handoffNotes,
-        target_organization_id: organizationId,
-      });
+    const result = await this.clients.createUserScoped(accessToken).rpc('resolve_clinical_flag', {
+      idempotency_key: idempotencyKey,
+      request_id: requestId,
+      target_clinic_id: clinicId,
+      target_flag_id: flagId,
+      target_handoff_notes: input.handoffNotes,
+      target_organization_id: organizationId,
+    });
 
     if (result.error) throw translateCockpitError(result.error);
     return result.data as string;

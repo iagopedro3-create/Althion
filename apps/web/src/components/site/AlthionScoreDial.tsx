@@ -195,7 +195,11 @@ export function AlthionScoreDial() {
   const current = DIMENSIONS.find((d) => d.key === selectedKey) ?? DIMENSIONS[0]!;
   const overall = getOverallScore(DIMENSIONS);
   const overallColor =
-    overall >= 70 ? STATUS_COLOR.healthy : overall >= 50 ? STATUS_COLOR.warning : STATUS_COLOR.critical;
+    overall >= 70
+      ? STATUS_COLOR.healthy
+      : overall >= 50
+        ? STATUS_COLOR.warning
+        : STATUS_COLOR.critical;
 
   return (
     <div className="radar-shell">
@@ -233,10 +237,7 @@ export function AlthionScoreDial() {
                 />
               </div>
               <span className="radar-dim-label">{dim.shortLabel}</span>
-              <span
-                className="radar-dim-score"
-                style={{ color: STATUS_COLOR[dim.status] }}
-              >
+              <span className="radar-dim-score" style={{ color: STATUS_COLOR[dim.status] }}>
                 {dim.score}
               </span>
             </button>
@@ -249,16 +250,16 @@ export function AlthionScoreDial() {
         {/* Cabeçalho */}
         <div className="radar-detail-header">
           <div>
-            <span className={`badge ${STATUS_BADGE[current.status]}`} style={{ fontSize: '0.72rem' }}>
+            <span
+              className={`badge ${STATUS_BADGE[current.status]}`}
+              style={{ fontSize: '0.72rem' }}
+            >
               {STATUS_LABEL[current.status]}
             </span>
             <h3 className="radar-detail-title">{current.title}</h3>
           </div>
           <div className="radar-detail-score-wrap">
-            <span
-              className="radar-detail-score"
-              style={{ color: STATUS_COLOR[current.status] }}
-            >
+            <span className="radar-detail-score" style={{ color: STATUS_COLOR[current.status] }}>
               {current.score}
             </span>
             <span className="radar-detail-score-max">/ 100</span>
@@ -283,19 +284,13 @@ export function AlthionScoreDial() {
         <p className="radar-detail-desc">{current.description}</p>
 
         {/* Gargalo */}
-        <div
-          className="radar-insight radar-insight--bottleneck"
-          aria-label="Gargalo identificado"
-        >
+        <div className="radar-insight radar-insight--bottleneck" aria-label="Gargalo identificado">
           <span className="radar-insight-label">Gargalo identificado</span>
           <p className="radar-insight-text">{current.bottleneck}</p>
         </div>
 
         {/* Acao sugerida */}
-        <div
-          className="radar-insight radar-insight--action"
-          aria-label="Proxima acao sugerida"
-        >
+        <div className="radar-insight radar-insight--action" aria-label="Proxima acao sugerida">
           <span className="radar-insight-label">Proxima acao sugerida</span>
           <p className="radar-insight-text">{current.action}</p>
         </div>

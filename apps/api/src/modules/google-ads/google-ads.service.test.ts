@@ -57,7 +57,14 @@ describe('google ads service', () => {
         { campaign_id: 'camp-implantes', name: 'Implantes Dentários SP', budget_micros: 50000000 },
       ],
       listMetrics: async () => [
-        { campaign_id: 'camp-implantes', date: '2026-01-15', clicks: 10, impressions: 100, cost_micros: 20000000, conversions: 1.0 },
+        {
+          campaign_id: 'camp-implantes',
+          date: '2026-01-15',
+          clicks: 10,
+          impressions: 100,
+          cost_micros: 20000000,
+          conversions: 1.0,
+        },
       ],
     } as unknown as GoogleAdsRepository;
 

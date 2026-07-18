@@ -91,21 +91,31 @@ export class GoogleAdsRepository {
     accessToken: string,
     organizationId: string,
     clinicId: string,
-    campaigns: readonly { campaign_id: string; name: string; status: string; budget_micros: number }[],
-    metrics: readonly { campaign_id: string; date: string; clicks: number; impressions: number; cost_micros: number; conversions: number }[],
+    campaigns: readonly {
+      campaign_id: string;
+      name: string;
+      status: string;
+      budget_micros: number;
+    }[],
+    metrics: readonly {
+      campaign_id: string;
+      date: string;
+      clicks: number;
+      impressions: number;
+      cost_micros: number;
+      conversions: number;
+    }[],
     idempotencyKey: string,
     requestId: string,
   ): Promise<boolean> {
-    const result = await this.clients
-      .createUserScoped(accessToken)
-      .rpc('sync_google_ads_data', {
-        idempotency_key: idempotencyKey,
-        request_id: requestId,
-        target_campaigns: campaigns as any,
-        target_clinic_id: clinicId,
-        target_metrics: metrics as any,
-        target_organization_id: organizationId,
-      });
+    const result = await this.clients.createUserScoped(accessToken).rpc('sync_google_ads_data', {
+      idempotency_key: idempotencyKey,
+      request_id: requestId,
+      target_campaigns: campaigns as any,
+      target_clinic_id: clinicId,
+      target_metrics: metrics as any,
+      target_organization_id: organizationId,
+    });
 
     if (result.error) throw translateCockpitError(result.error);
     return result.data as boolean;

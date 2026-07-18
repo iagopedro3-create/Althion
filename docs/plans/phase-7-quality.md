@@ -35,6 +35,7 @@ O cálculo do Score de Qualidade (`Quality Score`) de uma avaliação é a médi
 ### Guardrail Clínico e Handoff
 
 Sempre que a API registrar ou avaliar mensagens contendo marcadores clínicos (ex. "sintoma", "dor", "receita", "remédio", "consulta com o doutor sobre a mancha", etc.):
+
 1. A conversa é sinalizada com `potentially_clinical = true`.
 2. Um registro em `quality_clinical_flags` é criado com status `pending`.
 3. Qualquer ação automatizada daquele lead/contato no Recovery Engine é pausada (integração de governança no banco).
@@ -74,9 +75,11 @@ Tabelas com FK composta para `clinics(organization_id, id)` e RLS deny-by-defaul
   - `handoff_notes` (text).
 
 ### Históricos append-only:
+
 - `quality_evaluation_history` e `quality_clinical_flag_history` para auditoria total de transições.
 
 ### RPCs transacionais (`security definer`):
+
 - `create_quality_evaluation`: insere a avaliação, calcula a nota no banco e registra histórico de auditoria.
 - `flag_clinical_conversation`: sinaliza uma conversa como potencialmente clínica e registra o flag de guardrail.
 - `resolve_clinical_flag`: resolve o handoff clínico com notas de resolução humana.
@@ -84,6 +87,7 @@ Tabelas com FK composta para `clinics(organization_id, id)` e RLS deny-by-defaul
 ## Permissões (Capabilities)
 
 Novas capabilities:
+
 - `quality:read` (visualizar relatórios e notas de qualidade).
 - `quality:evaluate` (realizar avaliações assistidas e cadastrar notas).
 - `quality:flag` (sinalizar manualmente uma conversa como clínica).
@@ -91,25 +95,27 @@ Novas capabilities:
 
 ### Matriz de Papéis:
 
-| Perfil | Ler Qualidade | Avaliar | Sinalizar Clínico | Resolver Handoff |
-| :--- | :---: | :---: | :---: | :---: |
-| `platform_admin` | ✔ | ✔ | ✔ | ✔ |
-| `relationship_specialist` (ativo) | ✔ | ✔ | ✔ | ✔ |
-| `clinic_manager` / `organization_owner` | ✔ | — | — | — |
-| `doctor` | ✔ | — | ✔ | ✔ |
-| `operator` / `viewer` | — | — | — | — |
+| Perfil                                  | Ler Qualidade | Avaliar | Sinalizar Clínico | Resolver Handoff |
+| :-------------------------------------- | :-----------: | :-----: | :---------------: | :--------------: |
+| `platform_admin`                        |       ✔       |    ✔    |         ✔         |        ✔         |
+| `relationship_specialist` (ativo)       |       ✔       |    ✔    |         ✔         |        ✔         |
+| `clinic_manager` / `organization_owner` |       ✔       |    —    |         —         |        —         |
+| `doctor`                                |       ✔       |    —    |         ✔         |        ✔         |
+| `operator` / `viewer`                   |       —       |    —    |         —         |        —         |
 
-*Nota sobre privacidade:* O papel `doctor` possui permissão para sinalizar e resolver handoffs clínicos de sua clínica, sendo o único papel tenant com acesso completo ao conteúdo das conversas marcadas como clínicas. `clinic_manager` e `organization_owner` enxergam apenas as notas consolidadas de qualidade (médias), mas não o conteúdo clínico detalhado e não resolvido dos flags de saúde.
+_Nota sobre privacidade:_ O papel `doctor` possui permissão para sinalizar e resolver handoffs clínicos de sua clínica, sendo o único papel tenant com acesso completo ao conteúdo das conversas marcadas como clínicas. `clinic_manager` e `organization_owner` enxergam apenas as notas consolidadas de qualidade (médias), mas não o conteúdo clínico detalhado e não resolvido dos flags de saúde.
 
 ## Rotas e API
 
 ### Web:
+
 - `/cockpit/quality`: Fila de conversas para avaliação e lista de avaliações realizadas (Especialista).
 - `/cockpit/quality/rubricas`: Visualização das rubricas de avaliação ativas.
 - `/app/quality`: Dashboard de qualidade para o cliente (Owner/Manager), exibindo a evolução da nota média da clínica e distribuição por critério.
 - `/app/quality/clinical-flags`: Tela de controle para profissionais médicos (`doctor`) visualizarem e resolverem pendências de redirecionamento clínico.
 
 ### API:
+
 ```text
 GET  /api/v1/organizations/:orgId/clinics/:clinicId/quality/rubrics               quality:read
 POST /api/v1/organizations/:orgId/clinics/:clinicId/quality/rubrics               score_formula:manage (Admin)
@@ -145,12 +151,12 @@ POST /api/v1/organizations/:orgId/clinics/:clinicId/quality/clinical-flags/:id/r
 
 ## Riscos e mitigações
 
-| Risco | Mitigação |
-| :--- | :--- |
-| **Vazamento de dados clínicos sensíveis** | RLS proíbe que operadores, viewers e gerentes gerais vejam os registros de flags clínicos não resolvidos; visualização restrita a médicos (`doctor`) e Especialistas Althion. |
+| Risco                                           | Mitigação                                                                                                                                                                                                               |
+| :---------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Vazamento de dados clínicos sensíveis**       | RLS proíbe que operadores, viewers e gerentes gerais vejam os registros de flags clínicos não resolvidos; visualização restrita a médicos (`doctor`) e Especialistas Althion.                                           |
 | **Detecção automática falhar (falso negativo)** | Guardrail automático no domínio é apenas uma camada preventiva de velocidade; a API e a UI permitem que o Especialista ou o próprio operador sinalizem manualmente um flag clínico (`quality:flag`) a qualquer momento. |
-| **Duplicidade de avaliações** | Unique constraint no banco combinando `(clinic_id, conversation_id, rubric_version)` garante que uma conversa só seja avaliada uma vez por versão da rubrica. |
-| **Avaliação arbitrária humana** | Critérios fechados com pontuação de 0 a 5 com validação rigorosa de Zod no backend e no domínio, bloqueando notas decisais ou fora do range. |
+| **Duplicidade de avaliações**                   | Unique constraint no banco combinando `(clinic_id, conversation_id, rubric_version)` garante que uma conversa só seja avaliada uma vez por versão da rubrica.                                                           |
+| **Avaliação arbitrária humana**                 | Critérios fechados com pontuação de 0 a 5 com validação rigorosa de Zod no backend e no domínio, bloqueando notas decisais ou fora do range.                                                                            |
 
 ## Estratégia de testes
 

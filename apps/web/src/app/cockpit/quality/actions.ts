@@ -34,8 +34,10 @@ export async function createEvaluationAction(input: {
   );
 
   if (result.kind === 'success') return { ok: true };
-  if (result.kind === 'denied') return { error: 'Acesso negado para avaliar qualidade.', ok: false };
-  if (result.kind === 'conflict') return { error: 'Esta conversa já foi avaliada com esta rubrica.', ok: false };
+  if (result.kind === 'denied')
+    return { error: 'Acesso negado para avaliar qualidade.', ok: false };
+  if (result.kind === 'conflict')
+    return { error: 'Esta conversa já foi avaliada com esta rubrica.', ok: false };
   if (result.kind === 'invalid') return { error: 'Valores de avaliação inválidos.', ok: false };
   return { error: 'Serviço de qualidade indisponível.', ok: false };
 }
@@ -60,7 +62,8 @@ export async function flagConversationAction(input: {
   );
 
   if (result.kind === 'success') return { ok: true };
-  if (result.kind === 'denied') return { error: 'Acesso negado para sinalizar conteúdo clínico.', ok: false };
+  if (result.kind === 'denied')
+    return { error: 'Acesso negado para sinalizar conteúdo clínico.', ok: false };
   return { error: 'Serviço de qualidade indisponível.', ok: false };
 }
 
@@ -85,7 +88,9 @@ export async function resolveClinicalFlagAction(input: {
   );
 
   if (result.kind === 'success') return { ok: true };
-  if (result.kind === 'denied') return { error: 'Acesso negado para resolver flag clínico.', ok: false };
-  if (result.kind === 'conflict') return { error: 'Este flag clínico já foi resolvido.', ok: false };
+  if (result.kind === 'denied')
+    return { error: 'Acesso negado para resolver flag clínico.', ok: false };
+  if (result.kind === 'conflict')
+    return { error: 'Este flag clínico já foi resolvido.', ok: false };
   return { error: 'Serviço de qualidade indisponível.', ok: false };
 }

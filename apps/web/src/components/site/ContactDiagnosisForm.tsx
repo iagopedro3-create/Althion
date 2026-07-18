@@ -72,7 +72,12 @@ export function ContactDiagnosisForm() {
         return;
       }
     } else if (step === 2) {
-      if (!form.clinicName.trim() || !form.city.trim() || !form.specialty.trim() || !form.professionalsCount.trim()) {
+      if (
+        !form.clinicName.trim() ||
+        !form.city.trim() ||
+        !form.specialty.trim() ||
+        !form.professionalsCount.trim()
+      ) {
         setError('Por favor, preencha todos os campos da clínica.');
         return;
       }
@@ -89,7 +94,11 @@ export function ContactDiagnosisForm() {
     e.preventDefault();
     setError(null);
 
-    if (!form.monthlyContacts.trim() || !form.avgResponseTime.trim() || !form.mainDifficulty.trim()) {
+    if (
+      !form.monthlyContacts.trim() ||
+      !form.avgResponseTime.trim() ||
+      !form.mainDifficulty.trim()
+    ) {
       setError('Por favor, responda às perguntas operacionais.');
       return;
     }
@@ -112,15 +121,55 @@ export function ContactDiagnosisForm() {
 
   if (success) {
     return (
-      <div style={{ textAlign: 'center', padding: '48px 32px', background: '#FFFFFF', border: '1px solid rgba(16, 32, 27, 0.08)', borderRadius: '24px' }}>
-        <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#F4FAF7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: '#18A987' }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <div
+        style={{
+          textAlign: 'center',
+          padding: '48px 32px',
+          background: '#FFFFFF',
+          border: '1px solid rgba(16, 32, 27, 0.08)',
+          borderRadius: '24px',
+        }}
+      >
+        <div
+          style={{
+            width: '64px',
+            height: '64px',
+            borderRadius: '50%',
+            background: '#F4FAF7',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 24px',
+            color: '#18A987',
+          }}
+        >
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
         </div>
-        <h2 style={{ fontSize: '1.8rem', fontWeight: '800', margin: '0 0 12px 0', color: '#10201B' }}>
+        <h2
+          style={{ fontSize: '1.8rem', fontWeight: '800', margin: '0 0 12px 0', color: '#10201B' }}
+        >
           Informações Recebidas
         </h2>
-        <p style={{ color: '#52635D', fontSize: '1rem', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto 32px' }}>
-          Nossa equipe analisará os dados operacionais informados. Entraremos em contato em breve para apresentar o diagnóstico preliminar da agenda da sua clínica.
+        <p
+          style={{
+            color: '#52635D',
+            fontSize: '1rem',
+            lineHeight: '1.6',
+            maxWidth: '600px',
+            margin: '0 auto 32px',
+          }}
+        >
+          Nossa equipe analisará os dados operacionais informados. Entraremos em contato em breve
+          para apresentar o diagnóstico preliminar da agenda da sua clínica.
         </p>
         <button
           className="primary-button"
@@ -130,7 +179,15 @@ export function ContactDiagnosisForm() {
             setForm(INITIAL_STATE);
           }}
           type="button"
-          style={{ padding: '12px 24px', background: '#10201B', color: '#FFFFFF', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
+          style={{
+            padding: '12px 24px',
+            background: '#10201B',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '8px',
+            fontWeight: '600',
+            cursor: 'pointer',
+          }}
         >
           Solicitar Novo Diagnóstico
         </button>
@@ -139,10 +196,31 @@ export function ContactDiagnosisForm() {
   }
 
   return (
-    <div style={{ background: '#FFFFFF', border: '1px solid rgba(16, 32, 27, 0.08)', borderRadius: '24px', padding: '40px', maxWidth: '600px', margin: '0 auto', boxShadow: '0 10px 30px rgba(0,0,0,0.01)' }}>
+    <div
+      style={{
+        background: '#FFFFFF',
+        border: '1px solid rgba(16, 32, 27, 0.08)',
+        borderRadius: '24px',
+        padding: '40px',
+        maxWidth: '600px',
+        margin: '0 auto',
+        boxShadow: '0 10px 30px rgba(0,0,0,0.01)',
+      }}
+    >
       {/* Progress */}
       <div style={{ marginBottom: '32px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#52635D', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: '0.75rem',
+            color: '#52635D',
+            fontWeight: '700',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            marginBottom: '8px',
+          }}
+        >
           <span>Etapa {step} de 3</span>
           <span>
             {step === 1 && 'Contato Comercial'}
@@ -150,8 +228,17 @@ export function ContactDiagnosisForm() {
             {step === 3 && 'Diagnóstico Operacional'}
           </span>
         </div>
-        <div style={{ height: '4px', background: '#F5F7F3', borderRadius: '2px', overflow: 'hidden' }}>
-          <div style={{ height: '100%', background: '#10201B', width: `${(step / 3) * 100}%`, transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }} />
+        <div
+          style={{ height: '4px', background: '#F5F7F3', borderRadius: '2px', overflow: 'hidden' }}
+        >
+          <div
+            style={{
+              height: '100%',
+              background: '#10201B',
+              width: `${(step / 3) * 100}%`,
+              transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+            }}
+          />
         </div>
       </div>
 
@@ -312,14 +399,18 @@ export function ContactDiagnosisForm() {
                 type="checkbox"
               />
               <span>
-                Concordo com a coleta e uso dos dados operacionais exclusivamente para a análise inicial de performance da agenda, conforme as diretrizes da política de privacidade.
+                Concordo com a coleta e uso dos dados operacionais exclusivamente para a análise
+                inicial de performance da agenda, conforme as diretrizes da política de privacidade.
               </span>
             </label>
           </div>
         )}
 
         {error ? (
-          <div style={{ color: '#F47E6B', fontSize: '0.85rem', marginTop: '12px', fontWeight: '700' }} role="alert">
+          <div
+            style={{ color: '#F47E6B', fontSize: '0.85rem', marginTop: '12px', fontWeight: '700' }}
+            role="alert"
+          >
             {error}
           </div>
         ) : null}
@@ -327,11 +418,7 @@ export function ContactDiagnosisForm() {
         {/* Buttons */}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '32px' }}>
           {step > 1 ? (
-            <button
-              className="quiet-button"
-              onClick={prevStep}
-              type="button"
-            >
+            <button className="quiet-button" onClick={prevStep} type="button">
               Voltar
             </button>
           ) : (
@@ -343,7 +430,15 @@ export function ContactDiagnosisForm() {
               className="primary-button"
               onClick={nextStep}
               type="button"
-              style={{ background: '#10201B', color: '#FFFFFF', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
+              style={{
+                background: '#10201B',
+                color: '#FFFFFF',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontWeight: '600',
+                cursor: 'pointer',
+              }}
             >
               Avançar
             </button>
@@ -352,7 +447,15 @@ export function ContactDiagnosisForm() {
               className="primary-button"
               disabled={loading}
               type="submit"
-              style={{ background: '#10201B', color: '#FFFFFF', border: 'none', padding: '12px 24px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer' }}
+              style={{
+                background: '#10201B',
+                color: '#FFFFFF',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                fontWeight: '600',
+                cursor: 'pointer',
+              }}
             >
               {loading ? 'Processando…' : 'Solicitar Diagnóstico'}
             </button>

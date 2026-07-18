@@ -5,18 +5,18 @@
 
 ## Sequência de etapas e commits
 
-| # | Etapa | Commit | Escopo |
-| --- | --- | --- | --- |
-| 1 | Auditoria | `landing: audit current experience` | **Este documento + docs/landing/**. Sem alterar produção. |
-| 2 | Header + Hero | `landing: redesign header and hero` | Refino do hero/nav (já em bom estado); padronizar CTA; migrar fontes p/ `next/font`. |
-| 3 | Narrativa do problema | `landing: improve problem narrative` | Faixa de posicionamento + leak strip + ProblemSection: copy, acentuação, contraste. |
-| 4 | Althion Radar | `landing: redesign althion radar` | Polir Radar/Score; corrigir acentos do heading; tokenizar cores. |
-| 5 | Storytelling de produto | `landing: add product storytelling` | **Criar o CSS ausente de `HowItWorksSection`** (crítico) + acentuação do dataset. |
-| 6 | Recovery/Capacity | `landing: redesign recovery engines` | Extrair Acts 6–7 de inline p/ classes; responsivo; reduced-motion na Fila. |
-| 7 | Confiança | `landing: improve trust sections` | Acts 8–10 (IA, Especialista, Segurança): remover emojis, corrigir dado fabricado e copy jurídica. |
-| 8 | Conversão | `landing: optimize conversion flow` | Acts 11–13 (Implantação, FAQ, CTA) + formulário `/diagnostico`: a11y do FAQ, decisão sobre mock. |
-| 9 | Motion | `landing: implement motion system` | Consolidar reduced-motion, "um movimento por viewport", tokens de easing. |
-| 10 | A11y + performance | `landing: final accessibility and performance audit` | Auditoria final, contraste, SEO/OG, Lighthouse, testes em todos os tamanhos. |
+| #   | Etapa                   | Commit                                               | Escopo                                                                                            |
+| --- | ----------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| 1   | Auditoria               | `landing: audit current experience`                  | **Este documento + docs/landing/**. Sem alterar produção.                                         |
+| 2   | Header + Hero           | `landing: redesign header and hero`                  | Refino do hero/nav (já em bom estado); padronizar CTA; migrar fontes p/ `next/font`.              |
+| 3   | Narrativa do problema   | `landing: improve problem narrative`                 | Faixa de posicionamento + leak strip + ProblemSection: copy, acentuação, contraste.               |
+| 4   | Althion Radar           | `landing: redesign althion radar`                    | Polir Radar/Score; corrigir acentos do heading; tokenizar cores.                                  |
+| 5   | Storytelling de produto | `landing: add product storytelling`                  | **Criar o CSS ausente de `HowItWorksSection`** (crítico) + acentuação do dataset.                 |
+| 6   | Recovery/Capacity       | `landing: redesign recovery engines`                 | Extrair Acts 6–7 de inline p/ classes; responsivo; reduced-motion na Fila.                        |
+| 7   | Confiança               | `landing: improve trust sections`                    | Acts 8–10 (IA, Especialista, Segurança): remover emojis, corrigir dado fabricado e copy jurídica. |
+| 8   | Conversão               | `landing: optimize conversion flow`                  | Acts 11–13 (Implantação, FAQ, CTA) + formulário `/diagnostico`: a11y do FAQ, decisão sobre mock.  |
+| 9   | Motion                  | `landing: implement motion system`                   | Consolidar reduced-motion, "um movimento por viewport", tokens de easing.                         |
+| 10  | A11y + performance      | `landing: final accessibility and performance audit` | Auditoria final, contraste, SEO/OG, Lighthouse, testes em todos os tamanhos.                      |
 
 ## Fluxo obrigatório por etapa
 

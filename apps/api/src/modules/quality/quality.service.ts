@@ -20,20 +20,12 @@ export class QualityService {
     return this.repository.listRubrics(accessToken);
   }
 
-  public async listEvaluations(
-    accessToken: string,
-    organizationId: string,
-    clinicId: string,
-  ) {
+  public async listEvaluations(accessToken: string, organizationId: string, clinicId: string) {
     await this.feature.ensureEnabled(accessToken);
     return this.repository.listEvaluations(accessToken, organizationId, clinicId);
   }
 
-  public async listClinicalFlags(
-    accessToken: string,
-    organizationId: string,
-    clinicId: string,
-  ) {
+  public async listClinicalFlags(accessToken: string, organizationId: string, clinicId: string) {
     await this.feature.ensureEnabled(accessToken);
     return this.repository.listClinicalFlags(accessToken, organizationId, clinicId);
   }

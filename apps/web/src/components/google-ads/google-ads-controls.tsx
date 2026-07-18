@@ -130,7 +130,10 @@ export function SyncGoogleAdsButton({ context }: Readonly<{ context: PortalConte
       >
         {pending ? 'Sincronizando…' : 'Sincronizar dados do Google Ads (Sandbox)'}
       </button>
-      <span aria-live="polite" style={{ fontSize: '0.9rem', color: 'var(--success)', fontWeight: '500' }}>
+      <span
+        aria-live="polite"
+        style={{ fontSize: '0.9rem', color: 'var(--success)', fontWeight: '500' }}
+      >
         {message}
       </span>
     </div>
