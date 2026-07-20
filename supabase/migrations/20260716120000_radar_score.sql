@@ -918,8 +918,8 @@ begin
     target_assessment_id,
     v_score_id,
     case when score_component.status = 'insufficient_data'
-      then 'collect-' || score_component.dimension::text
-      else 'investigate-' || score_component.dimension::text
+      then 'collect-' || replace(score_component.dimension::text, '_', '-')
+      else 'investigate-' || replace(score_component.dimension::text, '_', '-')
     end,
     '1.0.0-provisional',
     score_component.dimension,
