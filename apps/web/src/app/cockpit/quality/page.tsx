@@ -254,7 +254,7 @@ export default async function QualityPage({
                           color: 'var(--muted)',
                         }}
                       >
-                        "{evalItem.feedback}"
+                        &ldquo;{evalItem.feedback}&rdquo;
                       </p>
                     ) : null}
                     <small style={{ color: 'var(--muted)' }}>

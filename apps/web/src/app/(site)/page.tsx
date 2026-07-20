@@ -247,7 +247,7 @@ export default function SiteHome() {
               </li>
               <li className="spec-row">
                 <span>Aderência à Configuração</span>
-                <strong style={{ color: '#18A987' }}>Conforme as diretrizes</strong>
+                <strong style={{ color: '#11765F' }}>Conforme as diretrizes</strong>
               </li>
             </ul>
           </div>
@@ -289,14 +289,14 @@ export default function SiteHome() {
 
           <div style={{ display: 'grid', gap: '16px' }}>
             <div className="trust-card">
-              <strong>🔒 Isolamento Multitenant</strong>
+              <strong>Isolamento por clínica</strong>
               <small>
-                As informações financeiras e logs de cada clínica são blindados a nível de banco de
-                dados.
+                Dados administrativos e logs de cada clínica são segregados por controles de acesso
+                e políticas no banco de dados.
               </small>
             </div>
             <div className="trust-card">
-              <strong>🛡️ Acesso Clínico Restrito</strong>
+              <strong>Escopo administrativo</strong>
               <small>
                 Histórico médico ou exames não são processados. As regras focam exclusivamente na
                 agenda administrativa.

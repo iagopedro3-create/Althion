@@ -149,7 +149,7 @@ O mock deverá ser determinístico e cobrir:
 
 ## Google Ads
 
-Somente na Fase 9 e inicialmente leitura. OAuth, contas, campanhas e métricas serão isolados atrás de um `AdsProvider`. Toda recomendação terá evidência, explicação e risco. Não haverá mutation na conta de anúncios nessa fase.
+Somente na Fase 9 e inicialmente leitura. OAuth, contas, campanhas e métricas serão isolados atrás de um `AdsProvider`. No protótipo atual, credenciais sintéticas ficam em `app_private`, a tabela pública expõe apenas metadados de conexão e valores sem prefixo `mock_` são rejeitados. Toda recomendação terá evidência, explicação e risco. Não haverá mutation na conta de anúncios nessa fase.
 
 ## Critérios para desbloquear a Helena
 

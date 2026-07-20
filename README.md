@@ -4,7 +4,7 @@ Fundação técnica da plataforma de Recuperação e Performance da Agenda para 
 
 ## Estado
 
-Fase 5 — Recovery Engine implementado **sem execução de contato**: regras determinísticas versionadas sobre dados sintéticos do mock, com consentimento, supressão, frequência e decisão humana obrigatória. Fases 1–4 (Fundação, Radar/Score, Portal, Cockpit) implementadas com dados exclusivamente sintéticos. A integração Helena está bloqueada até a entrega da documentação oficial. A validação PostgreSQL/pgTAP (128 assertions) depende de Docker/CI.
+Fundação, Radar/Score, Portal, Cockpit e Recovery implementados com dados sintéticos; Recovery permanece **sem execução de contato**. Quality está implementado em modo assistido e Google Ads em sandbox sintético, com segredos isolados do schema público e credenciais reais rejeitadas. A landing pública foi redesenhada, mas os canais de contato continuam desligados até a definição jurídica e operacional. A integração Helena segue bloqueada até a entrega da documentação oficial. A validação PostgreSQL/pgTAP (153 assertions) depende de Docker/CI.
 
 ## Requisitos
 

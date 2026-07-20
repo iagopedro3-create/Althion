@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import { submitDiagnosisAction } from '@/app/(site)/diagnostico/actions';
+
 interface DiagnosisState {
   name: string;
   role: string;
@@ -36,7 +38,34 @@ const INITIAL_STATE: DiagnosisState = {
   consent: false,
 };
 
-export function ContactDiagnosisForm() {
+type DiagnosisDraft = Pick<
+  DiagnosisState,
+  | 'avgResponseTime'
+  | 'city'
+  | 'clinicName'
+  | 'investsAds'
+  | 'mainChannel'
+  | 'mainDifficulty'
+  | 'monthlyContacts'
+  | 'professionalsCount'
+  | 'specialty'
+>;
+
+const toDraft = (state: DiagnosisState): DiagnosisDraft => ({
+  avgResponseTime: state.avgResponseTime,
+  city: state.city,
+  clinicName: state.clinicName,
+  investsAds: state.investsAds,
+  mainChannel: state.mainChannel,
+  mainDifficulty: state.mainDifficulty,
+  monthlyContacts: state.monthlyContacts,
+  professionalsCount: state.professionalsCount,
+  specialty: state.specialty,
+});
+
+export function ContactDiagnosisForm({
+  channelConfigured,
+}: Readonly<{ channelConfigured: boolean }>) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<DiagnosisState>(INITIAL_STATE);
   const [success, setSuccess] = useState(false);
@@ -44,21 +73,30 @@ export function ContactDiagnosisForm() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+
     try {
       const saved = localStorage.getItem('althion_diagnosis_draft_v2');
       if (saved) {
-        setForm(JSON.parse(saved));
+        const restored = JSON.parse(saved) as DiagnosisDraft;
+        queueMicrotask(() => {
+          if (!cancelled) setForm((current) => ({ ...current, ...restored }));
+        });
       }
     } catch {
       // Ignore storage errors
     }
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const updateField = (field: keyof DiagnosisState, value: string | boolean) => {
     const updated = { ...form, [field]: value };
     setForm(updated);
     try {
-      localStorage.setItem('althion_diagnosis_draft_v2', JSON.stringify(updated));
+      localStorage.setItem('althion_diagnosis_draft_v2', JSON.stringify(toDraft(updated)));
     } catch {
       // Ignore storage errors
     }
@@ -109,8 +147,14 @@ export function ContactDiagnosisForm() {
     }
 
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const result = await submitDiagnosisAction(form);
     setLoading(false);
+
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
     setSuccess(true);
     try {
       localStorage.removeItem('althion_diagnosis_draft_v2');
@@ -207,6 +251,16 @@ export function ContactDiagnosisForm() {
         boxShadow: '0 10px 30px rgba(0,0,0,0.01)',
       }}
     >
+      {!channelConfigured ? (
+        <div className="site-note-card" role="status" style={{ marginTop: 0, color: '#52635D' }}>
+          <strong>Canal em preparação</strong>
+          <p>
+            Você pode conhecer as perguntas, mas o envio está desativado. Nenhum dado será
+            armazenado ou encaminhado enquanto destino e política de uso não forem aprovados.
+          </p>
+        </div>
+      ) : null}
+
       {/* Progress */}
       <div style={{ marginBottom: '32px' }}>
         <div
@@ -408,7 +462,7 @@ export function ContactDiagnosisForm() {
 
         {error ? (
           <div
-            style={{ color: '#F47E6B', fontSize: '0.85rem', marginTop: '12px', fontWeight: '700' }}
+            style={{ color: '#A83C32', fontSize: '0.85rem', marginTop: '12px', fontWeight: '700' }}
             role="alert"
           >
             {error}
@@ -445,7 +499,7 @@ export function ContactDiagnosisForm() {
           ) : (
             <button
               className="primary-button"
-              disabled={loading}
+              disabled={loading || !channelConfigured}
               type="submit"
               style={{
                 background: '#10201B',
@@ -457,7 +511,11 @@ export function ContactDiagnosisForm() {
                 cursor: 'pointer',
               }}
             >
-              {loading ? 'Processando…' : 'Solicitar Diagnóstico'}
+              {loading
+                ? 'Processando…'
+                : channelConfigured
+                  ? 'Solicitar Diagnóstico'
+                  : 'Envio ainda indisponível'}
             </button>
           )}
         </div>

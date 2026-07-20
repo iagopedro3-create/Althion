@@ -9,10 +9,10 @@ Premium = contido. Preferir poucas animações bem executadas a muitas competind
 
 Estado atual:
 
-- CSS: coberto por dois blocos `@media (prefers-reduced-motion: reduce)` (consolidar em um).
+- CSS: coberto por regras `@media (prefers-reduced-motion: reduce)` nas superfícies animadas.
 - `HeroInteractiveFlow`: respeita — desliga autoplay. ✔
 - `ProblemSection` / `HowItWorksSection`: respeitam via checagem de `matchMedia`. ✔
-- **`RecoveryOpportunityFila`: NÃO respeita** — cicla estado a cada 5s independente da preferência. ✗ corrigir.
+- `RecoveryOpportunityFila`: respeita a preferência e só cicla enquanto estiver visível. ✔
 
 Regra: todo autoplay/loop/transição não essencial deve parar (ou virar estático) sob reduced-motion,
 tanto no CSS quanto nos timers JS.
@@ -36,10 +36,10 @@ tanto no CSS quanto nos timers JS.
 
 ## 5. Padrões a revisar
 
-| Padrão                           | Problema                                   | Ação                                                                                                        |
-| -------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| Leak strip scroll infinito (38s) | ok, mas competindo com o hero acima        | manter, garantir pausa em reduced-motion (já via CSS)                                                       |
-| Hero autoplay 3,5s + Fila 5s     | **dois loops simultâneos** na mesma página | escalonar: só um elemento em auto-movimento por viewport; Fila só anima quando visível e sem reduced-motion |
+| Padrão                           | Problema                              | Ação                                                              |
+| -------------------------------- | ------------------------------------- | ----------------------------------------------------------------- |
+| Leak strip scroll infinito (38s) | ok, mas competindo com o hero acima   | manter, garantir pausa em reduced-motion (já via CSS)             |
+| Hero autoplay 3,5s + Fila 5s     | loops em regiões diferentes da página | fila condicionada à visibilidade e à ausência de `reduced-motion` |
 
 ## 6. Regra de "um movimento por viewport"
 

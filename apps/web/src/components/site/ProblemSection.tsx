@@ -12,7 +12,7 @@ const PROBLEMS = [
       'Quando a recepção está sobrecarregada, mensagens no WhatsApp aguardam horas por retorno. O interessado agenda na concorrência antes de receber um atendimento.',
     lossLabel: 'Queda estimada de conversão',
     lossValue: '28%',
-    lossColor: '#F47E6B',
+    lossColor: '#A83C32',
     icon: (
       <svg
         aria-hidden="true"
@@ -28,7 +28,7 @@ const PROBLEMS = [
       </svg>
     ),
     iconBg: 'rgba(244, 126, 107, 0.1)',
-    iconColor: '#F47E6B',
+    iconColor: '#A83C32',
   },
   {
     id: 'followup',
@@ -37,7 +37,7 @@ const PROBLEMS = [
       'Pacientes que demonstram interesse sem confirmar imediatamente são esquecidos nas conversas antigas. Sem seguimento ativo, o contato esfria e a oportunidade se perde.',
     lossLabel: 'Contatos que não retornam',
     lossValue: '19%',
-    lossColor: '#F5A26F',
+    lossColor: '#8A4B16',
     icon: (
       <svg
         aria-hidden="true"
@@ -53,7 +53,7 @@ const PROBLEMS = [
       </svg>
     ),
     iconBg: 'rgba(245, 162, 111, 0.1)',
-    iconColor: '#F5A26F',
+    iconColor: '#8A4B16',
   },
   {
     id: 'vagas',
@@ -62,7 +62,7 @@ const PROBLEMS = [
       'Cancelamentos de última hora geram lacunas na agenda sem resposta ágil. A fila de espera existe, mas raramente é acionada em tempo hábil para reposição.',
     lossLabel: 'Vagas não recuperadas no mesmo dia',
     lossValue: '31%',
-    lossColor: '#F47E6B',
+    lossColor: '#A83C32',
     icon: (
       <svg
         aria-hidden="true"
@@ -80,7 +80,7 @@ const PROBLEMS = [
       </svg>
     ),
     iconBg: 'rgba(244, 126, 107, 0.1)',
-    iconColor: '#F47E6B',
+    iconColor: '#A83C32',
   },
   {
     id: 'retorno',
@@ -89,7 +89,7 @@ const PROBLEMS = [
       'Pacientes de procedimentos recorrentes concluem uma etapa, mas a clínica não realiza o agendamento preventivo do retorno, gerando inatividade desnecessária.',
     lossLabel: 'Pacientes recorrentes sem convite',
     lossValue: '22%',
-    lossColor: '#F5A26F',
+    lossColor: '#8A4B16',
     icon: (
       <svg
         aria-hidden="true"
@@ -107,7 +107,7 @@ const PROBLEMS = [
       </svg>
     ),
     iconBg: 'rgba(245, 162, 111, 0.1)',
-    iconColor: '#F5A26F',
+    iconColor: '#8A4B16',
   },
 ] as const;
 

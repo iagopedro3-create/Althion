@@ -26,18 +26,18 @@ sistema hospitalar, protótipo.
 - [ ] Sem promessa garantida ("garantimos X% de aumento").
 - [ ] Sem conformidade jurídica definitiva ("estamos em conformidade com a LGPD").
 
-## 4. Correções pendentes identificadas na auditoria
+## 4. Correções verificadas na auditoria
 
-| Local                               | Problema                                            | Ação                                       |
-| ----------------------------------- | --------------------------------------------------- | ------------------------------------------ |
-| Heading do Radar (`page.tsx`)       | acentos ausentes ("operacao", "esta", "dimensoes"…) | reescrever com acento                      |
-| `HowItWorksSection` (dataset STEPS) | todo o texto sem acento                             | reescrever                                 |
-| `HeroInteractiveFlow` (labels)      | "Acao", "Responsavel", "Proxima"                    | acentuar                                   |
-| `AlthionScoreDial` (status)         | "Atenção critica", "Requer atencao", "Saudavel"     | acentuar                                   |
-| `CapacityCalor`                     | typo "Saúdável"                                     | → "Saudável"                               |
-| `diagnostico/page.tsx`              | "Em conformidade com a LGPD e o sigilo médico"      | trocar por linguagem de intenção           |
-| Painel do Especialista              | nome inventado "Juliana S." + "94%" + data          | anonimizar ou rotular claramente como demo |
-| Mockups (HowItWorks)                | nomes de pacientes sem disclaimer uniforme          | adicionar nota de dado fictício            |
+| Local                               | Verificação                                                  | Estado    |
+| ----------------------------------- | ------------------------------------------------------------ | --------- |
+| Heading do Radar (`page.tsx`)       | acentuação e linguagem de módulo ilustrativo                 | corrigido |
+| `HowItWorksSection` (dataset STEPS) | acentuação e identificação dos mockups                       | corrigido |
+| `HeroInteractiveFlow` (labels)      | acentuação dos rótulos                                       | corrigido |
+| `AlthionScoreDial`                  | acentuação e identificação de dado ilustrativo               | corrigido |
+| `CapacityCalor`                     | ortografia e identificação de demonstração                   | corrigido |
+| `diagnostico/page.tsx`              | sem afirmação definitiva de conformidade                     | corrigido |
+| Painel do Especialista              | métricas e identidade dentro de painel rotulado demonstração | corrigido |
+| Mockups (`HowItWorksSection`)       | disclaimer de dados fictícios                                | corrigido |
 
 ## 5. Fórmulas de rótulo aprovadas
 

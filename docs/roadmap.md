@@ -4,7 +4,7 @@
 
 Cada fase é um gate. Antes de iniciar: plano detalhado, arquivos, riscos, critérios de aceite e aprovação explícita. Depois: lint, typecheck, testes, build, E2E relevante, revisão visual/acessibilidade, documentação, evidências, limitações e próximos passos.
 
-As Fases 2 e 3 foram implementadas em 16 de julho de 2026 e as Fases 4 e 5 em 17 de julho de 2026, sob autorização de avanço contínuo do usuário. O aceite técnico permanece condicionado aos gates de banco documentados (128 assertions pgTAP pendentes de Docker/CI).
+As Fases 2 e 3 foram implementadas em 16 de julho de 2026, as Fases 4, 5, 7 e o protótipo sintético da Fase 9 em 17 de julho, e a landing foi redesenhada até 19 de julho. O aceite técnico permanece condicionado aos gates de banco documentados (153 assertions pgTAP pendentes de Docker/CI).
 
 ## Sequência
 
@@ -17,9 +17,9 @@ As Fases 2 e 3 foram implementadas em 16 de julho de 2026 e as Fases 4 e 5 em 17
 | 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Execução das migrations e 100 assertions pgTAP; validação do modelo operacional | Em validação         |
 | 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Execução das migrations e 128 assertions pgTAP; base legal do consentimento     | Em validação         |
 | 6. Helena              | Sync real, webhooks, normalização e monitoramento                               | Documentação oficial, sandbox e contrato; atualmente bloqueada                  | Bloqueada            |
-| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | Política de conteúdo/IA e avaliação de privacidade                              | Não iniciada         |
+| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | 140 assertions acumuladas; política de conteúdo/IA e privacidade                | Em validação         |
 | 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Fonte oficial de agenda e definição de slot                                     | Bloqueada pela fonte |
-| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | Conta sandbox, consentimentos e taxonomia de atribuição                         | Não iniciada         |
+| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | 153 assertions acumuladas; OAuth/API real e cofre de produção                   | Protótipo sintético  |
 | 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores                           | Não iniciada         |
 
 ## Fase 0 — Auditoria
@@ -88,11 +88,11 @@ Não começa até receber documentação real. A integração avança por capabi
 
 ## Fases 7 e 8 — Quality e Capacity
 
-Quality começa assistido, com revisão humana e bloqueio clínico. Capacity começa como recomendação e simulação. Ambos guardam versões e explicação.
+Quality foi implementado em modo assistido, com revisão humana e bloqueio clínico, e permanece em validação de banco/privacidade. Capacity continua bloqueado pela ausência de uma fonte oficial de agenda.
 
 ## Fase 9 — Google Ads
 
-Somente leitura. Métricas da plataforma de anúncios não serão confundidas com consultas realizadas. Atribuição inclui janela, fonte, cobertura e incerteza. Alterações automáticas permanecem fora.
+O protótipo atual é somente leitura e usa dados sintéticos. Métricas da plataforma de anúncios não serão confundidas com consultas realizadas. Os tokens foram removidos do schema público, isolados em `app_private` e o contrato rejeita valores sem prefixo `mock_`. OAuth/API real, cofre de produção e conta sandbox oficial ainda precisam ser implementados; alterações automáticas permanecem fora.
 
 ## Fase 10 — Segurança e piloto
 
@@ -100,14 +100,14 @@ Inclui E2E por papel/tenant, carga e performance, acessibilidade, secret/depende
 
 ## Trilha do site institucional
 
-Não há landing no repositório. Para não alterar a ordem técnica, o site é uma trilha de produto dependente de marca e conteúdo:
+A landing e as páginas institucionais estão implementadas e compartilham a fundação Next.js sem depender de sessão. A trilha ainda depende de decisões operacionais e jurídicas:
 
-- definir conteúdo, identidade, privacidade e formulário antes do trabalho visual;
-- compartilhar a fundação Next.js sem acoplar site ao portal autenticado;
-- implementar em fase aprovada, possivelmente junto da Fase 2;
+- aprovar conteúdo, identidade, privacidade e termos finais;
+- definir destino dos leads, retenção e responsável operacional;
+- adicionar rate limit e antiabuso antes de ativar formulários;
 - o formulário público do Radar exige rate limit, consentimento/base, antiabuso e segregação de dados.
 
-Plano detalhado: `docs/plans/site-institucional.md`. A execução está bloqueada por marca, conteúdo, base jurídica (LGPD) e destino do lead; até lá, apenas o plano e a arquitetura de segregação são permitidos, sem publicar afirmações de marketing nem coletar dados reais.
+Plano detalhado: `docs/plans/site-institucional.md`. A publicação com coleta de dados reais permanece bloqueada por base jurídica (LGPD), destino do lead e controles de antiabuso; por isso os formulários não encaminham nem persistem submissões.
 
 ## Marcos de decisão
 

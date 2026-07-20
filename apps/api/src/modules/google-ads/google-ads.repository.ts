@@ -17,16 +17,15 @@ export class GoogleAdsRepository {
     organizationId: string,
     clinicId: string,
   ): Promise<CredentialsRow | null> {
-    const client = this.clients.createUserScoped(accessToken);
-    const { data, error } = await client
-      .from('google_ads_credentials')
-      .select('*')
-      .eq('organization_id', organizationId)
-      .eq('clinic_id', clinicId)
-      .maybeSingle();
+    const { data, error } = await this.clients
+      .createUserScoped(accessToken)
+      .rpc('get_google_ads_connection', {
+        target_clinic_id: clinicId,
+        target_organization_id: organizationId,
+      });
 
     if (error) throw translateCockpitError(error);
-    return data;
+    return data[0] ?? null;
   }
 
   public async saveCredentials(
@@ -111,9 +110,9 @@ export class GoogleAdsRepository {
     const result = await this.clients.createUserScoped(accessToken).rpc('sync_google_ads_data', {
       idempotency_key: idempotencyKey,
       request_id: requestId,
-      target_campaigns: campaigns as any,
+      target_campaigns: campaigns.map((campaign) => ({ ...campaign })),
       target_clinic_id: clinicId,
-      target_metrics: metrics as any,
+      target_metrics: metrics.map((metric) => ({ ...metric })),
       target_organization_id: organizationId,
     });
 

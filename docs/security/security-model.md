@@ -257,3 +257,11 @@ Não são prazos finais; são classes a serem preenchidas por jurídico/negócio
 - Aprovar uma ação exige oportunidade aprovada; decisões são terminais, expiram em 14 dias e exigem `decided_by`.
 - Auditoria registra apenas metadados (regra, decisão, contadores); rótulo do lead, evidência e referência externa nunca entram em `audit_logs`.
 - Nenhuma superfície executa contato: o estado `executed` não existe no schema desta fase.
+
+## Google Ads sintético — hardening (19/07/2026)
+
+- `public.google_ads_credentials` contém somente metadados de conexão e não pode ser consultada diretamente por `authenticated`.
+- Tokens ficam em `app_private.google_ads_credential_secrets`, sem grants para `public`, `anon` ou `authenticated`; uma RPC `security definer` expõe apenas os metadados autorizados.
+- O contrato da API e a RPC de gravação rejeitam tokens sem prefixo `mock_`, impedindo que o protótipo receba credenciais potencialmente reais.
+- Logs e auditoria registram somente hashes de idempotência e metadados operacionais, nunca o token.
+- OAuth/API real exige cofre de produção, rotação, revogação, mascaramento, sandbox oficial e revisão de acesso antes de ser habilitado.

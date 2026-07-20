@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type OpportState = 'identificada' | 'priorizada' | 'acao' | 'recuperada';
 
@@ -14,6 +14,7 @@ interface OpportItem {
 }
 
 export function RecoveryOpportunityFila() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [opps, setOpps] = useState<readonly OpportItem[]>([
     {
       id: '1',
@@ -42,7 +43,14 @@ export function RecoveryOpportunityFila() {
   ]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let interval: ReturnType<typeof setInterval> | undefined;
+    let isVisible = false;
+
+    const advance = () => {
       setOpps((prev) =>
         prev.map((op) => {
           if (op.state === 'identificada') return { ...op, state: 'priorizada' };
@@ -51,12 +59,41 @@ export function RecoveryOpportunityFila() {
           return { ...op, state: 'identificada', timeParado: 'Poucos segundos' };
         }),
       );
-    }, 5000);
-    return () => clearInterval(interval);
+    };
+
+    const reconcileAutoplay = () => {
+      if (isVisible && !reducedMotion.matches && interval === undefined) {
+        interval = setInterval(advance, 5000);
+        return;
+      }
+
+      if ((!isVisible || reducedMotion.matches) && interval !== undefined) {
+        clearInterval(interval);
+        interval = undefined;
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry?.isIntersecting ?? false;
+        reconcileAutoplay();
+      },
+      { threshold: 0.25 },
+    );
+
+    observer.observe(container);
+    reducedMotion.addEventListener('change', reconcileAutoplay);
+
+    return () => {
+      observer.disconnect();
+      reducedMotion.removeEventListener('change', reconcileAutoplay);
+      if (interval !== undefined) clearInterval(interval);
+    };
   }, []);
 
   return (
     <div
+      ref={containerRef}
       style={{
         background: '#FFFFFF',
         border: '1px solid rgba(16, 32, 27, 0.08)',
@@ -117,7 +154,7 @@ export function RecoveryOpportunityFila() {
                   padding: '20px 8px',
                   fontSize: '0.92rem',
                   fontWeight: '600',
-                  color: '#377CF6',
+                  color: '#2055A6',
                 }}
               >
                 {op.potencial}
@@ -147,7 +184,7 @@ export function RecoveryOpportunityFila() {
                         width: '5px',
                         height: '5px',
                         borderRadius: '50%',
-                        background: '#377CF6',
+                        background: '#2055A6',
                         opacity: 1,
                       }}
                     />
@@ -156,7 +193,7 @@ export function RecoveryOpportunityFila() {
                         width: '5px',
                         height: '5px',
                         borderRadius: '50%',
-                        background: '#377CF6',
+                        background: '#2055A6',
                         opacity: op.state !== 'identificada' ? 1 : 0.2,
                       }}
                     />
@@ -165,7 +202,7 @@ export function RecoveryOpportunityFila() {
                         width: '5px',
                         height: '5px',
                         borderRadius: '50%',
-                        background: '#377CF6',
+                        background: '#2055A6',
                         opacity: op.state === 'acao' || op.state === 'recuperada' ? 1 : 0.2,
                       }}
                     />

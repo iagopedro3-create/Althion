@@ -84,7 +84,7 @@ export function CapacityCalor() {
           <span
             style={{
               fontSize: '0.75rem',
-              color: '#377CF6',
+              color: '#2055A6',
               fontWeight: '700',
               letterSpacing: '0.05em',
               textTransform: 'uppercase',
@@ -108,13 +108,13 @@ export function CapacityCalor() {
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
-              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F5A26F' }}
+              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8A4B16' }}
             />{' '}
             Médio
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
-              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F47E6B' }}
+              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#A83C32' }}
             />{' '}
             Ocioso
           </span>
@@ -164,8 +164,8 @@ export function CapacityCalor() {
                   day.status === 'optimal'
                     ? '#29C7A1'
                     : day.status === 'moderate'
-                      ? '#F5A26F'
-                      : '#F47E6B',
+                      ? '#8A4B16'
+                      : '#A83C32',
               }}
             />
             <span style={{ fontSize: '0.85rem', color: '#52635D', fontWeight: '700' }}>
@@ -211,7 +211,7 @@ export function CapacityCalor() {
           {current.recommendation}
         </p>
         {current.leadsWaiting > 0 ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#F47E6B' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#A83C32' }}>
             <svg
               width="14"
               height="14"

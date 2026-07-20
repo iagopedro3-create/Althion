@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import { ContactDiagnosisForm } from '@/components/site/ContactDiagnosisForm';
+import { DIAGNOSIS_CHANNEL_CONFIGURED } from '@/lib/site/diagnosis';
 
 export const metadata: Metadata = {
   description:
@@ -31,7 +32,7 @@ export default function DiagnosticoPage() {
       </section>
 
       <section aria-label="Formulário do Diagnóstico">
-        <ContactDiagnosisForm />
+        <ContactDiagnosisForm channelConfigured={DIAGNOSIS_CHANNEL_CONFIGURED} />
       </section>
 
       <section
@@ -46,11 +47,12 @@ export default function DiagnosticoPage() {
           lineHeight: '1.5',
         }}
       >
-        <strong>🔒 Nota de Privacidade e Segurança (LGPD):</strong>
+        <strong>Nota de privacidade e segurança:</strong>
         <p style={{ margin: '6px 0 0 0' }}>
-          As informações fornecidas são tratadas em sigilo administrativo absoluto e utilizadas
-          unicamente para estimar gargalos de agendamento. Em conformidade com a LGPD e o sigilo
-          médico, o formulário não solicita informações clínicas de saúde dos seus pacientes.
+          O canal ainda não encaminha nem armazena submissões. Como medida de minimização, o
+          formulário não solicita informações clínicas de saúde dos seus pacientes. Quando a coleta
+          for ativada, finalidade, retenção e destino serão informados antes do envio e submetidos à
+          revisão jurídica.
         </p>
       </section>
     </main>

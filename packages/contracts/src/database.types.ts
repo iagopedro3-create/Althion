@@ -69,6 +69,13 @@ export interface Database {
         };
         Returns: string;
       };
+      get_google_ads_connection: {
+        Args: {
+          target_organization_id: string;
+          target_clinic_id: string;
+        };
+        Returns: GoogleAdsCredentialsRow[];
+      };
       sync_google_ads_data: {
         Args: {
           target_organization_id: string;
@@ -999,8 +1006,6 @@ export interface GoogleAdsCredentialsRow extends Record<string, unknown> {
   id: string;
   organization_id: string;
   clinic_id: string;
-  refresh_token: string;
-  developer_token: string;
   customer_id: string;
   status: 'active' | 'disabled' | 'error';
   last_sync_at: string | null;
