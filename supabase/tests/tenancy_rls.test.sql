@@ -3,6 +3,14 @@ begin;
 create extension if not exists pgtap with schema extensions;
 select plan(15);
 
+insert into public.organizations (id, name, slug)
+values ('10000000-0000-4000-8000-000000000003', 'Organização sem atribuição', 'organizacao-sem-atribuicao');
+
+create temporary table tenancy_test_ids (target_profile_id uuid not null);
+insert into tenancy_test_ids (target_profile_id)
+select id from public.profiles where auth_user_id = '80000000-0000-4000-8000-000000000005';
+grant select on tenancy_test_ids to authenticated;
+
 set local role authenticated;
 select set_config(
   'request.jwt.claims',
@@ -55,7 +63,7 @@ select results_eq(
 select throws_ok(
   $$ select public.grant_membership(
     '10000000-0000-4000-8000-000000000001',
-    (select id from public.profiles where auth_user_id = '80000000-0000-4000-8000-000000000005'),
+    (select target_profile_id from tenancy_test_ids),
     'viewer', null, null, 'manager-cannot-grant-001', 'rls-test-manager'
   ) $$,
   '42501',
@@ -99,7 +107,7 @@ select results_eq(
 );
 
 select results_eq(
-  $$ select count(*) from public.organizations where id = '10000000-0000-4000-8000-000000000002' $$,
+  $$ select count(*) from public.organizations where id = '10000000-0000-4000-8000-000000000003' $$,
   array[0::bigint],
   'specialist cannot read unassigned organization'
 );
@@ -113,12 +121,12 @@ select set_config(
 select is(
   public.grant_membership(
     '10000000-0000-4000-8000-000000000001',
-    (select id from public.profiles where auth_user_id = '80000000-0000-4000-8000-000000000005'),
+    (select target_profile_id from tenancy_test_ids),
     'viewer', null, null, 'owner-grant-target-001', 'rls-test-owner'
   ),
   public.grant_membership(
     '10000000-0000-4000-8000-000000000001',
-    (select id from public.profiles where auth_user_id = '80000000-0000-4000-8000-000000000005'),
+    (select target_profile_id from tenancy_test_ids),
     'viewer', null, null, 'owner-grant-target-001', 'rls-test-owner-replay'
   ),
   'grant membership is idempotent'

@@ -707,7 +707,7 @@ declare
   actor_id uuid := app_private.current_profile_id();
   assessment_status public.radar_assessment_status;
   formula_record public.althion_score_formulas%rowtype;
-  score_id uuid := gen_random_uuid();
+  v_score_id uuid := gen_random_uuid();
   existing_score_id uuid;
   covered_weight numeric(5, 2);
   covered_dimensions public.score_dimension[];
@@ -835,7 +835,7 @@ begin
     id, organization_id, clinic_id, assessment_id, formula_id,
     status, score_value, coverage, input_hash
   ) values (
-    score_id, target_organization_id, target_clinic_id, target_assessment_id,
+    v_score_id, target_organization_id, target_clinic_id, target_assessment_id,
     formula_record.id, result_status, result_value, covered_weight, inputs_hash
   );
 
@@ -845,7 +845,7 @@ begin
   )
   select
     target_organization_id,
-    score_id,
+    v_score_id,
     component.metric_code,
     component.dimension,
     case when input.id is not null and input.denominator > 0 and input.numerator <= input.denominator
@@ -881,7 +881,7 @@ begin
   )
   select
     target_organization_id,
-    score_id,
+    v_score_id,
     score_component.id,
     input.id,
     formula_component.metric_code,
@@ -900,7 +900,7 @@ begin
   from public.althion_score_formula_components formula_component
   join public.althion_score_components score_component
     on score_component.organization_id = target_organization_id
-    and score_component.score_id = score_id
+    and score_component.score_id = v_score_id
     and score_component.metric_code = formula_component.metric_code
   left join public.radar_metric_inputs input
     on input.organization_id = target_organization_id
@@ -916,7 +916,7 @@ begin
     target_organization_id,
     target_clinic_id,
     target_assessment_id,
-    score_id,
+    v_score_id,
     case when score_component.status = 'insufficient_data'
       then 'collect-' || score_component.dimension::text
       else 'investigate-' || score_component.dimension::text
@@ -949,10 +949,10 @@ begin
     and formula_component.metric_code = score_component.metric_code
   join public.althion_score_evidence evidence
     on evidence.organization_id = target_organization_id
-    and evidence.score_id = score_id
+    and evidence.score_id = v_score_id
     and evidence.component_id = score_component.id
   where score_component.organization_id = target_organization_id
-    and score_component.score_id = score_id
+    and score_component.score_id = v_score_id
     and (score_component.status = 'insufficient_data' or score_component.score_value < 100);
 
   insert into public.audit_logs (
@@ -960,7 +960,7 @@ begin
     resource_id, request_id, result, metadata_redacted
   ) values (
     target_organization_id, actor_id, 'user', 'radar.assessment.submitted',
-    'althion_score', score_id, request_id, 'success',
+    'althion_score', v_score_id, request_id, 'success',
     jsonb_build_object(
       'assessment_id', target_assessment_id,
       'clinic_id', target_clinic_id,
@@ -972,12 +972,12 @@ begin
   );
 
   update public.idempotency_records
-  set status = 'completed', resource_id = score_id
+  set status = 'completed', resource_id = v_score_id
   where organization_id = target_organization_id
     and scope = 'radar.submit'
     and idempotency_records.key_hash = v_key_hash;
 
-  return score_id;
+  return v_score_id;
 end
 $$;
 
