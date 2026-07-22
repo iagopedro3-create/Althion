@@ -199,13 +199,18 @@ export function ContactDiagnosisForm({
           </svg>
         </div>
         <h2
-          style={{ fontSize: '1.8rem', fontWeight: '800', margin: '0 0 12px 0', color: '#10201B' }}
+          style={{
+            fontSize: '1.8rem',
+            fontWeight: '800',
+            margin: '0 0 12px 0',
+            color: 'var(--text)',
+          }}
         >
           Informações Recebidas
         </h2>
         <p
           style={{
-            color: '#52635D',
+            color: 'var(--muted)',
             fontSize: '1rem',
             lineHeight: '1.6',
             maxWidth: '600px',
@@ -225,7 +230,7 @@ export function ContactDiagnosisForm({
           type="button"
           style={{
             padding: '12px 24px',
-            background: '#10201B',
+            background: 'var(--text)',
             color: '#FFFFFF',
             border: 'none',
             borderRadius: '8px',
@@ -252,7 +257,11 @@ export function ContactDiagnosisForm({
       }}
     >
       {!channelConfigured ? (
-        <div className="site-note-card" role="status" style={{ marginTop: 0, color: '#52635D' }}>
+        <div
+          className="site-note-card"
+          role="status"
+          style={{ marginTop: 0, color: 'var(--muted)' }}
+        >
           <strong>Canal em preparação</strong>
           <p>
             Você pode conhecer as perguntas, mas o envio está desativado. Nenhum dado será
@@ -268,7 +277,7 @@ export function ContactDiagnosisForm({
             display: 'flex',
             justifyContent: 'space-between',
             fontSize: '0.75rem',
-            color: '#52635D',
+            color: 'var(--muted)',
             fontWeight: '700',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
@@ -288,7 +297,7 @@ export function ContactDiagnosisForm({
           <div
             style={{
               height: '100%',
-              background: '#10201B',
+              background: 'var(--text)',
               width: `${(step / 3) * 100}%`,
               transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
@@ -485,7 +494,7 @@ export function ContactDiagnosisForm({
               onClick={nextStep}
               type="button"
               style={{
-                background: '#10201B',
+                background: 'var(--text)',
                 color: '#FFFFFF',
                 border: 'none',
                 padding: '12px 24px',
@@ -502,7 +511,7 @@ export function ContactDiagnosisForm({
               disabled={loading || !channelConfigured}
               type="submit"
               style={{
-                background: '#10201B',
+                background: 'var(--text)',
                 color: '#FFFFFF',
                 border: 'none',
                 padding: '12px 24px',

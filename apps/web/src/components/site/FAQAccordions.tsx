@@ -77,7 +77,7 @@ export function FAQAccordions() {
                 alignItems: 'center',
                 fontWeight: '700',
                 fontSize: '1.05rem',
-                color: '#10201B',
+                color: 'var(--text)',
                 cursor: 'pointer',
               }}
               type="button"
@@ -86,7 +86,7 @@ export function FAQAccordions() {
               <span
                 style={{
                   fontSize: '1.2rem',
-                  color: '#52635D',
+                  color: 'var(--muted)',
                   transform: isOpen ? 'rotate(45deg)' : 'none',
                   transition: 'transform 0.2s ease',
                   display: 'inline-block',
@@ -101,7 +101,7 @@ export function FAQAccordions() {
               <div
                 style={{
                   padding: '0 28px 24px 28px',
-                  color: '#52635D',
+                  color: 'var(--muted)',
                   fontSize: '0.95rem',
                   lineHeight: '1.65',
                   borderTop: '1px solid rgba(16, 32, 27, 0.04)',

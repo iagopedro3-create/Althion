@@ -112,7 +112,7 @@ export function RecoveryOpportunityFila() {
               borderBottom: '1px solid rgba(16, 32, 27, 0.08)',
               paddingBottom: '12px',
               fontSize: '0.75rem',
-              color: '#52635D',
+              color: 'var(--muted)',
               textTransform: 'uppercase',
               letterSpacing: '0.05em',
             }}
@@ -138,15 +138,15 @@ export function RecoveryOpportunityFila() {
                   padding: '20px 8px',
                   fontSize: '0.92rem',
                   fontWeight: '700',
-                  color: '#10201B',
+                  color: 'var(--text)',
                 }}
               >
                 {op.type}
               </td>
-              <td style={{ padding: '20px 8px', fontSize: '0.9rem', color: '#52635D' }}>
+              <td style={{ padding: '20px 8px', fontSize: '0.9rem', color: 'var(--muted)' }}>
                 {op.patientInitials}
               </td>
-              <td style={{ padding: '20px 8px', fontSize: '0.88rem', color: '#52635D' }}>
+              <td style={{ padding: '20px 8px', fontSize: '0.88rem', color: 'var(--muted)' }}>
                 {op.timeParado}
               </td>
               <td
@@ -226,7 +226,7 @@ export function RecoveryOpportunityFila() {
         style={{
           marginTop: '20px',
           fontSize: '0.8rem',
-          color: '#52635D',
+          color: 'var(--muted)',
           fontStyle: 'italic',
           textAlign: 'center',
         }}
