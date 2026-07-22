@@ -17,6 +17,9 @@ export default tseslint.config(
       'playwright-report/**',
       'test-results/**',
       'packages/contracts/src/database.types.ts',
+      // Entry serverless da Vercel: importa o build de dist/ e é compilado pela
+      // própria Vercel; fora do typecheck/lint do repo (ver apps/api/api/).
+      'apps/api/api/**',
     ],
   },
   eslint.configs.recommended,

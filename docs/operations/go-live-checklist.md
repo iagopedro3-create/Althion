@@ -22,15 +22,17 @@ A **fundação técnica** está implementada e **validada** (isolamento multi-te
 | #    | Item                                                                   | Estado | Dono      | Depende de                                                           |
 | ---- | ---------------------------------------------------------------------- | ------ | --------- | -------------------------------------------------------------------- |
 | 1.1  | Runbook + scaffolds de deploy                                          | ✅     | —         | `docs/operations/deploy-staging.md`, `apps/api/Dockerfile`, workflow |
-| 1.2  | Escolher **provedor da API** (container host)                          | ❌     | Você      | —                                                                    |
+| 1.2  | Provedor de hospedagem: **Supabase + Vercel** (web + API serverless)   | ✅     | —         | decidido 22/07                                                       |
 | 1.3  | Criar projeto **Supabase de staging** + senha do banco                 | ❌     | Você      | —                                                                    |
 | 1.4  | Aplicar **migrations** no Supabase remoto (dry-run → push)             | ❌     | Você/Eng. | 1.3                                                                  |
 | 1.5  | Regenerar `database.types.ts` a partir do schema remoto e revisar diff | ❌     | Eng.      | 1.4                                                                  |
-| 1.6  | Criar projeto **Vercel** (root `apps/web`) + domínio de staging        | ❌     | Você      | —                                                                    |
-| 1.7  | Preencher **Secrets** do Environment `staging` no GitHub               | ❌     | Você      | 1.2–1.6                                                              |
-| 1.8  | Primeiro deploy de staging + `docker build` da API validado            | ❌     | Eng.      | 1.7                                                                  |
-| 1.9  | **Cofre de segredos** de produção definido                             | ❌     | Você      | 1.2                                                                  |
-| 1.10 | Backups do banco e teste de restore                                    | ❌     | Eng.      | 1.3                                                                  |
+| 1.6  | Criar projeto **Vercel** do web (root `apps/web`) + domínio            | ❌     | Você      | —                                                                    |
+| 1.7  | Criar projeto **Vercel** da API (root `apps/api`, serverless)          | ❌     | Você      | —                                                                    |
+| 1.8  | Validar o **adaptador serverless** da API no 1º deploy (DI/rotas)      | ❌     | Eng.      | 1.7                                                                  |
+| 1.9  | Preencher **Secrets** do Environment `staging` no GitHub               | ❌     | Você      | 1.3–1.7                                                              |
+| 1.10 | Primeiro deploy de staging ponta a ponta (web → API → Supabase)        | ❌     | Eng.      | 1.9                                                                  |
+| 1.11 | **Cofre de segredos** de produção definido                             | ❌     | Você      | —                                                                    |
+| 1.12 | Backups do banco e teste de restore                                    | ❌     | Eng.      | 1.3                                                                  |
 
 ## Gate 2 — Segurança de produção
 

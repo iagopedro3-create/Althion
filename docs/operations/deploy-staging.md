@@ -2,13 +2,15 @@
 
 > **SCAFFOLD — VALIDAR ANTES DE USAR.** Este runbook e os artefatos referenciados (`.github/workflows/deploy-staging.yml`, `apps/api/Dockerfile`) foram preparados sem acesso a segredos nem a um ambiente com Docker/contas reais. As instruções são fundamentadas na arquitetura do projeto, mas **precisam de uma primeira execução real** (um `docker build`, um deploy com secrets configurados) para serem confirmadas. Campos `[entre colchetes]` são valores que só você tem.
 
-## Topologia proposta
+## Topologia
 
-| Componente | Tecnologia                               | Hospedagem proposta                                                                                                      | Estado da decisão                                      |
-| ---------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ |
-| Web        | Next.js (`apps/web`)                     | **Vercel** (root do projeto = `apps/web`)                                                                                | proposto/aceito                                        |
-| API        | NestJS (`apps/api`, `node dist/main.js`) | **Container host a decidir** (Railway, Render, Fly.io, Cloud Run, VM…) — servidor de longa duração, **não** é serverless | **PENDENTE** (ver `docs/architecture/architecture.md`) |
-| Banco/Auth | Supabase PostgreSQL                      | **Supabase** (projeto remoto `[yzbmmkyhsjkrdjknspnv]`)                                                                   | projeto existe; migrations não aplicadas               |
+Decisão de infraestrutura: **Supabase + Vercel** (22/07/2026).
+
+| Componente | Tecnologia           | Hospedagem                                                                                                                             | Estado da decisão                                               |
+| ---------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Web        | Next.js (`apps/web`) | **Vercel** (root do projeto = `apps/web`)                                                                                              | ✅ decidido                                                     |
+| API        | NestJS (`apps/api`)  | **Vercel — função serverless** (`apps/api/api/index.ts` + `apps/api/vercel.json`). Fallback: container host via `apps/api/Dockerfile`. | ✅ Vercel decidido; adaptador serverless a validar no 1º deploy |
+| Banco/Auth | Supabase PostgreSQL  | **Supabase** (projeto remoto `[yzbmmkyhsjkrdjknspnv]`)                                                                                 | ✅ decidido; migrations não aplicadas                           |
 
 Regra de ouro: **staging usa dados exclusivamente sintéticos** e credenciais **não produtivas**. Nenhum dado real antes da revisão jurídica (`docs/legal/`).
 
@@ -17,8 +19,8 @@ Regra de ouro: **staging usa dados exclusivamente sintéticos** e credenciais **
 - Acesso de owner ao repositório GitHub e permissão para configurar Environments/Secrets.
 - Conta Vercel com um projeto criado para a Althion (web).
 - Projeto Supabase de **staging** (idealmente separado do de produção) e sua senha de banco.
-- Provedor escolhido para a API (para a Parte 3).
-- `supabase` CLI e Docker instalados na máquina de quem for rodar os passos manuais.
+- Dois projetos Vercel: um para o web (root `apps/web`) e um para a API (root `apps/api`, serverless).
+- `supabase` CLI instalado (e Docker, só se optar pelo fallback de container da API).
 
 ## Segredos a configurar
 
@@ -46,12 +48,12 @@ ALTHION_API_URL=https://[HOST-DA-API-STAGING]
 NEXT_PUBLIC_APP_URL=https://[DOMINIO-STAGING-DO-WEB]
 ```
 
-**API (container host):**
+**API** (na Vercel serverless, **omita** `API_PORT`/`API_HOST` — só valem para o fallback de container):
 
 ```
 NODE_ENV=production
-API_PORT=4000
-API_HOST=0.0.0.0
+API_PORT=4000                # apenas container
+API_HOST=0.0.0.0             # apenas container
 CORS_ORIGINS=https://[DOMINIO-STAGING-DO-WEB]
 SUPABASE_URL=https://[REF].supabase.co
 SUPABASE_PUBLISHABLE_KEY=[publishable-key-staging]
@@ -99,23 +101,31 @@ Notas:
 
 **Alternativa: deploy por CI** — ver o job `web-vercel` em `.github/workflows/deploy-staging.yml` (usa `VERCEL_TOKEN`/`ORG`/`PROJECT`). Use só se você preferir orquestrar pela Action em vez da integração de Git.
 
-## Parte 3 — API (container host a decidir)
+## Parte 3 — API (Vercel — função serverless)
 
-A API é um servidor Node de longa duração. Use o `apps/api/Dockerfile` (portável) e publique no host escolhido.
+A API NestJS roda na Vercel como **função serverless**, via o entry `apps/api/api/index.ts` e o `apps/api/vercel.json`. Crie um **segundo projeto Vercel** para a API (separado do web).
+
+**Configuração do projeto Vercel (API):**
+
+1. **Root Directory = `apps/api`** e habilite "Include source files outside of the Root Directory" (o pnpm workspace instala na raiz do monorepo).
+2. Framework Preset: **Other** (sem framework).
+3. Build Command: já vem do `apps/api/vercel.json` (compila `@althion/domain|config|contracts|api` com `nest build`/tsc). O entry consome o `dist/` compilado.
+4. Configure as variáveis de ambiente da API (seção acima) — **exceto** `API_PORT`/`API_HOST` (não se aplicam a serverless).
+5. O `vercel.json` faz o rewrite de todas as rotas para a função; a API mantém seu próprio prefixo `/api/v1/*` e `/health/*`.
+
+> ⚠️ **Validar no 1º deploy.** O adaptador serverless importa o **build de `dist/`** (não de `src/`) de propósito: o bundler da Vercel (esbuild) não emite o metadata de decorator que a injeção de dependência do Nest exige. Se a DI falhar no deploy, confirme que o `nest build` rodou e que o entry aponta para `dist/`.
+
+**Trade-offs do serverless para esta API:** cold starts (o `createRemoteJWKSet` re-busca as chaves em instâncias frias — aceitável); limite de duração por request (`maxDuration` no `vercel.json`); sem jobs de longa duração/persistentes (a fila/outbox segue adiada no roadmap, então não é bloqueio hoje).
+
+**Fallback — container host:** se o serverless der atrito, o `apps/api/Dockerfile` (portável) roda a API como servidor de longa duração em Railway/Render/Fly/Cloud Run:
 
 ```bash
-# Build local do container (validar antes de publicar)
 docker build -f apps/api/Dockerfile -t althion-api:staging .
-
-# Teste local
 docker run --rm -p 4000:4000 --env-file [arquivo-env-api] althion-api:staging
-# Healthcheck
 curl -fsS http://localhost:4000/health/ready
 ```
 
-Depois, publique conforme o provedor (Railway/Render/Fly/Cloud Run): aponte o build para `apps/api/Dockerfile`, injete as variáveis de ambiente da API e exponha a porta `4000`. Configure `CORS_ORIGINS` com o domínio do web.
-
-**Decisão pendente:** escolher o provedor da API. Critérios: suporte a container Node de longa duração, região (preferir Brasil por LGPD), variáveis/segredos, health checks, custo. Ver `docs/legal/` (transferência internacional, art. 33).
+Neste caso, aponte `ALTHION_API_URL` (no web) para o host do container e ajuste `CORS_ORIGINS`.
 
 ## Parte 4 — Verificação pós-deploy
 
