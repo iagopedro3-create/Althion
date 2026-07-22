@@ -110,7 +110,7 @@ export function CapacityCalor() {
             <span
               style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#29C7A1' }}
             />{' '}
-            Saúdável
+            Saudável
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
