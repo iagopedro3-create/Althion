@@ -97,12 +97,12 @@ export class PortalService {
       score: this.scoreSummary(detail),
       sources: [
         {
-          availability: 'source_blocked',
+          availability: 'handled_externally',
           key: 'leads',
           label: 'Leads e conversas',
           source: 'helena',
         },
-        { availability: 'source_not_configured', key: 'agenda', label: 'Agenda', source: null },
+        { availability: 'handled_externally', key: 'agenda', label: 'Agenda', source: 'helena' },
         {
           availability: 'module_not_available',
           key: 'recovery',

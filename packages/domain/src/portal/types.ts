@@ -2,6 +2,7 @@ export const PORTAL_AVAILABILITY_STATES = [
   'available',
   'insufficient_data',
   'not_assigned',
+  'handled_externally',
   'source_blocked',
   'source_not_configured',
   'module_not_available',

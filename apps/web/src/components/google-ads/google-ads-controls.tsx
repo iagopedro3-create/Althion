@@ -43,7 +43,7 @@ export function GoogleAdsCredentialsForm({
       return;
     }
 
-    setMessage('Credenciais do Google Ads salvas com sucesso. Status: Conectado.');
+    setMessage('Configuração sintética do sandbox salva com sucesso.');
     setDeveloperToken('');
     setRefreshToken('');
     router.refresh();
@@ -62,20 +62,20 @@ export function GoogleAdsCredentialsForm({
         />
       </label>
       <label>
-        Developer Token
+        Developer Token sintético
         <input
           onChange={(e) => setDeveloperToken(e.target.value)}
-          placeholder="Insira o Developer Token da sua conta administrador"
+          placeholder="mock_developer_token"
           required
           type="password"
           value={developerToken}
         />
       </label>
       <label>
-        Refresh Token (OAuth2)
+        Refresh Token sintético
         <input
           onChange={(e) => setRefreshToken(e.target.value)}
-          placeholder="Insira o Refresh Token gerado no fluxo OAuth"
+          placeholder="mock_refresh_token"
           required
           type="password"
           value={refreshToken}

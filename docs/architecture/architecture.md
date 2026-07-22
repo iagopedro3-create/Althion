@@ -202,7 +202,7 @@ secret scan -> install imutável -> lint -> typecheck -> unit -> integration/RLS
 - fornecedor de error tracking e tracing;
 - biblioteca de gráficos após protótipo do dashboard;
 - armazenamento temporário de conteúdo necessário ao Quality Engine;
-- mecanismo de agenda e fonte oficial dos eventos de comparecimento;
+- forma de consumir os eventos de agenda/comparecimento (operados externamente por cliente e integrados via Helena) quando a integração de dados opcional for ligada;
 - extração de qualquer módulo para microserviço.
 
 ## Mapas relacionados

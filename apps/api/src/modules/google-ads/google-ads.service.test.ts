@@ -5,6 +5,8 @@ import { GoogleAdsService } from './google-ads.service';
 
 const ORG = '11111111-1111-4111-8111-111111111111';
 const CLINIC = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+type SyncCampaigns = Parameters<GoogleAdsRepository['syncData']>[3];
+type SyncMetrics = Parameters<GoogleAdsRepository['syncData']>[4];
 
 const feature = { ensureEnabled: async () => undefined } as unknown as GoogleAdsFeatureService;
 
@@ -31,15 +33,15 @@ describe('google ads service', () => {
 
     const service = new GoogleAdsService(feature, repository);
 
-    await service.getCredentials('token', ORG, CLINIC);
+    const credentials = await service.getCredentials('token', ORG, CLINIC);
     await service.saveCredentials(
       'token',
       ORG,
       CLINIC,
       {
         customer_id: '123-456-7890',
-        developer_token: 'dev',
-        refresh_token: 'ref',
+        developer_token: 'mock_developer',
+        refresh_token: 'mock_refresh',
       },
       'idempotency-1',
       'req-1',
@@ -47,6 +49,7 @@ describe('google ads service', () => {
     await service.listCampaigns('token', ORG, CLINIC);
 
     expect(getCredentialsCalled).toBe(true);
+    expect(credentials).toBeNull();
     expect(saveCredentialsCalled).toBe(true);
     expect(listCampaignsCalled).toBe(true);
   });
@@ -79,16 +82,16 @@ describe('google ads service', () => {
   });
 
   it('triggers mock Google Ads data sync in sandbox', async () => {
-    let syncedCampaigns: any[] = [];
-    let syncedMetrics: any[] = [];
+    let syncedCampaigns: SyncCampaigns = [];
+    let syncedMetrics: SyncMetrics = [];
 
     const repository = {
       syncData: async (
         _token: string,
         _org: string,
         _clinic: string,
-        campaigns: any[],
-        metrics: any[],
+        campaigns: SyncCampaigns,
+        metrics: SyncMetrics,
       ) => {
         syncedCampaigns = campaigns;
         syncedMetrics = metrics;

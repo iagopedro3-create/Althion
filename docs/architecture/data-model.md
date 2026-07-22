@@ -173,7 +173,7 @@ erDiagram
 | `external_conversations` | Metadados de conversa                     | Fonte Helena                                                     |
 | `external_messages`      | Metadados de mensagem                     | Sem body/anexo por padrão                                        |
 | `opportunities`          | Oportunidade CRM canônica                 | Fonte Helena, distinta de recovery                               |
-| `appointments`           | Agendamento administrativo                | Fonte oficial ainda indefinida                                   |
+| `appointments`           | Agendamento administrativo                | Operado externamente por cliente e integrado via Helena          |
 | `appointment_history`    | Mudanças de status                        | Append-only                                                      |
 | `waiting_list`           | Elegibilidade administrativa              | Sem motivo clínico                                               |
 | `integrations`           | Conexão lógica, estado e capabilities     | Segredo fica em cofre, não na tabela em claro                    |

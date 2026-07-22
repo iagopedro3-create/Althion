@@ -1377,6 +1377,11 @@ a {
   background: #f3bd4f;
 }
 
+.source-dot.handled_externally {
+  border-color: #5b8def;
+  background: #5b8def;
+}
+
 .source-dot.source_blocked,
 .source-dot.module_not_available,
 .source-dot.source_not_configured {
@@ -2422,7 +2427,7 @@ details.creation-panel > summary {
   --surface: #ffffff;
   --text: #10201b;
   --muted: #52635d;
-  --accent: #18a987;
+  --accent: #11765f;
   --line: rgba(16, 32, 27, 0.08);
   color-scheme: light;
   font-family: var(--font-sans);
@@ -2453,6 +2458,52 @@ details.creation-panel > summary {
 .site-shell h3 {
   font-family: var(--font-display);
   color: var(--text);
+}
+
+.site-shell .portal-form label {
+  color: #52635d;
+}
+
+.site-shell .portal-form input,
+.site-shell .portal-form select,
+.site-shell .portal-form textarea {
+  border-color: rgba(16, 32, 27, 0.18);
+  background: #ffffff;
+  color: #10201b;
+}
+
+.site-shell .field-error,
+.site-shell .form-message {
+  color: #9f2f28;
+}
+
+.site-shell .primary-link,
+.site-shell .primary-button {
+  color: #ffffff;
+}
+
+.site-shell .badge.success {
+  color: #11765f;
+}
+
+.site-shell .badge.warning {
+  color: #8a4b16;
+}
+
+.site-shell .badge.danger {
+  color: #a83c32;
+}
+
+.site-shell .badge.primary {
+  color: #2055a6;
+}
+
+.site-shell .badge.muted {
+  color: #52635d;
+}
+
+.site-shell .dark-section .badge.warning {
+  color: #f6bb8d;
 }
 
 .site-main {
@@ -2546,6 +2597,10 @@ details.creation-panel > summary {
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   border-bottom-color: rgba(243, 250, 247, 0.08);
   box-shadow: 0 1px 40px rgba(0, 0, 0, 0.2);
+}
+
+.site-header .brand {
+  color: #f3faf7;
 }
 
 .site-header-inner {
@@ -2844,6 +2899,77 @@ details.creation-panel > summary {
   margin: 16px 0 0;
 }
 
+/* ── Botao secundario da landing (contornado; claro e escuro) ────────────────*/
+.site-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(243, 250, 247, 0.04);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.site-cta-secondary:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.site-cta-secondary:active {
+  transform: translateY(0);
+}
+
+/* ── CTA final (Ato 13) ──────────────────────────────────────────────────────*/
+.cta-final {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-final .section-headline {
+  margin: 20px 0;
+}
+
+.cta-final .section-lead {
+  margin-bottom: 40px;
+}
+
+.cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.cta-microcopy {
+  display: block;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+/* No mobile, empilha os dois botoes do CTA final (espelha .hero-actions) */
+@media (max-width: 480px) {
+  .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-actions .site-cta-secondary {
+    width: 100%;
+  }
+}
+
 /* ── Hero connections strip ──────────────────────────────────────────────────*/
 .hero-connections {
   display: flex;
@@ -2949,7 +3075,7 @@ details.creation-panel > summary {
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgba(169, 187, 180, 0.5);
+  color: rgba(196, 213, 207, 0.82);
   min-width: 90px;
   flex-shrink: 0;
 }
@@ -3157,7 +3283,7 @@ details.creation-panel > summary {
 }
 
 .positioning-headline-accent {
-  color: #18a987;
+  color: #11765f;
 }
 
 .positioning-lead {
@@ -3319,7 +3445,7 @@ details.creation-panel > summary {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #18a987;
+  color: #11765f;
   margin-bottom: 20px;
 }
 
@@ -3367,7 +3493,7 @@ details.creation-panel > summary {
 .problem-connector-label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #18a987;
+  color: #11765f;
   white-space: nowrap;
 }
 
@@ -3524,7 +3650,7 @@ details.creation-panel > summary {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #18a987;
+  color: #11765f;
   margin-bottom: 16px;
 }
 
@@ -3572,6 +3698,10 @@ details.creation-panel > summary {
   background: #ffffff;
 }
 
+.landing-band--bordered {
+  border-top: 1px solid var(--line);
+}
+
 /* Cabecalho de banda: coluna unica alinhada a esquerda */
 .band-intro {
   max-width: 800px;
@@ -3582,6 +3712,39 @@ details.creation-panel > summary {
   max-width: 640px;
   margin: 0 auto 60px;
   text-align: center;
+}
+
+/* Espacamento padrao dentro das bandas (evita overrides inline) */
+.band-intro .section-headline,
+.band-intro--center .section-headline,
+.band-split .section-headline {
+  margin-bottom: 20px;
+}
+
+.band-split .section-lead {
+  margin-bottom: 24px;
+}
+
+/* Nota/disclaimer em tema escuro (Ato 10 — Seguranca) */
+.security-note {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(243, 250, 247, 0.03);
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Valor de destaque em spec-list */
+.spec-accent {
+  color: var(--accent);
+}
+
+/* Pilha de cards de confianca (Ato 10) */
+.trust-stack {
+  display: grid;
+  gap: 16px;
 }
 
 /* Layout de duas colunas com colapso no mobile */
@@ -3784,7 +3947,7 @@ details.creation-panel > summary {
 
 .radar-score-unit {
   font-size: 0.88rem;
-  color: #a0aea9;
+  color: #52635d;
   font-weight: 600;
 }
 
@@ -3907,7 +4070,7 @@ details.creation-panel > summary {
 
 .radar-detail-score-max {
   font-size: 1rem;
-  color: #a0aea9;
+  color: #52635d;
   font-weight: 600;
 }
 
@@ -3973,7 +4136,7 @@ details.creation-panel > summary {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(82, 99, 93, 0.7);
+  color: #52635d;
 }
 
 .radar-insight-text {
@@ -4066,7 +4229,7 @@ details.creation-panel > summary {
   padding: 26px 24px;
   border: 1px solid transparent;
   border-radius: 18px;
-  opacity: 0.55;
+  opacity: 1;
   transition:
     opacity 0.3s ease,
     background-color 0.3s ease,
@@ -4083,7 +4246,7 @@ details.creation-panel > summary {
   font-family: var(--font-display);
   font-size: 1rem;
   font-weight: 800;
-  color: #18a987;
+  color: #11765f;
   font-variant-numeric: tabular-nums;
   line-height: 1.6;
 }

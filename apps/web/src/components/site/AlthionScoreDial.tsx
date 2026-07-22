@@ -127,9 +127,9 @@ const DIMENSIONS: Dimension[] = [
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const STATUS_COLOR: Record<Dimension['status'], string> = {
-  critical: '#F47E6B',
-  warning: '#F5A26F',
-  healthy: '#18A987',
+  critical: '#A83C32',
+  warning: '#8A4B16',
+  healthy: '#11765F',
 };
 
 const STATUS_LABEL: Record<Dimension['status'], string> = {
@@ -289,9 +289,9 @@ export function AlthionScoreDial() {
           <p className="radar-insight-text">{current.bottleneck}</p>
         </div>
 
-        {/* Acao sugerida */}
-        <div className="radar-insight radar-insight--action" aria-label="Proxima acao sugerida">
-          <span className="radar-insight-label">Proxima acao sugerida</span>
+        {/* Ação sugerida */}
+        <div className="radar-insight radar-insight--action" aria-label="Próxima ação sugerida">
+          <span className="radar-insight-label">Próxima ação sugerida</span>
           <p className="radar-insight-text">{current.action}</p>
         </div>
       </div>

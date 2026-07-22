@@ -19,7 +19,7 @@ export default defineConfig({
   webServer: {
     command: 'pnpm --filter @althion/web dev',
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 180_000,
     url: 'http://127.0.0.1:3000',
   },
 });

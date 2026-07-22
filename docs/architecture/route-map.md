@@ -30,34 +30,34 @@ As seções comerciais (recuperação, leads, agenda, especialista, IA, indicado
 
 ## Portal do cliente
 
-| Rota web                               | Finalidade                                             | Fase                          |
-| -------------------------------------- | ------------------------------------------------------ | ----------------------------- |
-| `/app`                                 | Dashboard orientado a problemas, oportunidades e ações | 3, implementada               |
-| `/app/radar`                           | Histórico de diagnósticos                              | 2, implementada               |
-| `/app/radar/novo`                      | Questionário manual em etapas                          | 2, implementada               |
-| `/app/radar/[assessmentId]`            | Rascunho, prévia, envio e evidências                   | 2, implementada               |
-| `/app/radar/[assessmentId]/editar`     | Edição de rascunho                                     | 2, implementada               |
-| `/app/radar/[assessmentId]/relatorio`  | Relatório imprimível                                   | 2, implementada               |
-| `/app/radar/[assessmentId]/export.csv` | Exportação autorizada e auditada                       | 2, implementada               |
-| `/app/score`                           | Score, componentes, comparação e histórico             | 2, implementada               |
-| `/app/score/[scoreId]`                 | Nota, cobertura, componentes, recomendações e lineage  | 2, implementada               |
-| `/app/leads`                           | Visão normalizada de leads                             | 3/6                           |
-| `/app/agenda`                          | Capacidade e eventos administrativos                   | 3, limitada até definir fonte |
-| `/app/recuperacao`                     | Oportunidades priorizadas                              | 3/5                           |
-| `/app/recuperacao/[opportunityId]`     | Evidências, ações e resultado                          | 5                             |
-| `/app/indicadores`                     | Métricas, histórico e evidências                       | 3, implementada               |
-| `/app/oportunidades`                   | Recomendações administrativas do Radar                 | 3, implementada               |
-| `/app/relatorios`                      | Relatórios e exportações existentes                    | 2/3, implementada             |
-| `/app/acoes`                           | Ações executadas e pendentes                           | 3/5                           |
-| `/app/qualidade`                       | Performance de IA, revisões e handoffs                 | 7                             |
-| `/app/solicitacoes`                    | Solicitações do cliente                                | 3, implementada               |
-| `/app/solicitacoes/[requestId]`        | Detalhe, histórico e transições                        | 3, implementada               |
-| `/app/plano-de-melhoria`               | Plano, responsáveis e prazos                           | 3, implementada               |
-| `/app/especialista`                    | Especialista atribuído e contato operacional           | 3, implementada               |
-| `/app/integracoes`                     | Conexões, estado e freshness                           | 3/6, leitura implementada     |
-| `/app/configuracoes`                   | Contexto autorizado em leitura                         | 1/3, implementada             |
-| `/app/configuracoes/acessos`           | Memberships e permissões                               | 1                             |
-| `/app/configuracoes/consentimentos`    | Políticas e supressões administrativas                 | 5                             |
+| Rota web                               | Finalidade                                             | Fase                                                                                 |
+| -------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `/app`                                 | Dashboard orientado a problemas, oportunidades e ações | 3, implementada                                                                      |
+| `/app/radar`                           | Histórico de diagnósticos                              | 2, implementada                                                                      |
+| `/app/radar/novo`                      | Questionário manual em etapas                          | 2, implementada                                                                      |
+| `/app/radar/[assessmentId]`            | Rascunho, prévia, envio e evidências                   | 2, implementada                                                                      |
+| `/app/radar/[assessmentId]/editar`     | Edição de rascunho                                     | 2, implementada                                                                      |
+| `/app/radar/[assessmentId]/relatorio`  | Relatório imprimível                                   | 2, implementada                                                                      |
+| `/app/radar/[assessmentId]/export.csv` | Exportação autorizada e auditada                       | 2, implementada                                                                      |
+| `/app/score`                           | Score, componentes, comparação e histórico             | 2, implementada                                                                      |
+| `/app/score/[scoreId]`                 | Nota, cobertura, componentes, recomendações e lineage  | 2, implementada                                                                      |
+| `/app/leads`                           | Visão normalizada de leads                             | 3/6                                                                                  |
+| `/app/agenda`                          | Capacidade e eventos administrativos                   | 3, limitada até ligar a integração de dados (agenda operada externamente via Helena) |
+| `/app/recuperacao`                     | Oportunidades priorizadas                              | 3/5                                                                                  |
+| `/app/recuperacao/[opportunityId]`     | Evidências, ações e resultado                          | 5                                                                                    |
+| `/app/indicadores`                     | Métricas, histórico e evidências                       | 3, implementada                                                                      |
+| `/app/oportunidades`                   | Recomendações administrativas do Radar                 | 3, implementada                                                                      |
+| `/app/relatorios`                      | Relatórios e exportações existentes                    | 2/3, implementada                                                                    |
+| `/app/acoes`                           | Ações executadas e pendentes                           | 3/5                                                                                  |
+| `/app/qualidade`                       | Performance de IA, revisões e handoffs                 | 7                                                                                    |
+| `/app/solicitacoes`                    | Solicitações do cliente                                | 3, implementada                                                                      |
+| `/app/solicitacoes/[requestId]`        | Detalhe, histórico e transições                        | 3, implementada                                                                      |
+| `/app/plano-de-melhoria`               | Plano, responsáveis e prazos                           | 3, implementada                                                                      |
+| `/app/especialista`                    | Especialista atribuído e contato operacional           | 3, implementada                                                                      |
+| `/app/integracoes`                     | Conexões, estado e freshness                           | 3/6, leitura implementada                                                            |
+| `/app/configuracoes`                   | Contexto autorizado em leitura                         | 1/3, implementada                                                                    |
+| `/app/configuracoes/acessos`           | Memberships e permissões                               | 1                                                                                    |
+| `/app/configuracoes/consentimentos`    | Políticas e supressões administrativas                 | 5                                                                                    |
 
 ## Cockpit do Especialista
 
@@ -128,13 +128,13 @@ Operações específicas como simular, aprovar ou pausar podem usar sub-recursos
 
 ## Integrações e webhooks
 
-| Rota Althion                                              | Finalidade                           | Estado                          |
-| --------------------------------------------------------- | ------------------------------------ | ------------------------------- |
-| `GET /api/v1/organizations/:organizationId/integrations`  | Estado das integrações               | Fundação                        |
-| `POST /api/v1/integrations/helena/webhooks/:connectionId` | Receptor potencial de eventos Helena | Bloqueada até documentação real |
-| `GET /api/v1/organizations/:organizationId/sync-jobs`     | Status e freshness                   | Fase 6                          |
-| `POST /api/v1/organizations/:organizationId/sync-jobs`    | Sync manual autorizado e limitado    | Fase 6                          |
-| `/api/v1/integrations/google-ads/oauth/*`                 | OAuth e callback                     | Fase 9                          |
+| Rota Althion                                              | Finalidade                           | Estado                                                        |
+| --------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------- |
+| `GET /api/v1/organizations/:organizationId/integrations`  | Estado das integrações               | Fundação                                                      |
+| `POST /api/v1/integrations/helena/webhooks/:connectionId` | Receptor potencial de eventos Helena | Integração de dados opcional; desligada até documentação real |
+| `GET /api/v1/organizations/:organizationId/sync-jobs`     | Status e freshness                   | Fase 6                                                        |
+| `POST /api/v1/organizations/:organizationId/sync-jobs`    | Sync manual autorizado e limitado    | Fase 6                                                        |
+| `/api/v1/integrations/google-ads/oauth/*`                 | OAuth e callback                     | Fase 9                                                        |
 
 A rota de webhook proposta é uma rota da Althion; ela não presume URL, evento, header ou assinatura existente na Helena.
 

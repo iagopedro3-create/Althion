@@ -12,6 +12,7 @@ const LABELS: Record<string, string> = {
 
 const AVAILABILITY_LABELS: Record<string, string> = {
   available: 'Disponível',
+  handled_externally: 'Operado pela Helena',
   module_not_available: 'Módulo futuro',
   source_blocked: 'Fonte bloqueada',
   source_not_configured: 'Fonte não configurada',
@@ -31,8 +32,8 @@ export default async function IntegrationsPage({
           <p className="eyebrow">Integrações</p>
           <h1>Estado real das fontes.</h1>
           <p className="lead-copy">
-            Conexões bloqueadas ou ausentes permanecem explícitas. Nenhum endpoint Helena é
-            simulado.
+            A Helena opera em paralelo como motor operacional. Conexões opcionais ou ausentes
+            permanecem explícitas e nenhum endpoint Helena é simulado.
           </p>
         </div>
         <a className="quiet-button" href={`/app?${query}`}>
@@ -78,8 +79,8 @@ export default async function IntegrationsPage({
           <section className="source-status-section">
             <div className="section-heading">
               <div>
-                <p className="eyebrow">Cobertura futura</p>
-                <h2>Fontes ainda indisponíveis</h2>
+                <p className="eyebrow">Fontes e responsabilidades</p>
+                <h2>Quem opera cada fonte</h2>
               </div>
             </div>
             <div className="source-status-grid">

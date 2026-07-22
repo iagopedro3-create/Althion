@@ -26,7 +26,7 @@ Os tipos acima são Althion. Paginação, nomes de status e DTOs externos perman
 
 ```text
 CrmProvider
-├── HelenaCrmProvider   # bloqueado até contrato oficial
+├── HelenaCrmProvider   # integração de dados opcional, desligada por padrão
 ├── MockCrmProvider     # fixtures sintéticas e determinísticas
 └── FutureCrmProvider   # ponto de extensão, sem implementação especulativa
 ```
@@ -35,20 +35,22 @@ CrmProvider
 
 ## Estado da integração Helena
 
-**Bloqueada.** O repositório não contém documentação, SDK, collection, schema, credenciais de sandbox ou exemplos de webhook. Nenhum endpoint, método de autenticação, limite ou evento pode ser assumido.
+**A Helena opera em paralelo.** Ela é um CRM operacional completo e autônomo (WhatsApp, Instagram, webhooks, agentes e supervisor de IA) que executa contato e conversa por conta própria. A Althion funciona **ao lado** dela como camada de inteligência, recuperação e score, sem depender da Helena como fonte de verdade para operar.
 
-Na Fase 1 foram implementados somente:
+A **integração de dados** Althion↔Helena (consumir Helena como fonte oficial de conversas, leads etc.) é **opcional, desligada por padrão e não bloqueia o roadmap**. Enquanto não é ligada, o `MockCrmProvider` sustenta o domínio. O repositório ainda não contém documentação, SDK, collection, schema, credenciais de sandbox ou exemplos de webhook oficiais; portanto nenhum endpoint, método de autenticação, limite ou evento é assumido.
+
+Na Fase 1 foram implementados:
 
 - interface e modelos canônicos mínimos;
 - `MockCrmProvider` com dados sintéticos;
-- `HelenaCrmProvider` vazio que falha explicitamente como não configurado;
-- configuração desabilitada por padrão;
+- `HelenaCrmProvider` vazio que falha explicitamente como não configurado (`PROVIDER_NOT_CONFIGURED`);
+- integração de dados desabilitada por padrão;
 - testes do contrato usando o mock;
 - TODOs que apontam para os requisitos documentais abaixo.
 
-## Documentação necessária da Helena
+## Requisitos para ativar a integração de dados (opcional)
 
-Antes da Fase 6, obter e validar:
+A Helena não depende disto para funcionar. Antes de ligar a integração de dados, obter e validar:
 
 1. ambientes, base URLs oficiais e sandbox;
 2. autenticação, rotação, scopes e segregação por cliente;
@@ -67,24 +69,24 @@ Esse inventário descreve capacidades necessárias, não endpoints presumidos.
 
 ## Fonte oficial de dados
 
-| Informação                        | Fonte oficial inicial | Persistência Althion                                                               |
-| --------------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
-| Conversas                         | Helena                | ID, metadados necessários, eventos e agregações; conteúdo não replicado por padrão |
-| Mensagens                         | Helena                | ID, direção, timestamps e atributos analíticos minimizados                         |
-| Contatos operacionais             | Helena                | referência externa e projeção mínima normalizada                                   |
-| Funis                             | Helena                | IDs, versão/snapshot mínimo para interpretar oportunidade                          |
-| Oportunidades CRM                 | Helena                | referência, estado normalizado e histórico necessário                              |
-| Agentes de IA                     | Helena                | identidade externa e métricas aprovadas                                            |
-| Operadores                        | Helena                | identidade externa e escopo necessário, sem duplicar gestão                        |
-| Organizações e clínicas           | Althion               | registro transacional próprio                                                      |
-| Especialistas e assignments       | Althion               | registro transacional próprio                                                      |
-| Regras e ações de recuperação     | Althion               | registro transacional e auditável                                                  |
-| Althion Score                     | Althion               | fórmula, inputs, componentes e histórico                                           |
-| Relatórios e analytics históricos | Althion               | agregações e snapshots com provenance                                              |
-| Quality e Capacity                | Althion               | avaliações/recomendações derivadas e explicáveis                                   |
-| Google Ads                        | Google/Althion        | fatos externos normalizados e snapshots; recomendações próprias                    |
-| Solicitações                      | Althion               | registro transacional próprio                                                      |
-| Agenda e comparecimento           | **Indefinida**        | bloqueio para métricas e engines dependentes                                       |
+| Informação                        | Fonte oficial inicial | Persistência Althion                                                                                                                                                      |
+| --------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Conversas                         | Helena                | ID, metadados necessários, eventos e agregações; conteúdo não replicado por padrão                                                                                        |
+| Mensagens                         | Helena                | ID, direção, timestamps e atributos analíticos minimizados                                                                                                                |
+| Contatos operacionais             | Helena                | referência externa e projeção mínima normalizada                                                                                                                          |
+| Funis                             | Helena                | IDs, versão/snapshot mínimo para interpretar oportunidade                                                                                                                 |
+| Oportunidades CRM                 | Helena                | referência, estado normalizado e histórico necessário                                                                                                                     |
+| Agentes de IA                     | Helena                | identidade externa e métricas aprovadas                                                                                                                                   |
+| Operadores                        | Helena                | identidade externa e escopo necessário, sem duplicar gestão                                                                                                               |
+| Organizações e clínicas           | Althion               | registro transacional próprio                                                                                                                                             |
+| Especialistas e assignments       | Althion               | registro transacional próprio                                                                                                                                             |
+| Regras e ações de recuperação     | Althion               | registro transacional e auditável                                                                                                                                         |
+| Althion Score                     | Althion               | fórmula, inputs, componentes e histórico                                                                                                                                  |
+| Relatórios e analytics históricos | Althion               | agregações e snapshots com provenance                                                                                                                                     |
+| Quality e Capacity                | Althion               | avaliações/recomendações derivadas e explicáveis                                                                                                                          |
+| Google Ads                        | Google/Althion        | fatos externos normalizados e snapshots; recomendações próprias                                                                                                           |
+| Solicitações                      | Althion               | registro transacional próprio                                                                                                                                             |
+| Agenda e comparecimento           | Externa (por cliente) | operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena; disponível na Althion quando a integração de dados opcional estiver ligada |
 
 ## Dados externos e provenance
 
@@ -149,16 +151,18 @@ O mock deverá ser determinístico e cobrir:
 
 ## Google Ads
 
-Somente na Fase 9 e inicialmente leitura. OAuth, contas, campanhas e métricas serão isolados atrás de um `AdsProvider`. Toda recomendação terá evidência, explicação e risco. Não haverá mutation na conta de anúncios nessa fase.
+Somente na Fase 9 e inicialmente leitura. OAuth, contas, campanhas e métricas serão isolados atrás de um `AdsProvider`. No protótipo atual, credenciais sintéticas ficam em `app_private`, a tabela pública expõe apenas metadados de conexão e valores sem prefixo `mock_` são rejeitados. Toda recomendação terá evidência, explicação e risco. Não haverá mutation na conta de anúncios nessa fase.
 
-## Critérios para desbloquear a Helena
+## Critérios para ativar a integração de dados (opcional)
+
+Requisitos para ligar a integração Althion↔Helena. A Helena continua operando em paralelo independentemente deles:
 
 - documentação oficial arquivada/referenciada e revisada;
 - sandbox e credenciais não produtivas;
 - matriz de capabilities confirmada;
-- source-of-truth de agenda decidido;
+- agenda de cada cliente integrada na Helena (sistema próprio, Google Agenda etc.), quando o cliente a disponibilizar;
 - mapeamento de dados e DPIA/avaliação LGPD aprovados;
 - contrato de webhook e segurança testado;
 - limites, retries e runbook definidos;
 - testes de contrato e integração em staging;
-- autorização explícita para iniciar a Fase 6.
+- autorização explícita para ligar a integração de dados.

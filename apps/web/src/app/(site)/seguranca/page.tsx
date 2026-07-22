@@ -26,7 +26,7 @@ const PRINCIPLES = [
     title: 'Sem função clínica',
   },
   {
-    body: 'Integrações são tratadas como provedores substituíveis. A Helena é o motor operacional; a Althion mantém contratos próprios para evitar acoplamento.',
+    body: 'Integrações são tratadas como provedores substituíveis. O sistema operacional de atendimento funciona em paralelo; a Althion mantém contratos próprios para evitar acoplamento a um fornecedor específico.',
     title: 'Integrações substituíveis',
   },
 ] as const;

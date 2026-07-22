@@ -16,8 +16,10 @@ import {
 import { Injectable } from '@nestjs/common';
 
 /**
- * Blocked adapter. Do not add URLs, payloads or authentication until official
- * Helena documentation and a non-production sandbox are reviewed.
+ * Optional adapter. Helena runs in parallel as the operational engine; the
+ * Althion<->Helena data integration is off by default and not on the critical
+ * path. Do not add URLs, payloads or authentication until official Helena
+ * documentation and a non-production sandbox are reviewed.
  */
 @Injectable()
 export class HelenaCrmProvider implements CrmProvider {
@@ -60,7 +62,7 @@ export class HelenaCrmProvider implements CrmProvider {
   private blocked(): never {
     throw new CrmProviderError(
       'PROVIDER_NOT_CONFIGURED',
-      'Helena integration is blocked pending official documentation',
+      'Helena data integration is not configured; Helena operates in parallel',
     );
   }
 

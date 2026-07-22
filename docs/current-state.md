@@ -2,9 +2,9 @@
 
 ## Resumo executivo
 
-Atualizado em 16 de julho de 2026 após a implementação da Fase 3. O repositório contém a Fundação executável, Radar/Score e o Portal do Cliente source-backed, com dashboard acionável, indicadores, oportunidades do Radar, solicitações, plano de melhoria, Especialista, relatórios, integrações e configurações.
+Atualizado em 19 de julho de 2026. O repositório contém Fundação, Radar/Score, Portal do Cliente, Cockpit, Recovery sem execução, Quality assistido, Google Ads em sandbox sintético e o site institucional redesenhado.
 
-A integração Helena permanece intencionalmente bloqueada. Leads, agenda, Recovery e Quality são mostrados como fontes indisponíveis/módulos futuros, nunca como dados simulados. Cockpit, Recovery, Helena, Quality, Capacity e Google Ads não foram iniciados. As Fases 1–3 continuam condicionadas à execução das migrations e dos testes pgTAP em Docker/CI.
+A Helena opera em paralelo como motor operacional; a integração de dados Althion↔Helena é opcional, desligada por padrão e não bloqueia o roadmap. A agenda é operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena; a Althion não mantém fonte de agenda própria. Capacity não foi implementado como engine real; suas visualizações públicas são apenas demonstrações identificadas. Google Ads ainda não chama a API do Google e rejeita credenciais reais; os segredos sintéticos foram isolados em schema privado. Todos os módulos de banco continuam condicionados à execução das migrations e dos 153 testes pgTAP em Docker/CI.
 
 ## Stack atual
 
@@ -25,7 +25,7 @@ A integração Helena permanece intencionalmente bloqueada. Leads, agenda, Recov
 - autenticação, sessão, principal, RBAC, capabilities e RLS deny-by-default;
 - Organization → Clinic → Unit, memberships, scopes e assignments;
 - auditoria, idempotência, feature flags, health, logs e erros sanitizados;
-- `CrmProvider`, mock determinístico e Helena bloqueada sem endpoint inventado.
+- `CrmProvider`, mock determinístico e `HelenaCrmProvider` como integração de dados opcional/desligada, sem endpoint inventado.
 
 ### Radar e Score
 
@@ -109,30 +109,32 @@ As rotas fundacionais permanecem documentadas em `docs/architecture/route-map.md
 
 ## Evidências executadas
 
-| Verificação                    | Resultado                                                  |
-| ------------------------------ | ---------------------------------------------------------- |
-| Prettier                       | passou em todo o repositório                               |
-| ESLint                         | passou sem warnings                                        |
-| Typecheck                      | passou em todos os workspaces                              |
-| Unit/component/API integration | 38 testes em 14 arquivos passaram                          |
-| Build                          | Next.js e NestJS passaram; rotas das Fases 1–3 compiladas  |
-| Playwright + axe               | 2 testes Chromium passaram                                 |
-| Revisão visual                 | Portal verificado em 1440 px e 390 px, sem overflow mobile |
-| pgTAP                          | 73 assertions das Fases 1–3 versionadas; não executadas    |
+| Verificação                    | Resultado                                                 |
+| ------------------------------ | --------------------------------------------------------- |
+| Prettier                       | passou em todo o repositório                              |
+| ESLint                         | passou sem warnings                                       |
+| Typecheck                      | passou em todos os workspaces                             |
+| Unit/component/API integration | 105 testes em 27 arquivos passaram                        |
+| Build                          | Next.js e NestJS passaram; 37 rotas compiladas            |
+| Playwright + axe               | 15 testes Chromium passaram                               |
+| Acessibilidade pública         | zero violações críticas/sérias nas seis rotas verificadas |
+| pgTAP                          | 153 assertions versionadas; não executadas                |
 
 ## Limitações atuais
 
-1. Docker não está disponível; migrations, RPCs, RLS e 73 assertions pgTAP ainda não foram executados.
+1. Docker não está disponível; migrations, RPCs, RLS e 153 assertions pgTAP ainda não foram executados.
 2. `database.types.ts` continua sendo baseline manual e deve ser regenerado após `db:reset` verde.
 3. A fórmula `1.0.0-provisional` está em estado `draft`: pesos e suficiência foram autorizados, mas thresholds de calibração e owner nominal continuam pendentes.
-4. Não existe Supabase remoto, staging, domínio ou deployment autorizado.
+4. O projeto Supabase remoto `yzbmmkyhsjkrdjknspnv` existe, mas ainda não recebeu as migrations; staging, domínio e deployment continuam pendentes.
 5. O E2E autenticado completo do Radar e Portal depende de usuários sintéticos provisionados no Supabase local/CI.
-6. A fonte oficial de agenda permanece indefinida; inputs de agenda são manuais e declarados.
-7. Helena não possui documentação/sandbox e não realiza chamada alguma.
+6. A agenda é operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena; enquanto a integração de dados opcional não é ligada, os inputs de agenda na Althion são manuais/sintéticos e declarados.
+7. A integração de dados Helena não possui documentação/sandbox oficiais e não realiza chamada alguma; a Helena opera em paralelo por conta própria.
+8. Google Ads usa campanhas, métricas e atribuição sintéticas; tokens ficam fora do schema público e somente valores `mock_` são aceitos. OAuth/API e um cofre de produção ainda não existem.
+9. Os formulários públicos não encaminham leads: destino, antiabuso, base legal e retenção seguem pendentes.
 
 ## Git
 
-Branch atual: `codex/phase-3-client-portal`. Nenhum remoto está configurado.
+Branch atual: `codex/landing-redesign`. O remoto `origin` aponta para `iagopedro3-create/althion`.
 
 ## Atualização — Fase 4 (17/07/2026)
 
@@ -140,4 +142,8 @@ Cockpit do Especialista implementado no branch `codex/phase-4-cockpit`: domínio
 
 ## Atualização — Fase 5 (17/07/2026)
 
-Recovery Engine implementado no branch `codex/phase-5-recovery`, **sem execução de contato**: domínio em `packages/domain/src/recovery` (política `1.0.0-provisional`, regras `lead_no_response` e `attended_no_booking`, governança de consentimento/supressão/frequência), tabelas `recovery_*` com históricos append-only e RLS por papel, RPCs que revalidam a governança no banco, API em `/api/v1/.../recovery/*` e web em `/cockpit/recovery`. Fonte de leads exclusivamente o `MockCrmProvider`; Helena segue bloqueada. Validação pgTAP (128 assertions das Fases 1–5) pendente de Docker/CI. Detalhes: `docs/releases/phase-5.md`.
+Recovery Engine implementado no branch `codex/phase-5-recovery`, **sem execução de contato**: domínio em `packages/domain/src/recovery` (política `1.0.0-provisional`, regras `lead_no_response` e `attended_no_booking`, governança de consentimento/supressão/frequência), tabelas `recovery_*` com históricos append-only e RLS por papel, RPCs que revalidam a governança no banco, API em `/api/v1/.../recovery/*` e web em `/cockpit/recovery`. Fonte de leads exclusivamente o `MockCrmProvider`; a Helena opera em paralelo e sua integração de dados é opcional. Validação pgTAP (128 assertions das Fases 1–5) pendente de Docker/CI. Detalhes: `docs/releases/phase-5.md`.
+
+## Atualização — Quality, Google Ads e site (19/07/2026)
+
+Quality assistido foi implementado com rubricas versionadas, revisão humana e handoff clínico. Google Ads possui schema, API, telas e atribuição apenas para sandbox sintético; tokens foram removidos da tabela pública, isolados em `app_private` e limitados a valores `mock_`. OAuth/API real e um cofre de produção continuam obrigatórios antes de qualquer uso real. O site institucional e `/diagnostico` foram redesenhados; o E2E público passa com verificações axe, e o formulário não persiste PII nem encaminha dados enquanto destino e base legal não forem aprovados.

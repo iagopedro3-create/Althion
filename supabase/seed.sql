@@ -69,7 +69,7 @@ values ('10000000-0000-4000-8000-000000000001', '50000000-0000-4000-8000-0000000
 insert into public.feature_flags (key, description, default_enabled)
 values
   ('foundation.portal', 'Exibe o shell fundacional autenticado.', true),
-  ('integration.helena', 'Habilita a integração Helena após documentação e sandbox.', false);
+  ('integration.helena', 'Habilita a integração de dados com a Helena (opcional; a Helena opera em paralelo).', false);
 
 insert into public.feature_flag_overrides (organization_id, feature_flag_id, enabled, reason)
 select
@@ -163,10 +163,19 @@ cross join (
 ) as status_change(from_status, to_status)
 where profile.auth_user_id = '80000000-0000-4000-8000-000000000004';
 
--- Habilitação sintética local do Cockpit interno (flag global, sem override por organização).
-update public.feature_flags
-set default_enabled = true
-where key = 'cockpit.specialist.v1';
+-- Habilitação sintética local do Cockpit apenas para a organização de demonstração.
+insert into public.feature_flag_overrides (organization_id, feature_flag_id, enabled, reason)
+select
+  '10000000-0000-4000-8000-000000000001',
+  id,
+  true,
+  'Habilita o Cockpit no ambiente local de demonstração'
+from public.feature_flags
+where key = 'cockpit.specialist.v1'
+on conflict (organization_id, feature_flag_id) do update
+set enabled = excluded.enabled,
+    reason = excluded.reason,
+    expires_at = null;
 
 -- Fase 5 — Recovery sintético: consentimentos internos dos leads do MockCrmProvider e flag local.
 insert into public.recovery_consents (
@@ -182,23 +191,32 @@ from public.profiles profile
 cross join (values ('mock-lead-unanswered'), ('mock-lead-in-progress')) as leads(lead_ref)
 where profile.auth_user_id = '80000000-0000-4000-8000-000000000004';
 
-update public.feature_flags
-set default_enabled = true
-where key = 'recovery.engine.v1';
+insert into public.feature_flag_overrides (organization_id, feature_flag_id, enabled, reason)
+select
+  '10000000-0000-4000-8000-000000000001',
+  id,
+  true,
+  'Habilita o Recovery no ambiente local de demonstração'
+from public.feature_flags
+where key = 'recovery.engine.v1'
+on conflict (organization_id, feature_flag_id) do update
+set enabled = excluded.enabled,
+    reason = excluded.reason,
+    expires_at = null;
 
 insert into public.integrations (organization_id, provider, status, capabilities, last_error_code)
 values
   (
     '10000000-0000-4000-8000-000000000001',
     'helena',
-    'blocked',
+    'disabled',
     '{"listContacts":false,"listLeads":false,"listConversations":false,"listMessages":false,"listPipelines":false,"listOpportunities":false,"updateOpportunity":false,"createTask":false}',
     'PROVIDER_NOT_CONFIGURED'
   ),
   (
     '10000000-0000-4000-8000-000000000002',
     'helena',
-    'blocked',
+    'disabled',
     '{"listContacts":false,"listLeads":false,"listConversations":false,"listMessages":false,"listPipelines":false,"listOpportunities":false,"updateOpportunity":false,"createTask":false}',
     'PROVIDER_NOT_CONFIGURED'
   );

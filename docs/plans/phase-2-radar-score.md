@@ -57,7 +57,7 @@ O usuário principal desta fase é o gestor da clínica. O Especialista de Relac
 4. Fórmulas publicadas não serão editadas. Uma mudança cria nova versão e preserva cálculos anteriores.
 5. Um recálculo nunca sobrescreve o snapshot histórico.
 6. Valores monetários opcionais de aquisição não participarão do Score v1 nem gerarão afirmações de retorno financeiro.
-7. A agenda continua sem fonte oficial. Ocupação e comparecimento serão inputs manuais identificados como `manual` até uma integração aprovada.
+7. A agenda é operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena; a Althion não mantém fonte de agenda própria. Ocupação e comparecimento serão inputs manuais identificados como `manual` até a integração de dados opcional ser ligada.
 8. Migrations/RLS da Fase 1 e da Fase 2 precisam passar em Docker/CI antes do aceite técnico da fase.
 
 ## Matriz de acesso proposta

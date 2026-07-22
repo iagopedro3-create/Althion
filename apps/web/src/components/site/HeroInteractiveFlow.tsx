@@ -243,12 +243,9 @@ export function HeroInteractiveFlow() {
       {/* Barra de progresso e navegação */}
       <div className="hero-flow-footer">
         <div
+          aria-label={`Navegação da jornada: etapa ${state.active + 1} de ${JOURNEY_STEPS.length}`}
           className="hero-flow-progress"
-          role="progressbar"
-          aria-valuenow={state.active + 1}
-          aria-valuemin={1}
-          aria-valuemax={JOURNEY_STEPS.length}
-          aria-label="Progresso da jornada"
+          role="group"
         >
           {JOURNEY_STEPS.map((s, i) => (
             <button

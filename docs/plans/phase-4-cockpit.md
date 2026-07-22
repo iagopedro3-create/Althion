@@ -142,15 +142,15 @@ Nenhum modelo opaco de churn; nenhuma ação automática. O Cockpit recomenda; o
 
 ## Fontes e disponibilidade
 
-| Informação                         | Fonte                              | Estado quando ausente                   |
-| ---------------------------------- | ---------------------------------- | --------------------------------------- |
-| carteira, complexidade, capacidade | Fundação (assignments/specialists) | `not_assigned`                          |
-| Score, cobertura, staleness        | Althion Score                      | `insufficient_data`                     |
-| solicitações e SLA                 | Portal (Fase 3)                    | `available` (lista vazia)               |
-| plano e tarefas vencidas           | Portal (Fase 3)                    | `available` (sem plano)                 |
-| incidentes e reuniões              | módulo próprio da Fase 4           | disponível após migration               |
-| integrações                        | Fundação                           | `blocked`/`disabled`                    |
-| leads, conversas, agenda, Recovery | Helena/fases futuras               | `source_blocked`/`module_not_available` |
+| Informação                         | Fonte                              | Estado quando ausente                       |
+| ---------------------------------- | ---------------------------------- | ------------------------------------------- |
+| carteira, complexidade, capacidade | Fundação (assignments/specialists) | `not_assigned`                              |
+| Score, cobertura, staleness        | Althion Score                      | `insufficient_data`                         |
+| solicitações e SLA                 | Portal (Fase 3)                    | `available` (lista vazia)                   |
+| plano e tarefas vencidas           | Portal (Fase 3)                    | `available` (sem plano)                     |
+| incidentes e reuniões              | módulo próprio da Fase 4           | disponível após migration                   |
+| integrações                        | Fundação                           | `blocked`/`disabled`                        |
+| leads, conversas, agenda, Recovery | Helena (paralelo)/fases futuras    | `handled_externally`/`module_not_available` |
 
 ## Modelo de dados
 

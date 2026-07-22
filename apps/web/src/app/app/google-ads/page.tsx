@@ -65,7 +65,7 @@ export default async function GoogleAdsPage({
         <header className="page-heading">
           <div>
             <p className="eyebrow">Configurações de Integração</p>
-            <h1>Conectar Google Ads</h1>
+            <h1>Configurar sandbox do Google Ads</h1>
             <p className="lead-copy">
               Monitore o desempenho de suas campanhas de atração e atribua cliques de anúncios a
               novas consultas médicas.
@@ -74,10 +74,10 @@ export default async function GoogleAdsPage({
         </header>
 
         <section className="state-card">
-          <h2>Insira suas Credenciais de Leitura</h2>
+          <h2>Use somente credenciais sintéticas</h2>
           <p className="lead-copy" style={{ marginBottom: '20px' }}>
-            A conexão é estabelecida de forma segura e com permissão exclusiva de **leitura
-            (ReadOnly)**. Nenhuma alteração é enviada ao Google Ads.
+            Este protótipo não chama a API do Google. Use apenas valores iniciados por `mock_`;
+            credenciais reais são recusadas pela API e pelo banco.
           </p>
           <GoogleAdsCredentialsForm context={context} />
         </section>
@@ -127,7 +127,7 @@ export default async function GoogleAdsPage({
           >
             <div>
               <span>
-                Status da Integração: <strong>Conectado (ReadOnly)</strong>
+                Status da Integração: <strong>Sandbox sintético</strong>
               </span>
               {credentials.last_sync_at ? (
                 <small style={{ color: 'var(--muted)', display: 'block' }}>
@@ -318,10 +318,10 @@ export default async function GoogleAdsPage({
       )}
 
       <section className="state-card">
-        <h2>Atualizar Configurações do Google Ads</h2>
+        <h2>Atualizar configuração sintética</h2>
         <p className="lead-copy" style={{ marginBottom: '16px' }}>
-          Atualize os tokens OAuth se a sessão expirar ou se quiser conectar um Customer ID
-          diferente.
+          Este ambiente aceita somente tokens iniciados por `mock_`. OAuth e credenciais reais
+          permanecem bloqueados até a integração oficial.
         </p>
         <GoogleAdsCredentialsForm context={context} existingCustomerId={credentials.customer_id} />
       </section>

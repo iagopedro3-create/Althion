@@ -9,7 +9,7 @@ const LEAK_POINTS = [
     stage: 'Primeiro contato',
     loss: '28%',
     label: 'dos contatos não recebem retorno em até 10 min.',
-    color: '#F47E6B',
+    color: '#A83C32',
     severity: 'high',
   },
   {
@@ -17,7 +17,7 @@ const LEAK_POINTS = [
     stage: 'Atendimento inicial',
     loss: '19%',
     label: 'das conversas não chegam a uma proposta de horário.',
-    color: '#F5A26F',
+    color: '#8A4B16',
     severity: 'medium',
   },
   {
@@ -25,7 +25,7 @@ const LEAK_POINTS = [
     stage: 'Oferta de agendamento',
     loss: '14%',
     label: 'dos interessados abandonam antes de confirmar.',
-    color: '#F5A26F',
+    color: '#8A4B16',
     severity: 'medium',
   },
   {
@@ -33,7 +33,7 @@ const LEAK_POINTS = [
     stage: 'Confirmação',
     loss: '11%',
     label: 'dos agendados não recebem lembrete ativo.',
-    color: '#EBB94A',
+    color: '#755B00',
     severity: 'medium',
   },
   {
@@ -41,7 +41,7 @@ const LEAK_POINTS = [
     stage: 'Dia do atendimento',
     loss: '8%',
     label: 'de cancelamentos na véspera sem oferta de reposição.',
-    color: '#EBB94A',
+    color: '#755B00',
     severity: 'low',
   },
   {
@@ -49,7 +49,7 @@ const LEAK_POINTS = [
     stage: 'Pós-atendimento',
     loss: '22%',
     label: 'de pacientes recorrentes não recebem convite de retorno.',
-    color: '#F47E6B',
+    color: '#A83C32',
     severity: 'high',
   },
   {
@@ -57,7 +57,7 @@ const LEAK_POINTS = [
     stage: 'Fila de espera',
     loss: '31%',
     label: 'das vagas canceladas não são recuperadas no mesmo dia.',
-    color: '#F47E6B',
+    color: '#A83C32',
     severity: 'high',
   },
 ] as const;

@@ -181,7 +181,7 @@ export default async function ClientQualityPage({
                   </div>
                   {evalItem.feedback ? (
                     <p style={{ margin: '8px 0', fontSize: '0.9rem', color: 'var(--text)' }}>
-                      "{evalItem.feedback}"
+                      &ldquo;{evalItem.feedback}&rdquo;
                     </p>
                   ) : null}
                   <small style={{ color: 'var(--muted)', display: 'block' }}>
@@ -197,11 +197,10 @@ export default async function ClientQualityPage({
           <h2>Fila de Triagem Médica</h2>
           {flagsRes.kind === 'denied' ? (
             <div style={{ textAlign: 'center', padding: '24px 16px', color: 'var(--muted)' }}>
-              <div style={{ fontSize: '2rem', marginBottom: '12px' }}>🔒</div>
               <strong>Acesso Restrito a Médicos</strong>
               <p className="lead-copy" style={{ marginTop: '8px' }}>
-                Em conformidade com o sigilo médico e LGPD, a visualização dos dados clínicos de
-                pacientes é restrita aos profissionais médicos.
+                A política de minimização e acesso prevê que dados clínicos sejam visualizados
+                apenas por profissionais médicos autorizados.
               </p>
             </div>
           ) : flags && flags.length === 0 ? (
@@ -246,7 +245,7 @@ export default async function ClientQualityPage({
                         fontStyle: 'italic',
                       }}
                     >
-                      <strong>Resolução:</strong> "{flag.handoff_notes}"
+                      <strong>Resolução:</strong> &ldquo;{flag.handoff_notes}&rdquo;
                     </p>
                   ) : null}
                   <small style={{ color: 'var(--muted)', display: 'block', marginBottom: '8px' }}>

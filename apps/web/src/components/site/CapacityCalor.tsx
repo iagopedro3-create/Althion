@@ -56,6 +56,12 @@ const WEEK_DATA: DayCapacity[] = [
   },
 ];
 
+const STATUS_LABEL: Record<DayCapacity['status'], string> = {
+  low: 'Ocupação baixa',
+  moderate: 'Ocupação média',
+  optimal: 'Ocupação saudável',
+};
+
 export function CapacityCalor() {
   const [selectedIdx, setSelectedIdx] = useState(1);
   const current = (WEEK_DATA[selectedIdx] ?? WEEK_DATA[0])!;
@@ -84,7 +90,7 @@ export function CapacityCalor() {
           <span
             style={{
               fontSize: '0.75rem',
-              color: '#377CF6',
+              color: '#2055A6',
               fontWeight: '700',
               letterSpacing: '0.05em',
               textTransform: 'uppercase',
@@ -94,27 +100,27 @@ export function CapacityCalor() {
           >
             Em Desenvolvimento
           </span>
-          <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '700', color: '#10201B' }}>
+          <h3 style={{ margin: 0, fontSize: '1.4rem', fontWeight: '700', color: 'var(--text)' }}>
             Monitor de Ocupação da Agenda
           </h3>
         </div>
         {/* Legend */}
-        <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: '#52635D' }}>
+        <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', color: 'var(--muted)' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
               style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#29C7A1' }}
             />{' '}
-            Saúdável
+            Saudável
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
-              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F5A26F' }}
+              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8A4B16' }}
             />{' '}
             Médio
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span
-              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F47E6B' }}
+              style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#A83C32' }}
             />{' '}
             Ocioso
           </span>
@@ -132,11 +138,12 @@ export function CapacityCalor() {
         {WEEK_DATA.map((day, idx) => (
           <button
             key={day.day}
+            aria-pressed={selectedIdx === idx}
             onClick={() => setSelectedIdx(idx)}
             style={{
               background: selectedIdx === idx ? '#F5F7F3' : '#FFFFFF',
               border:
-                selectedIdx === idx ? '2px solid #10201B' : '1px solid rgba(16, 32, 27, 0.08)',
+                selectedIdx === idx ? '2px solid var(--text)' : '1px solid rgba(16, 32, 27, 0.08)',
               borderRadius: '16px',
               padding: '20px 12px',
               cursor: 'pointer',
@@ -149,13 +156,14 @@ export function CapacityCalor() {
             }}
             type="button"
           >
-            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: '#52635D' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'var(--muted)' }}>
               {day.day}
             </span>
-            <span style={{ fontSize: '1rem', fontWeight: '800', color: '#10201B' }}>
+            <span style={{ fontSize: '1rem', fontWeight: '800', color: 'var(--text)' }}>
               {day.date}
             </span>
             <span
+              aria-hidden="true"
               style={{
                 width: '10px',
                 height: '10px',
@@ -164,13 +172,14 @@ export function CapacityCalor() {
                   day.status === 'optimal'
                     ? '#29C7A1'
                     : day.status === 'moderate'
-                      ? '#F5A26F'
-                      : '#F47E6B',
+                      ? '#8A4B16'
+                      : '#A83C32',
               }}
             />
-            <span style={{ fontSize: '0.85rem', color: '#52635D', fontWeight: '700' }}>
+            <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '700' }}>
               {day.occupancy}%
             </span>
+            <span className="sr-only">{STATUS_LABEL[day.status]}</span>
           </button>
         ))}
       </div>
@@ -193,7 +202,7 @@ export function CapacityCalor() {
             gap: '8px',
           }}
         >
-          <strong style={{ fontSize: '0.95rem', color: '#10201B' }}>
+          <strong style={{ fontSize: '0.95rem', color: 'var(--text)' }}>
             Auditoria da Ocupação ({current.day} — {current.date})
           </strong>
           <span
@@ -206,12 +215,17 @@ export function CapacityCalor() {
           </span>
         </div>
         <p
-          style={{ margin: '0 0 16px 0', fontSize: '0.9rem', color: '#52635D', lineHeight: '1.6' }}
+          style={{
+            margin: '0 0 16px 0',
+            fontSize: '0.9rem',
+            color: 'var(--muted)',
+            lineHeight: '1.6',
+          }}
         >
           {current.recommendation}
         </p>
         {current.leadsWaiting > 0 ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#F47E6B' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#A83C32' }}>
             <svg
               width="14"
               height="14"

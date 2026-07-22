@@ -105,6 +105,7 @@ export function SiteHeader() {
         aria-hidden={!mobileOpen}
         className={`site-mobile-nav${mobileOpen ? ' site-mobile-nav--open' : ''}`}
         id="mobile-nav"
+        inert={!mobileOpen}
         ref={mobileNavRef}
         role="dialog"
         aria-label="Menu de navegação"

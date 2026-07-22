@@ -1,15 +1,22 @@
 import { z } from 'zod';
 
 export const saveGoogleAdsCredentialsSchema = z.object({
-  refresh_token: z.string().min(1, 'Token de refresh do Google Ads é obrigatório'),
-  developer_token: z.string().min(1, 'Token de desenvolvedor (developer token) é obrigatório'),
+  refresh_token: z
+    .string()
+    .startsWith('mock_', 'Somente tokens sintéticos de sandbox são aceitos nesta fase')
+    .max(512, 'Token sintético excede o tamanho permitido'),
+  developer_token: z
+    .string()
+    .startsWith('mock_', 'Somente tokens sintéticos de sandbox são aceitos nesta fase')
+    .max(512, 'Token sintético excede o tamanho permitido'),
   customer_id: z
     .string()
     .regex(
       /^[0-9-]+$/,
       'Identificador de cliente do Google Ads deve conter apenas números e traços',
     )
-    .min(1, 'Identificador de cliente (Customer ID) é obrigatório'),
+    .min(1, 'Identificador de cliente (Customer ID) é obrigatório')
+    .max(64, 'Identificador de cliente excede o tamanho permitido'),
 });
 
 export const googleAdsClinicParamsSchema = z.object({

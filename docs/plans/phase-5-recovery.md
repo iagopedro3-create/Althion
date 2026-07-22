@@ -16,7 +16,7 @@ Fronteiras invioláveis nesta fase:
 - nenhuma API Helena real ou fictícia; fonte de leads é exclusivamente o mock determinístico;
 - ações terminam em `approved`/`rejected`; o estado `executed` não existe no schema desta fase;
 - nenhum dado clínico; motivos e notas são taxonomias administrativas fechadas;
-- cancelamento/falta/horário vago/paciente inativo dependem de fonte de agenda indefinida → **fora do escopo**; apenas os cenários 1 e 2 do roadmap entram (lead sem resposta; atendido sem agendamento), ambos sintéticos.
+- cancelamento/falta/horário vago/paciente inativo dependem de dados de agenda, operados externamente por cliente (sistema próprio, Google Agenda etc.) e integrados via Helena → **fora do escopo desta fase** até a integração de dados opcional ser ligada; apenas os cenários 1 e 2 do roadmap entram (lead sem resposta; atendido sem agendamento), ambos sintéticos.
 
 ## Política de recuperação v1 (provisória, versionada)
 
