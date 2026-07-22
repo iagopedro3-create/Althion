@@ -133,7 +133,7 @@ task_priority: low | normal | high
 ### 9. Integrações e configurações
 
 - integração: provider, estado, capabilities, última sincronização bem-sucedida e erro sanitizado;
-- Helena permanece `blocked` sem ação de conexão;
+- a integração de dados Helena permanece `disabled` (opcional) sem ação de conexão; a Helena opera em paralelo;
 - Mock permanece identificado como ambiente sintético;
 - configurações de organização, clínica, timezone e acessos em modo de leitura nesta fase;
 - mutations de identidade, retenção, integração e permissões continuam nos fluxos administrativos já autorizados ou em fase própria.
@@ -164,7 +164,7 @@ task_priority: low | normal | high
 | plano e tarefas                            | módulo próprio da Fase 3 | disponível após migration                    |
 | Especialista atribuído                     | Fundação Althion         | disponível ou `not_assigned`                 |
 | estado de integração                       | Fundação Althion         | disponível, `blocked`, `disabled` ou `stale` |
-| leads, conversas e mensagens               | Helena                   | `source_blocked`                             |
+| leads, conversas e mensagens               | Helena (em paralelo)     | `handled_externally`                         |
 | agenda e comparecimento                    | fonte não definida       | `source_not_configured`                      |
 | recuperação executada                      | Recovery Engine futuro   | `module_not_available`                       |
 | qualidade e performance de IA              | Quality Engine futuro    | `module_not_available`                       |

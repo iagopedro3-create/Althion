@@ -40,7 +40,7 @@ O repositório começou vazio: sem commits, remoto, stack ou landing page. Porta
 
 - inventário atual baseado em evidências;
 - arquitetura, rotas e dados marcados como proposta, não implementação;
-- integração Helena explicitamente bloqueada;
+- Helena posicionada como motor operacional paralelo; integração de dados opcional e não bloqueante;
 - riscos multi-tenant, LGPD e conteúdo clínico documentados;
 - escopo e não objetivos alinhados;
 - dúvidas fundacionais respondidas ou aceitas como decisões adiadas;
@@ -48,19 +48,19 @@ O repositório começou vazio: sem commits, remoto, stack ou landing page. Porta
 
 ## Decisões técnicas propostas
 
-| Tema           | Proposta                                                  | Justificativa                                                               | Estado                            |
-| -------------- | --------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------- |
-| Repositório    | monorepo pnpm workspaces                                  | contratos/tipos compartilhados e releases coordenados sem ferramenta pesada | Implementado                      |
-| Arquitetura    | modular monolith NestJS                                   | fronteiras claras e menor custo operacional inicial                         | Implementado                      |
-| Web            | Next.js App Router + TypeScript + Tailwind                | stack solicitada, SSR/RSC e acessibilidade                                  | Implementado                      |
-| API            | NestJS REST `/api/v1`                                     | contratos explícitos, módulos e guards                                      | Implementado                      |
-| Dados          | Supabase PostgreSQL + SQL migrations                      | Auth, RLS e Postgres solicitados                                            | Implementado; Docker pendente     |
-| Acesso a dados | Supabase user-scoped na API; RPC para transações críticas | mantém RLS com o JWT; reduz bypass privilegiado                             | Implementado; pgTAP pendente      |
-| Auth           | Supabase Auth; API valida JWT por JWKS                    | autoridade única e fronteira server-side                                    | Convite/e-mail e senha provisório |
-| Testes         | Vitest, Supertest, Playwright e testes SQL/RLS            | cobertura por camada e testes negativos                                     | Código/E2E verdes; SQL pendente   |
-| Assíncrono     | outbox + fila somente quando houver job real              | idempotência sem infraestrutura prematura                                   | Provedor adiado                   |
-| CRM            | ports/adapters com `MockCrmProvider`                      | Helena substituível e integração bloqueada honestamente                     | Requisito confirmado              |
-| Deploy         | local, staging e production separados                     | reduz risco e evita dados reais em preview                                  | Fornecedor/região a decidir       |
+| Tema           | Proposta                                                  | Justificativa                                                                     | Estado                            |
+| -------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------- |
+| Repositório    | monorepo pnpm workspaces                                  | contratos/tipos compartilhados e releases coordenados sem ferramenta pesada       | Implementado                      |
+| Arquitetura    | modular monolith NestJS                                   | fronteiras claras e menor custo operacional inicial                               | Implementado                      |
+| Web            | Next.js App Router + TypeScript + Tailwind                | stack solicitada, SSR/RSC e acessibilidade                                        | Implementado                      |
+| API            | NestJS REST `/api/v1`                                     | contratos explícitos, módulos e guards                                            | Implementado                      |
+| Dados          | Supabase PostgreSQL + SQL migrations                      | Auth, RLS e Postgres solicitados                                                  | Implementado; Docker pendente     |
+| Acesso a dados | Supabase user-scoped na API; RPC para transações críticas | mantém RLS com o JWT; reduz bypass privilegiado                                   | Implementado; pgTAP pendente      |
+| Auth           | Supabase Auth; API valida JWT por JWKS                    | autoridade única e fronteira server-side                                          | Convite/e-mail e senha provisório |
+| Testes         | Vitest, Supertest, Playwright e testes SQL/RLS            | cobertura por camada e testes negativos                                           | Código/E2E verdes; SQL pendente   |
+| Assíncrono     | outbox + fila somente quando houver job real              | idempotência sem infraestrutura prematura                                         | Provedor adiado                   |
+| CRM            | ports/adapters com `MockCrmProvider`                      | Helena opera em paralelo e é substituível; integração de dados opcional/desligada | Requisito confirmado              |
+| Deploy         | local, staging e production separados                     | reduz risco e evita dados reais em preview                                        | Fornecedor/região a decidir       |
 
 ## Fase 1 — Fundação (implementada; validação de banco pendente)
 
@@ -215,7 +215,7 @@ Pipeline mínimo: secret scan, instalação imutável, lint, typecheck, unit, in
 | Auth UX define política sem decisão                | aprovar fluxo de convite/login antes do incremento 3                   |
 | Hierarquia não reflete grupos reais                | validar Organization/Clinic/Unit com cenários piloto                   |
 | Framework compartilhado vaza para domínio          | lint/boundaries e contracts canônicos                                  |
-| Mock cria falsa impressão de integração            | UI/status explícito “mock” e Helena “bloqueada”                        |
+| Mock cria falsa impressão de integração            | UI/status explícito “mock” e integração de dados Helena “desligada”    |
 | OneDrive afeta watchers/performance                | medir; mover workspace se causar lock/sync inconsistente               |
 | Dependências atuais mudam                          | verificar releases e advisories na abertura da fase; lockfile imutável |
 
@@ -268,11 +268,11 @@ Plano detalhado: `docs/plans/phase-4-cockpit.md`. Política operacional versiona
 
 - regra/versão, simulação, run, oportunidade e ação;
 - consentimento, supressão, frequência, aprovação e idempotência;
-- sem execução Helena até a Fase 6 desbloqueada.
+- sem execução de contato pela Althion; o contato é executado pela Helena, que opera em paralelo.
 
 Plano detalhado: `docs/plans/phase-5-recovery.md`. Política `1.0.0-provisional` com duas regras determinísticas sobre o `MockCrmProvider`; consentimento deny-by-default, supressão e frequência revalidados no banco; nenhuma execução de contato (o estado `executed` não existe no schema). Evidências e limitações: `docs/releases/phase-5.md`.
 
-### Fase 6 — Helena
+### Fase 6 — Integração de dados com a Helena (opcional, não bloqueante)
 
 - autenticação e endpoints apenas conforme documentação oficial;
 - adapter mapping, backfill, incremental, webhook e reconciliação;
@@ -362,7 +362,7 @@ Após confirmar o provedor/remoto:
 
 ### Bloqueios externos
 
-1. API Helena: documentação, sandbox, autenticação, rate limits, webhooks e capabilities ausentes. Bloqueia a Fase 6 e qualquer integração real.
+1. Integração de dados Helena: documentação, sandbox, autenticação, rate limits, webhooks e capabilities ausentes. Bloqueia apenas a Fase 6 (opcional). A Helena opera em paralelo independentemente disso e não bloqueia o roadmap.
 2. Agenda: fonte oficial de disponibilidade, agendamento, confirmação, cancelamento, falta e comparecimento indefinida. Bloqueia métricas confiáveis e partes de Recovery/Capacity.
 3. LGPD/contratos: papéis, bases legais, retenção, descarte, suboperadores e transferência internacional não aprovados. Bloqueia dados reais/piloto.
 4. Infraestrutura: projetos/contas, região de dados, hosting, domínio e ownership não definidos. Não impede scaffold local, mas bloqueia staging.
@@ -387,7 +387,7 @@ Após confirmar o provedor/remoto:
 3. Repetir lint, typecheck, testes, build e E2E após a geração dos tipos.
 4. Provisionar usuários exclusivamente sintéticos para E2E autenticado do Radar e Portal por papel.
 5. Revisar migrations, functions `security definer`, grants e policies por segunda pessoa.
-6. Manter Helena bloqueada, fórmula `draft` e dados exclusivamente sintéticos.
+6. Manter a integração de dados Helena desligada (opcional), fórmula `draft` e dados exclusivamente sintéticos.
 7. Definir owner nominal e plano de calibração antes de publicar a fórmula oficial.
 8. Revisar as limitações em `docs/releases/phase-2.md` e `docs/releases/phase-3.md`.
 9. Definir SLAs, saúde da conta, incidentes, reuniões, complexidade, capacidade e risco do Cockpit.

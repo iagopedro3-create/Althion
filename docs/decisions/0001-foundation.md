@@ -17,7 +17,7 @@ O repositório começou vazio. A Fundação precisa suportar autenticação, mul
 - Especialista recebe acesso por assignment, não por membership ampla.
 - Login inicial por convite/e-mail e senha; cadastro público desabilitado; MFA TOTP habilitado no Auth local e obrigatório para plataforma antes de produção.
 - Mutations de membership ocorrem por RPC atômica com autorização, idempotência e auditoria.
-- Helena permanece bloqueada e sem endpoint fictício.
+- Helena opera em paralelo como motor operacional; a integração de dados Althion↔Helena é opcional, desligada por padrão e sem endpoint fictício.
 
 ## Consequências
 

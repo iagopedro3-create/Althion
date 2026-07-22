@@ -15,7 +15,7 @@ O MVP de piloto é composto pelas Fases 1 a 6, cada uma com aprovação independ
 - organizações, clínicas, unidades, profissionais e memberships;
 - RBAC, RLS e testes negativos de isolamento;
 - auditoria, feature flags e configuração por ambiente;
-- contrato `CrmProvider`, `MockCrmProvider` e adaptador Helena explicitamente bloqueado.
+- contrato `CrmProvider`, `MockCrmProvider` e adaptador Helena como integração de dados opcional/desligada (Helena opera em paralelo).
 
 ### Radar e Score
 
