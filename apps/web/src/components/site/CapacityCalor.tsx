@@ -56,6 +56,12 @@ const WEEK_DATA: DayCapacity[] = [
   },
 ];
 
+const STATUS_LABEL: Record<DayCapacity['status'], string> = {
+  low: 'Ocupação baixa',
+  moderate: 'Ocupação média',
+  optimal: 'Ocupação saudável',
+};
+
 export function CapacityCalor() {
   const [selectedIdx, setSelectedIdx] = useState(1);
   const current = (WEEK_DATA[selectedIdx] ?? WEEK_DATA[0])!;
@@ -132,6 +138,7 @@ export function CapacityCalor() {
         {WEEK_DATA.map((day, idx) => (
           <button
             key={day.day}
+            aria-pressed={selectedIdx === idx}
             onClick={() => setSelectedIdx(idx)}
             style={{
               background: selectedIdx === idx ? '#F5F7F3' : '#FFFFFF',
@@ -156,6 +163,7 @@ export function CapacityCalor() {
               {day.date}
             </span>
             <span
+              aria-hidden="true"
               style={{
                 width: '10px',
                 height: '10px',
@@ -171,6 +179,7 @@ export function CapacityCalor() {
             <span style={{ fontSize: '0.85rem', color: 'var(--muted)', fontWeight: '700' }}>
               {day.occupancy}%
             </span>
+            <span className="sr-only">{STATUS_LABEL[day.status]}</span>
           </button>
         ))}
       </div>

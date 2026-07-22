@@ -64,7 +64,9 @@ export function FAQAccordions() {
             }}
           >
             <button
+              aria-controls={`faq-panel-${idx}`}
               aria-expanded={isOpen}
+              id={`faq-trigger-${idx}`}
               onClick={() => toggle(idx)}
               style={{
                 width: '100%',
@@ -84,6 +86,7 @@ export function FAQAccordions() {
             >
               <span>{item.q}</span>
               <span
+                aria-hidden="true"
                 style={{
                   fontSize: '1.2rem',
                   color: 'var(--muted)',
@@ -99,6 +102,9 @@ export function FAQAccordions() {
 
             {isOpen ? (
               <div
+                aria-labelledby={`faq-trigger-${idx}`}
+                id={`faq-panel-${idx}`}
+                role="region"
                 style={{
                   padding: '0 28px 24px 28px',
                   color: 'var(--muted)',

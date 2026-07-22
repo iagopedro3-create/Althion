@@ -178,7 +178,7 @@ export function RecoveryOpportunityFila() {
                     {op.state === 'acao' && 'Em andamento'}
                     {op.state === 'recuperada' && 'Recuperada!'}
                   </span>
-                  <div style={{ display: 'flex', gap: '3px' }}>
+                  <div aria-hidden="true" style={{ display: 'flex', gap: '3px' }}>
                     <div
                       style={{
                         width: '5px',
