@@ -60,7 +60,10 @@ SUPABASE_PUBLISHABLE_KEY=[publishable-key-staging]
 SUPABASE_JWT_ISSUER=https://[REF].supabase.co/auth/v1
 SUPABASE_JWT_AUDIENCE=authenticated
 LOG_LEVEL=info
+MFA_ENFORCEMENT=disabled     # ver abaixo antes de mudar
 ```
+
+> **`MFA_ENFORCEMENT`** controla se as rotas marcadas com `@RequireMfa()` exigem sessão com segundo fator (`aal2`). Mantenha `disabled` até a tela de inscrição TOTP estar publicada — ligar antes disso tranca o acesso de quem ainda não se inscreveu. O rollout previsto é `platform_admin` primeiro. Detalhes em `docs/plans/phase-10-security-pilot.md`.
 
 ## Parte 1 — Banco (Supabase remoto)
 

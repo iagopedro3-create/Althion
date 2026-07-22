@@ -17,7 +17,7 @@ Deixar o enforcement pronto para ser **ligado por configuração**, sem risco de
 3. **Rota declara a exigência; ambiente decide se ela vale.** `@RequireMfa()` marca a rota; `MfaGuard` só rejeita quando `MFA_ENFORCEMENT=enforced`. O default é `disabled`, então mesclar este incremento **não altera comportamento em nenhum ambiente**. Ligar é uma mudança de env var, reversível sem deploy de código.
 4. **Erro dedicado.** `403 MFA_REQUIRED` (não `401`): o token é válido, o que falta é o fator. Isso permite ao cliente distinguir "faça login" de "conclua a verificação em dois fatores".
 5. **Nenhuma rota é marcada ainda.** A lista de rotas sensíveis é decisão de produto (item 3.5). Marcar rotas agora, mesmo com enforcement desligado, criaria um falso sinal de cobertura.
-6. **`/api/v1/me` expõe o nível.** O web precisa saber se a sessão é `aal1` ou `aal2` para decidir se pede a inscrição; devolver isso junto do principal evita decodificar o JWT no cliente.
+6. **`/api/v1/me` expõe o nível.** O web precisa saber se a sessão é `aal1` ou `aal2` para decidir se pede a inscrição; devolver isso junto do principal evita decodificar o JWT no cliente. É um **campo adicional** (`assuranceLevel`), não um envelope: mantém o consumo atual do web funcionando, e o contrato usa `.default('aal1')` para tolerar uma API mais antiga durante o deploy.
 
 ## Arquivos
 
@@ -30,17 +30,18 @@ Deixar o enforcement pronto para ser **ligado por configuração**, sem risco de
 - `apps/api/src/common/auth/current-assurance-level.decorator.ts` (novo).
 - `apps/api/src/config/api-config.service.ts` — env `MFA_ENFORCEMENT`.
 - `apps/api/src/app.module.ts` — registra o `MfaGuard` depois do `JwtAuthGuard`.
-- `apps/api/src/modules/auth/me.controller.ts` — devolve `{ principal, assuranceLevel }`.
-- `apps/api/.env.example` / `docs/operations/deploy-staging.md` — documentar a env var.
+- `apps/api/src/modules/auth/me.controller.ts` — acrescenta `assuranceLevel` à resposta.
+- `packages/contracts/src/auth.ts` — `assuranceLevelSchema` e o campo em `principalResponseSchema`.
+- `.env.example` / `docs/operations/deploy-staging.md` — documentar a env var.
 - Testes: `access-token-claims.test.ts`, `mfa.guard.test.ts`.
 
 ## Riscos
 
-| Risco                                                       | Mitigação                                                                       |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| Ligar o enforcement sem tela de inscrição trava o acesso    | Default `disabled`; rollout documentado exige a tela publicada antes            |
-| Mudança de assinatura do `verify` quebra chamadores         | Um único chamador (`JwtAuthGuard`); typecheck cobre                             |
-| Contrato de `/api/v1/me` muda para o web                    | Envelope novo `{ principal, assuranceLevel }`; ajustar o cliente no mesmo commit |
+| Risco                                                    | Mitigação                                                            |
+| -------------------------------------------------------- | -------------------------------------------------------------------- |
+| Ligar o enforcement sem tela de inscrição trava o acesso | Default `disabled`; rollout documentado exige a tela publicada antes |
+| Mudança de assinatura do `verify` quebra chamadores      | Um único chamador (`JwtAuthGuard`); typecheck cobre                  |
+| Contrato de `/api/v1/me` muda para o web                 | Campo aditivo com default no schema; nenhum consumidor quebra        |
 
 ## Critérios de aceite
 
