@@ -2899,6 +2899,65 @@ details.creation-panel > summary {
   margin: 16px 0 0;
 }
 
+/* ── Botao secundario da landing (contornado; claro e escuro) ────────────────*/
+.site-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(243, 250, 247, 0.04);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.site-cta-secondary:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.site-cta-secondary:active {
+  transform: translateY(0);
+}
+
+/* ── CTA final (Ato 13) ──────────────────────────────────────────────────────*/
+.cta-final {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-final .section-headline {
+  margin: 20px 0;
+}
+
+.cta-final .section-lead {
+  margin-bottom: 40px;
+}
+
+.cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.cta-microcopy {
+  display: block;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 /* ── Hero connections strip ──────────────────────────────────────────────────*/
 .hero-connections {
   display: flex;
@@ -3627,6 +3686,10 @@ details.creation-panel > summary {
   background: #ffffff;
 }
 
+.landing-band--bordered {
+  border-top: 1px solid var(--line);
+}
+
 /* Cabecalho de banda: coluna unica alinhada a esquerda */
 .band-intro {
   max-width: 800px;
@@ -3637,6 +3700,39 @@ details.creation-panel > summary {
   max-width: 640px;
   margin: 0 auto 60px;
   text-align: center;
+}
+
+/* Espacamento padrao dentro das bandas (evita overrides inline) */
+.band-intro .section-headline,
+.band-intro--center .section-headline,
+.band-split .section-headline {
+  margin-bottom: 20px;
+}
+
+.band-split .section-lead {
+  margin-bottom: 24px;
+}
+
+/* Nota/disclaimer em tema escuro (Ato 10 — Seguranca) */
+.security-note {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(243, 250, 247, 0.03);
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Valor de destaque em spec-list */
+.spec-accent {
+  color: var(--accent);
+}
+
+/* Pilha de cards de confianca (Ato 10) */
+.trust-stack {
+  display: grid;
+  gap: 16px;
 }
 
 /* Layout de duas colunas com colapso no mobile */

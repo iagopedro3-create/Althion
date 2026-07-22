@@ -149,9 +149,7 @@ export default function SiteHome() {
         <div className="site-container">
           <div className="band-intro">
             <span className="section-eyebrow">Recuperação de oportunidades</span>
-            <h2 className="section-headline" style={{ marginBottom: '20px' }}>
-              Da perda identificada à próxima ação.
-            </h2>
+            <h2 className="section-headline">Da perda identificada à próxima ação.</h2>
             <p className="section-lead">
               A Althion identifica oportunidades paradas e organiza ações aprovadas para que leads,
               cancelamentos, faltas e retornos não fiquem sem acompanhamento.
@@ -167,7 +165,7 @@ export default function SiteHome() {
         <div className="site-container">
           <div className="band-intro">
             <span className="section-eyebrow">Inteligência de capacidade</span>
-            <h2 className="section-headline" style={{ marginBottom: '20px' }}>
+            <h2 className="section-headline">
               Use a capacidade da agenda para priorizar a operação.
             </h2>
             <p className="section-lead">
@@ -185,10 +183,8 @@ export default function SiteHome() {
         <div className="site-container band-split band-split--wide">
           <div>
             <span className="section-eyebrow">Triagem de Mensagens</span>
-            <h2 className="section-headline" style={{ marginBottom: '20px' }}>
-              Automação para a rotina. Pessoas para as exceções.
-            </h2>
-            <p className="section-lead" style={{ marginBottom: '24px' }}>
+            <h2 className="section-headline">Automação para a rotina. Pessoas para as exceções.</h2>
+            <p className="section-lead">
               A inteligência artificial cuida de tarefas administrativas repetitivas de forma veloz.
               Quando uma situação exige contexto e sensibilidade humana, a conversa é imediatamente
               direcionada para a equipe da clínica.
@@ -220,10 +216,10 @@ export default function SiteHome() {
         <div className="site-container band-split">
           <div>
             <span className="section-eyebrow">Acompanhamento Humano</span>
-            <h2 className="section-headline" style={{ marginBottom: '20px' }}>
+            <h2 className="section-headline">
               Tecnologia para executar. Uma pessoa responsável para acompanhar.
             </h2>
-            <p className="section-lead" style={{ marginBottom: '24px' }}>
+            <p className="section-lead">
               Cada clínica possui um Especialista de Relacionamento como principal ponto de contato.
               Ele estuda os processos internos da clínica, monitora os indicadores operacionais e
               coordena os planos de melhoria da agenda.
@@ -247,7 +243,7 @@ export default function SiteHome() {
               </li>
               <li className="spec-row">
                 <span>Aderência à Configuração</span>
-                <strong style={{ color: '#11765F' }}>Conforme as diretrizes</strong>
+                <strong className="spec-accent">Conforme as diretrizes</strong>
               </li>
             </ul>
           </div>
@@ -255,39 +251,23 @@ export default function SiteHome() {
       </section>
 
       {/* Act 10: Segurança & Termos (DARK THEME) */}
-      <section
-        id="seguranca"
-        className="dark-section landing-band"
-        style={{ borderTop: '1px solid var(--line)' }}
-      >
+      <section id="seguranca" className="dark-section landing-band landing-band--bordered">
         <div className="site-container band-split band-split--wide">
           <div>
             <span className="section-eyebrow">Segurança &amp; Privacidade</span>
-            <h2 className="section-headline" style={{ marginBottom: '20px' }}>
-              Tecnologia responsável começa com limites claros.
-            </h2>
-            <p className="section-lead" style={{ marginBottom: '24px' }}>
+            <h2 className="section-headline">Tecnologia responsável começa com limites claros.</h2>
+            <p className="section-lead">
               Nossos sistemas são construídos adotando isolamento total de dados entre organizações
               e limites rígidos de controle de permissões.
             </p>
-            <div
-              style={{
-                padding: '20px',
-                background: 'rgba(243, 250, 247, 0.03)',
-                border: '1px solid var(--line)',
-                borderRadius: '12px',
-                fontSize: '0.85rem',
-                color: 'var(--muted)',
-                lineHeight: '1.5',
-              }}
-            >
+            <div className="security-note">
               A plataforma está sendo desenvolvida com princípios de segurança, minimização de dados
               e controle de acesso. A documentação definitiva deverá ser revisada juridicamente
               antes da operação comercial.
             </div>
           </div>
 
-          <div style={{ display: 'grid', gap: '16px' }}>
+          <div className="trust-stack">
             <div className="trust-card">
               <strong>Isolamento por clínica</strong>
               <small>
@@ -311,9 +291,7 @@ export default function SiteHome() {
         <div className="site-container">
           <div className="band-intro" style={{ marginBottom: '60px' }}>
             <span className="section-eyebrow">Processo de Ativação</span>
-            <h2 className="section-headline" style={{ marginBottom: '20px' }}>
-              Comece sem mudar toda a operação de uma vez.
-            </h2>
+            <h2 className="section-headline">Comece sem mudar toda a operação de uma vez.</h2>
             <p className="section-lead">
               Nossa implantação é modular e gradual, adaptando-se aos sistemas e cronogramas
               específicos de cada clínica para evitar sobrecargas.
@@ -356,9 +334,7 @@ export default function SiteHome() {
         <div className="site-container">
           <div className="band-intro--center">
             <span className="section-eyebrow">FAQ</span>
-            <h2 className="section-headline" style={{ marginBottom: '20px' }}>
-              Perguntas e Respostas
-            </h2>
+            <h2 className="section-headline">Perguntas e Respostas</h2>
             <p className="section-lead">
               Esclareça suas dúvidas técnicas operacionais sobre a Althion.
             </p>
@@ -369,60 +345,25 @@ export default function SiteHome() {
       </section>
 
       {/* Act 13: CTA Final (DARK THEME) */}
-      <section className="dark-section landing-band" style={{ borderTop: '1px solid var(--line)' }}>
-        <div
-          className="site-container"
-          style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto' }}
-        >
+      <section className="dark-section landing-band landing-band--bordered">
+        <div className="site-container cta-final">
           <span className="section-eyebrow">Diagnóstico Althion</span>
-          <h2 className="section-headline" style={{ margin: '20px 0' }}>
+          <h2 className="section-headline">
             Descubra onde sua clínica está perdendo oportunidades.
           </h2>
-          <p className="section-lead" style={{ marginBottom: '40px' }}>
+          <p className="section-lead">
             Receba uma análise inicial detalhada da jornada de atendimento, conversão e
             aproveitamento da agenda da sua clínica.
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-            <Link
-              className="primary-link"
-              href="/diagnostico"
-              style={{
-                background: '#29C7A1',
-                color: '#061713',
-                padding: '14px 28px',
-                borderRadius: '8px',
-                fontWeight: '700',
-                textDecoration: 'none',
-                fontSize: '1.05rem',
-              }}
-            >
+          <div className="cta-actions">
+            <Link className="site-cta-primary" href="/diagnostico">
               Solicitar diagnóstico
             </Link>
-            <Link
-              className="quiet-button"
-              href="/contato"
-              style={{
-                border: '1px solid var(--line)',
-                padding: '14px 28px',
-                borderRadius: '8px',
-                fontWeight: '700',
-                textDecoration: 'none',
-                fontSize: '1.05rem',
-                background: '#0A211B',
-                color: '#F3FAF7',
-              }}
-            >
+            <Link className="site-cta-secondary" href="/contato">
               Falar com a Althion
             </Link>
           </div>
-          <small
-            style={{
-              display: 'block',
-              marginTop: '20px',
-              color: 'var(--muted)',
-              fontSize: '0.82rem',
-            }}
-          >
+          <small className="cta-microcopy">
             Sem compromisso. Informações utilizadas exclusivamente para a análise operacional.
           </small>
         </div>
