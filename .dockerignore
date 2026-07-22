@@ -1,0 +1,30 @@
+# Dependências e artefatos de build (reinstalados/reconstruídos dentro do container)
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+
+# Testes e relatórios
+playwright-report
+test-results
+**/coverage
+
+# Git e metadados
+.git
+.gitignore
+.github
+
+# Ambiente e segredos (nunca entram na imagem)
+**/.env
+**/.env.*
+!**/.env.example
+
+# Editor/OS
+.vscode
+.idea
+**/*.log
+.DS_Store
+
+# Supabase local (não necessário para a imagem da API)
+supabase/.branches
+supabase/.temp

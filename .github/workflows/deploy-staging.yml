@@ -1,0 +1,80 @@
+name: Deploy (staging)
+
+# SCAFFOLD — validar antes de usar (ver docs/operations/deploy-staging.md).
+# Disparo MANUAL por padrão: não roda em push até você configurar os Secrets do
+# Environment `staging` e decidir automatizar. Para automatizar depois, adicione
+# um gatilho `push: { branches: [main] }` abaixo.
+on:
+  workflow_dispatch:
+    inputs:
+      run_migrations:
+        description: 'Aplicar migrations ao Supabase de staging'
+        type: boolean
+        default: true
+      deploy_web:
+        description: 'Deploy do web na Vercel (alternativa à integração de Git)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  db-migrate:
+    name: Supabase migrations (staging)
+    if: ${{ inputs.run_migrations }}
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 11.9.0
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Install (CLI supabase vem como devDependency)
+        run: pnpm install --frozen-lockfile
+      - name: Link projeto de staging
+        run: pnpm exec supabase link --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}"
+      - name: Dry-run (mostra o que será aplicado)
+        run: pnpm exec supabase db push --dry-run
+      - name: Aplicar migrations
+        run: pnpm exec supabase db push
+
+  web-vercel:
+    name: Web deploy (Vercel CLI)
+    if: ${{ inputs.deploy_web }}
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - name: Setup Node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+      # Preferencialmente use a integração de Git da Vercel (root = apps/web).
+      # Este job é a alternativa por CLI. Requer que o projeto Vercel esteja
+      # configurado com Root Directory = apps/web.
+      - name: Vercel pull (ambiente de staging/preview)
+        run: npx --yes vercel@latest pull --yes --environment=preview --token="$VERCEL_TOKEN"
+      - name: Vercel build
+        run: npx --yes vercel@latest build --token="$VERCEL_TOKEN"
+      - name: Vercel deploy (prebuilt)
+        run: npx --yes vercel@latest deploy --prebuilt --token="$VERCEL_TOKEN"
