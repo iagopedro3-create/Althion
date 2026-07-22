@@ -46,7 +46,7 @@ O MVP de piloto é composto pelas Fases 1 a 6, cada uma com aprovação independ
 - casos iniciais: sem resposta, sem agendamento, cancelamento e falta;
 - oportunidade, ação, resultado, aprovação e auditoria;
 - idempotência, limite de frequência, consentimento e supressão;
-- horário vago e inatividade podem entrar no piloto somente com fonte de agenda/retorno definida.
+- horário vago e inatividade podem entrar no piloto somente com a integração de dados de agenda/retorno ligada (agenda operada externamente por cliente e integrada via Helena).
 
 ### Integração Helena
 

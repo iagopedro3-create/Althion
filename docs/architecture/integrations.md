@@ -69,24 +69,24 @@ Esse inventário descreve capacidades necessárias, não endpoints presumidos.
 
 ## Fonte oficial de dados
 
-| Informação                        | Fonte oficial inicial | Persistência Althion                                                               |
-| --------------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
-| Conversas                         | Helena                | ID, metadados necessários, eventos e agregações; conteúdo não replicado por padrão |
-| Mensagens                         | Helena                | ID, direção, timestamps e atributos analíticos minimizados                         |
-| Contatos operacionais             | Helena                | referência externa e projeção mínima normalizada                                   |
-| Funis                             | Helena                | IDs, versão/snapshot mínimo para interpretar oportunidade                          |
-| Oportunidades CRM                 | Helena                | referência, estado normalizado e histórico necessário                              |
-| Agentes de IA                     | Helena                | identidade externa e métricas aprovadas                                            |
-| Operadores                        | Helena                | identidade externa e escopo necessário, sem duplicar gestão                        |
-| Organizações e clínicas           | Althion               | registro transacional próprio                                                      |
-| Especialistas e assignments       | Althion               | registro transacional próprio                                                      |
-| Regras e ações de recuperação     | Althion               | registro transacional e auditável                                                  |
-| Althion Score                     | Althion               | fórmula, inputs, componentes e histórico                                           |
-| Relatórios e analytics históricos | Althion               | agregações e snapshots com provenance                                              |
-| Quality e Capacity                | Althion               | avaliações/recomendações derivadas e explicáveis                                   |
-| Google Ads                        | Google/Althion        | fatos externos normalizados e snapshots; recomendações próprias                    |
-| Solicitações                      | Althion               | registro transacional próprio                                                      |
-| Agenda e comparecimento           | **Indefinida**        | bloqueio para métricas e engines dependentes                                       |
+| Informação                        | Fonte oficial inicial | Persistência Althion                                                                                                                                                      |
+| --------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Conversas                         | Helena                | ID, metadados necessários, eventos e agregações; conteúdo não replicado por padrão                                                                                        |
+| Mensagens                         | Helena                | ID, direção, timestamps e atributos analíticos minimizados                                                                                                                |
+| Contatos operacionais             | Helena                | referência externa e projeção mínima normalizada                                                                                                                          |
+| Funis                             | Helena                | IDs, versão/snapshot mínimo para interpretar oportunidade                                                                                                                 |
+| Oportunidades CRM                 | Helena                | referência, estado normalizado e histórico necessário                                                                                                                     |
+| Agentes de IA                     | Helena                | identidade externa e métricas aprovadas                                                                                                                                   |
+| Operadores                        | Helena                | identidade externa e escopo necessário, sem duplicar gestão                                                                                                               |
+| Organizações e clínicas           | Althion               | registro transacional próprio                                                                                                                                             |
+| Especialistas e assignments       | Althion               | registro transacional próprio                                                                                                                                             |
+| Regras e ações de recuperação     | Althion               | registro transacional e auditável                                                                                                                                         |
+| Althion Score                     | Althion               | fórmula, inputs, componentes e histórico                                                                                                                                  |
+| Relatórios e analytics históricos | Althion               | agregações e snapshots com provenance                                                                                                                                     |
+| Quality e Capacity                | Althion               | avaliações/recomendações derivadas e explicáveis                                                                                                                          |
+| Google Ads                        | Google/Althion        | fatos externos normalizados e snapshots; recomendações próprias                                                                                                           |
+| Solicitações                      | Althion               | registro transacional próprio                                                                                                                                             |
+| Agenda e comparecimento           | Externa (por cliente) | operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena; disponível na Althion quando a integração de dados opcional estiver ligada |
 
 ## Dados externos e provenance
 
@@ -160,7 +160,7 @@ Requisitos para ligar a integração Althion↔Helena. A Helena continua operand
 - documentação oficial arquivada/referenciada e revisada;
 - sandbox e credenciais não produtivas;
 - matriz de capabilities confirmada;
-- source-of-truth de agenda decidido;
+- agenda de cada cliente integrada na Helena (sistema próprio, Google Agenda etc.), quando o cliente a disponibilizar;
 - mapeamento de dados e DPIA/avaliação LGPD aprovados;
 - contrato de webhook e segurança testado;
 - limites, retries e runbook definidos;

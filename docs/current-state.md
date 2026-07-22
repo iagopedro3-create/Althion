@@ -4,7 +4,7 @@
 
 Atualizado em 19 de julho de 2026. O repositório contém Fundação, Radar/Score, Portal do Cliente, Cockpit, Recovery sem execução, Quality assistido, Google Ads em sandbox sintético e o site institucional redesenhado.
 
-A Helena opera em paralelo como motor operacional; a integração de dados Althion↔Helena é opcional, desligada por padrão e não bloqueia o roadmap. A fonte oficial de agenda permanece indefinida. Capacity não foi implementado como engine real; suas visualizações públicas são apenas demonstrações identificadas. Google Ads ainda não chama a API do Google e rejeita credenciais reais; os segredos sintéticos foram isolados em schema privado. Todos os módulos de banco continuam condicionados à execução das migrations e dos 153 testes pgTAP em Docker/CI.
+A Helena opera em paralelo como motor operacional; a integração de dados Althion↔Helena é opcional, desligada por padrão e não bloqueia o roadmap. A agenda é operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena; a Althion não mantém fonte de agenda própria. Capacity não foi implementado como engine real; suas visualizações públicas são apenas demonstrações identificadas. Google Ads ainda não chama a API do Google e rejeita credenciais reais; os segredos sintéticos foram isolados em schema privado. Todos os módulos de banco continuam condicionados à execução das migrations e dos 153 testes pgTAP em Docker/CI.
 
 ## Stack atual
 
@@ -127,8 +127,8 @@ As rotas fundacionais permanecem documentadas em `docs/architecture/route-map.md
 3. A fórmula `1.0.0-provisional` está em estado `draft`: pesos e suficiência foram autorizados, mas thresholds de calibração e owner nominal continuam pendentes.
 4. O projeto Supabase remoto `yzbmmkyhsjkrdjknspnv` existe, mas ainda não recebeu as migrations; staging, domínio e deployment continuam pendentes.
 5. O E2E autenticado completo do Radar e Portal depende de usuários sintéticos provisionados no Supabase local/CI.
-6. A fonte oficial de agenda permanece indefinida; inputs de agenda são manuais e declarados.
-7. Helena não possui documentação/sandbox e não realiza chamada alguma.
+6. A agenda é operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena; enquanto a integração de dados opcional não é ligada, os inputs de agenda na Althion são manuais/sintéticos e declarados.
+7. A integração de dados Helena não possui documentação/sandbox oficiais e não realiza chamada alguma; a Helena opera em paralelo por conta própria.
 8. Google Ads usa campanhas, métricas e atribuição sintéticas; tokens ficam fora do schema público e somente valores `mock_` são aceitos. OAuth/API e um cofre de produção ainda não existem.
 9. Os formulários públicos não encaminham leads: destino, antiabuso, base legal e retenção seguem pendentes.
 

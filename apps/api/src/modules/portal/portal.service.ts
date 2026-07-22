@@ -102,7 +102,7 @@ export class PortalService {
           label: 'Leads e conversas',
           source: 'helena',
         },
-        { availability: 'source_not_configured', key: 'agenda', label: 'Agenda', source: null },
+        { availability: 'handled_externally', key: 'agenda', label: 'Agenda', source: 'helena' },
         {
           availability: 'module_not_available',
           key: 'recovery',

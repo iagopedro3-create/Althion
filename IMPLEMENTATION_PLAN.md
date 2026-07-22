@@ -363,7 +363,7 @@ Após confirmar o provedor/remoto:
 ### Bloqueios externos
 
 1. Integração de dados Helena: documentação, sandbox, autenticação, rate limits, webhooks e capabilities ausentes. Bloqueia apenas a Fase 6 (opcional). A Helena opera em paralelo independentemente disso e não bloqueia o roadmap.
-2. Agenda: fonte oficial de disponibilidade, agendamento, confirmação, cancelamento, falta e comparecimento indefinida. Bloqueia métricas confiáveis e partes de Recovery/Capacity.
+2. Agenda: operada externamente por cliente (sistema próprio, Google Agenda etc.) e integrada via Helena — a Althion não mantém fonte de agenda própria nem precisa decidi-la. Disponibilidade, agendamento, confirmação, cancelamento, falta e comparecimento chegam à Althion pela integração de dados opcional da Helena; até lá, métricas dependentes e partes de Recovery/Capacity usam inputs manuais/sintéticos.
 3. LGPD/contratos: papéis, bases legais, retenção, descarte, suboperadores e transferência internacional não aprovados. Bloqueia dados reais/piloto.
 4. Infraestrutura: projetos/contas, região de dados, hosting, domínio e ownership não definidos. Não impede scaffold local, mas bloqueia staging.
 

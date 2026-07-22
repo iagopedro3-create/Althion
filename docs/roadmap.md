@@ -8,19 +8,19 @@ As Fases 2 e 3 foram implementadas em 16 de julho de 2026, as Fases 4, 5, 7 e o 
 
 ## Sequência
 
-| Fase                   | Resultado                                                                       | Dependências/gate                                                               | Status                    |
-| ---------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------- |
-| 0. Auditoria           | Estado atual, visão, arquitetura, segurança, dados e plano                      | Revisão do solicitante                                                          | Concluída                 |
-| 1. Fundação            | Base modular, Auth, tenancy, RBAC/RLS, auditoria, flags e providers vazios/mock | Execução de migrations/pgTAP em Docker ou CI                                    | Em validação              |
-| 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Execução das migrations e 37 assertions pgTAP                                   | Em validação              |
-| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Execução das migrations e 73 assertions pgTAP                                   | Em validação              |
-| 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Execução das migrations e 100 assertions pgTAP; validação do modelo operacional | Em validação              |
-| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Execução das migrations e 128 assertions pgTAP; base legal do consentimento     | Em validação              |
-| 6. Integração Helena   | Sync de dados opcional, webhooks, normalização e monitoramento                  | Documentação oficial, sandbox e contrato; Helena já opera em paralelo           | Opcional / não bloqueante |
-| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | 140 assertions acumuladas; política de conteúdo/IA e privacidade                | Em validação              |
-| 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Fonte oficial de agenda e definição de slot                                     | Bloqueada pela fonte      |
-| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | 153 assertions acumuladas; OAuth/API real e cofre de produção                   | Protótipo sintético       |
-| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores                           | Não iniciada              |
+| Fase                   | Resultado                                                                       | Dependências/gate                                                                  | Status                         |
+| ---------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------ |
+| 0. Auditoria           | Estado atual, visão, arquitetura, segurança, dados e plano                      | Revisão do solicitante                                                             | Concluída                      |
+| 1. Fundação            | Base modular, Auth, tenancy, RBAC/RLS, auditoria, flags e providers vazios/mock | Execução de migrations/pgTAP em Docker ou CI                                       | Em validação                   |
+| 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Execução das migrations e 37 assertions pgTAP                                      | Em validação                   |
+| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Execução das migrations e 73 assertions pgTAP                                      | Em validação                   |
+| 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Execução das migrations e 100 assertions pgTAP; validação do modelo operacional    | Em validação                   |
+| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Execução das migrations e 128 assertions pgTAP; base legal do consentimento        | Em validação                   |
+| 6. Integração Helena   | Sync de dados opcional, webhooks, normalização e monitoramento                  | Documentação oficial, sandbox e contrato; Helena já opera em paralelo              | Opcional / não bloqueante      |
+| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | 140 assertions acumuladas; política de conteúdo/IA e privacidade                   | Em validação                   |
+| 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Definição de slot; dados de agenda via integração opcional da Helena (por cliente) | Depende da integração de dados |
+| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | 153 assertions acumuladas; OAuth/API real e cofre de produção                      | Protótipo sintético            |
+| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores                              | Não iniciada                   |
 
 ## Fase 0 — Auditoria
 
@@ -80,7 +80,7 @@ Ordem interna recomendada:
 
 Os dois últimos dependem de fontes e definições ainda ausentes. Toda execução respeita aprovação, finalidade, consentimento/base aplicável, supressão e frequência.
 
-Plano detalhado: `docs/plans/phase-5-recovery.md`. Implementada sem execução de contato: os cenários 1 e 2 rodam sobre o `MockCrmProvider` com política `1.0.0-provisional`, governança revalidada no banco e decisão humana obrigatória. Os cenários 3 a 6 seguem bloqueados pela fonte de agenda. Entrega e limitações: `docs/releases/phase-5.md`.
+Plano detalhado: `docs/plans/phase-5-recovery.md`. Implementada sem execução de contato: os cenários 1 e 2 rodam sobre o `MockCrmProvider` com política `1.0.0-provisional`, governança revalidada no banco e decisão humana obrigatória. Os cenários 3 a 6 dependem de dados de agenda, que são operados externamente por cliente (sistema próprio, Google Agenda etc.) e integrados via Helena; entram quando a integração de dados opcional for ligada. Entrega e limitações: `docs/releases/phase-5.md`.
 
 ## Fase 6 — Integração de dados com a Helena (opcional)
 
@@ -88,7 +88,7 @@ A Helena já opera em paralelo como motor operacional; a Althion funciona ao lad
 
 ## Fases 7 e 8 — Quality e Capacity
 
-Quality foi implementado em modo assistido, com revisão humana e bloqueio clínico, e permanece em validação de banco/privacidade. Capacity continua bloqueado pela ausência de uma fonte oficial de agenda.
+Quality foi implementado em modo assistido, com revisão humana e bloqueio clínico, e permanece em validação de banco/privacidade. Capacity depende de dados de agenda, que são operados externamente por cliente e integrados via Helena; fica disponível quando a integração de dados opcional for ligada, sem exigir uma fonte de agenda própria da Althion.
 
 ## Fase 9 — Google Ads
 
