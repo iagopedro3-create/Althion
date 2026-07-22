@@ -4,7 +4,7 @@
 
 Atualizado em 19 de julho de 2026. O repositório contém Fundação, Radar/Score, Portal do Cliente, Cockpit, Recovery sem execução, Quality assistido, Google Ads em sandbox sintético e o site institucional redesenhado.
 
-A integração Helena e a fonte oficial de agenda permanecem bloqueadas. Capacity não foi implementado como engine real; suas visualizações públicas são apenas demonstrações identificadas. Google Ads ainda não chama a API do Google e rejeita credenciais reais; os segredos sintéticos foram isolados em schema privado. Todos os módulos de banco continuam condicionados à execução das migrations e dos 153 testes pgTAP em Docker/CI.
+A Helena opera em paralelo como motor operacional; a integração de dados Althion↔Helena é opcional, desligada por padrão e não bloqueia o roadmap. A fonte oficial de agenda permanece indefinida. Capacity não foi implementado como engine real; suas visualizações públicas são apenas demonstrações identificadas. Google Ads ainda não chama a API do Google e rejeita credenciais reais; os segredos sintéticos foram isolados em schema privado. Todos os módulos de banco continuam condicionados à execução das migrations e dos 153 testes pgTAP em Docker/CI.
 
 ## Stack atual
 
@@ -25,7 +25,7 @@ A integração Helena e a fonte oficial de agenda permanecem bloqueadas. Capacit
 - autenticação, sessão, principal, RBAC, capabilities e RLS deny-by-default;
 - Organization → Clinic → Unit, memberships, scopes e assignments;
 - auditoria, idempotência, feature flags, health, logs e erros sanitizados;
-- `CrmProvider`, mock determinístico e Helena bloqueada sem endpoint inventado.
+- `CrmProvider`, mock determinístico e `HelenaCrmProvider` como integração de dados opcional/desligada, sem endpoint inventado.
 
 ### Radar e Score
 
@@ -142,7 +142,7 @@ Cockpit do Especialista implementado no branch `codex/phase-4-cockpit`: domínio
 
 ## Atualização — Fase 5 (17/07/2026)
 
-Recovery Engine implementado no branch `codex/phase-5-recovery`, **sem execução de contato**: domínio em `packages/domain/src/recovery` (política `1.0.0-provisional`, regras `lead_no_response` e `attended_no_booking`, governança de consentimento/supressão/frequência), tabelas `recovery_*` com históricos append-only e RLS por papel, RPCs que revalidam a governança no banco, API em `/api/v1/.../recovery/*` e web em `/cockpit/recovery`. Fonte de leads exclusivamente o `MockCrmProvider`; Helena segue bloqueada. Validação pgTAP (128 assertions das Fases 1–5) pendente de Docker/CI. Detalhes: `docs/releases/phase-5.md`.
+Recovery Engine implementado no branch `codex/phase-5-recovery`, **sem execução de contato**: domínio em `packages/domain/src/recovery` (política `1.0.0-provisional`, regras `lead_no_response` e `attended_no_booking`, governança de consentimento/supressão/frequência), tabelas `recovery_*` com históricos append-only e RLS por papel, RPCs que revalidam a governança no banco, API em `/api/v1/.../recovery/*` e web em `/cockpit/recovery`. Fonte de leads exclusivamente o `MockCrmProvider`; a Helena opera em paralelo e sua integração de dados é opcional. Validação pgTAP (128 assertions das Fases 1–5) pendente de Docker/CI. Detalhes: `docs/releases/phase-5.md`.
 
 ## Atualização — Quality, Google Ads e site (19/07/2026)
 

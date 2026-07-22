@@ -18,7 +18,7 @@ const dashboard: PortalDashboardView = {
   score: { availability: 'insufficient_data', coverage: 55 },
   sources: [
     {
-      availability: 'source_blocked',
+      availability: 'handled_externally',
       key: 'leads',
       label: 'Leads e conversas',
       source: 'helena',
@@ -43,7 +43,7 @@ describe('PortalDashboard', () => {
 
     expect(screen.getByRole('heading', { name: 'Dados insuficientes' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Iniciar Radar' })).toBeInTheDocument();
-    expect(screen.getByText('Fonte bloqueada')).toBeInTheDocument();
+    expect(screen.getByText('Operado pela Helena')).toBeInTheDocument();
     expect(screen.getByText(/Especialista ainda n.*atribu/i)).toBeInTheDocument();
     expect(screen.queryByText('0/100')).not.toBeInTheDocument();
   });

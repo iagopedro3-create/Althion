@@ -128,13 +128,13 @@ Operações específicas como simular, aprovar ou pausar podem usar sub-recursos
 
 ## Integrações e webhooks
 
-| Rota Althion                                              | Finalidade                           | Estado                          |
-| --------------------------------------------------------- | ------------------------------------ | ------------------------------- |
-| `GET /api/v1/organizations/:organizationId/integrations`  | Estado das integrações               | Fundação                        |
-| `POST /api/v1/integrations/helena/webhooks/:connectionId` | Receptor potencial de eventos Helena | Bloqueada até documentação real |
-| `GET /api/v1/organizations/:organizationId/sync-jobs`     | Status e freshness                   | Fase 6                          |
-| `POST /api/v1/organizations/:organizationId/sync-jobs`    | Sync manual autorizado e limitado    | Fase 6                          |
-| `/api/v1/integrations/google-ads/oauth/*`                 | OAuth e callback                     | Fase 9                          |
+| Rota Althion                                              | Finalidade                           | Estado                                                        |
+| --------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------- |
+| `GET /api/v1/organizations/:organizationId/integrations`  | Estado das integrações               | Fundação                                                      |
+| `POST /api/v1/integrations/helena/webhooks/:connectionId` | Receptor potencial de eventos Helena | Integração de dados opcional; desligada até documentação real |
+| `GET /api/v1/organizations/:organizationId/sync-jobs`     | Status e freshness                   | Fase 6                                                        |
+| `POST /api/v1/organizations/:organizationId/sync-jobs`    | Sync manual autorizado e limitado    | Fase 6                                                        |
+| `/api/v1/integrations/google-ads/oauth/*`                 | OAuth e callback                     | Fase 9                                                        |
 
 A rota de webhook proposta é uma rota da Althion; ela não presume URL, evento, header ou assinatura existente na Helena.
 

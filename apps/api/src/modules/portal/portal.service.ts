@@ -97,7 +97,7 @@ export class PortalService {
       score: this.scoreSummary(detail),
       sources: [
         {
-          availability: 'source_blocked',
+          availability: 'handled_externally',
           key: 'leads',
           label: 'Leads e conversas',
           source: 'helena',

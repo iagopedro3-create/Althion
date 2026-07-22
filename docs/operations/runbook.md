@@ -9,20 +9,20 @@ Ambas são públicas, rate-limited e não retornam segredo, versão interna ou c
 
 ## Sintomas principais
 
-| Código/estado              | Interpretação                             | Ação                                            |
-| -------------------------- | ----------------------------------------- | ----------------------------------------------- |
-| `AUTHENTICATION_REQUIRED`  | bearer ausente ou inválido                | renovar login; não registrar token              |
-| `PROFILE_NOT_PROVISIONED`  | Auth existe sem profile                   | verificar trigger/provisionamento               |
-| `ACCESS_DENIED`            | capability ou scope insuficiente          | revisar membership/assignment e auditoria       |
-| `DATA_SERVICE_UNAVAILABLE` | Data API indisponível/falhou              | validar Supabase e correlation ID               |
-| `RADAR_INPUT_INVALID`      | período, contagem ou vínculo inválido     | revisar payload agregado; não logar observações |
-| `RADAR_STATE_CONFLICT`     | rascunho enviado ou comando concorrente   | recarregar; não sobrescrever snapshot           |
-| `RADAR_NOT_FOUND`          | recurso inexistente ou invisível por RLS  | confirmar tenant, clínica e acesso              |
-| `PORTAL_NOT_AVAILABLE`     | feature flag do Portal desabilitada       | revisar flag/override; não contornar no cliente |
-| `PORTAL_STATE_CONFLICT`    | transição inválida ou comando concorrente | recarregar estado; não forçar update direto     |
-| `PORTAL_CURSOR_INVALID`    | cursor não pertence à clínica autorizada  | reiniciar paginação e revisar URL               |
-| `PROVIDER_NOT_CONFIGURED`  | Helena propositalmente bloqueada          | não improvisar URL; obter documentação          |
-| integration `blocked`      | conexão não habilitada                    | estado esperado na Fase 1                       |
+| Código/estado              | Interpretação                                   | Ação                                                   |
+| -------------------------- | ----------------------------------------------- | ------------------------------------------------------ |
+| `AUTHENTICATION_REQUIRED`  | bearer ausente ou inválido                      | renovar login; não registrar token                     |
+| `PROFILE_NOT_PROVISIONED`  | Auth existe sem profile                         | verificar trigger/provisionamento                      |
+| `ACCESS_DENIED`            | capability ou scope insuficiente                | revisar membership/assignment e auditoria              |
+| `DATA_SERVICE_UNAVAILABLE` | Data API indisponível/falhou                    | validar Supabase e correlation ID                      |
+| `RADAR_INPUT_INVALID`      | período, contagem ou vínculo inválido           | revisar payload agregado; não logar observações        |
+| `RADAR_STATE_CONFLICT`     | rascunho enviado ou comando concorrente         | recarregar; não sobrescrever snapshot                  |
+| `RADAR_NOT_FOUND`          | recurso inexistente ou invisível por RLS        | confirmar tenant, clínica e acesso                     |
+| `PORTAL_NOT_AVAILABLE`     | feature flag do Portal desabilitada             | revisar flag/override; não contornar no cliente        |
+| `PORTAL_STATE_CONFLICT`    | transição inválida ou comando concorrente       | recarregar estado; não forçar update direto            |
+| `PORTAL_CURSOR_INVALID`    | cursor não pertence à clínica autorizada        | reiniciar paginação e revisar URL                      |
+| `PROVIDER_NOT_CONFIGURED`  | Integração de dados Helena desligada (opcional) | esperado; Helena opera em paralelo. Não improvisar URL |
+| integration `blocked`      | conexão não habilitada                          | estado esperado na Fase 1                              |
 
 ## Revogação de acesso
 
@@ -50,7 +50,7 @@ Ambas são públicas, rate-limited e não retornam segredo, versão interna ou c
 
 ## Helena
 
-Não existe operação real na Fase 1. Nenhum erro autoriza criar endpoint, credencial ou payload por tentativa. O desbloqueio segue `docs/architecture/integrations.md`.
+A Helena opera em paralelo como motor operacional; a integração de dados Althion↔Helena é opcional e está desligada. Não existe operação real de integração na Fase 1. Nenhum erro autoriza criar endpoint, credencial ou payload por tentativa. A ativação da integração segue `docs/architecture/integrations.md`.
 
 ## Radar e Score
 

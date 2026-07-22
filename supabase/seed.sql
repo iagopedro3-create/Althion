@@ -69,7 +69,7 @@ values ('10000000-0000-4000-8000-000000000001', '50000000-0000-4000-8000-0000000
 insert into public.feature_flags (key, description, default_enabled)
 values
   ('foundation.portal', 'Exibe o shell fundacional autenticado.', true),
-  ('integration.helena', 'Habilita a integração Helena após documentação e sandbox.', false);
+  ('integration.helena', 'Habilita a integração de dados com a Helena (opcional; a Helena opera em paralelo).', false);
 
 insert into public.feature_flag_overrides (organization_id, feature_flag_id, enabled, reason)
 select
@@ -209,14 +209,14 @@ values
   (
     '10000000-0000-4000-8000-000000000001',
     'helena',
-    'blocked',
+    'disabled',
     '{"listContacts":false,"listLeads":false,"listConversations":false,"listMessages":false,"listPipelines":false,"listOpportunities":false,"updateOpportunity":false,"createTask":false}',
     'PROVIDER_NOT_CONFIGURED'
   ),
   (
     '10000000-0000-4000-8000-000000000002',
     'helena',
-    'blocked',
+    'disabled',
     '{"listContacts":false,"listLeads":false,"listConversations":false,"listMessages":false,"listPipelines":false,"listOpportunities":false,"updateOpportunity":false,"createTask":false}',
     'PROVIDER_NOT_CONFIGURED'
   );

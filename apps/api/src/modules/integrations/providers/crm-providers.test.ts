@@ -31,7 +31,7 @@ describe('MockCrmProvider', () => {
 });
 
 describe('HelenaCrmProvider', () => {
-  it('reports no capabilities and fails explicitly while blocked', async () => {
+  it('reports no capabilities and fails explicitly while the data integration is off', async () => {
     const provider = new HelenaCrmProvider();
 
     await expect(provider.getCapabilities()).resolves.toMatchObject({ listContacts: false });

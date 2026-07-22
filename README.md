@@ -4,7 +4,7 @@ Fundação técnica da plataforma de Recuperação e Performance da Agenda para 
 
 ## Estado
 
-Fundação, Radar/Score, Portal, Cockpit e Recovery implementados com dados sintéticos; Recovery permanece **sem execução de contato**. Quality está implementado em modo assistido e Google Ads em sandbox sintético, com segredos isolados do schema público e credenciais reais rejeitadas. A landing pública foi redesenhada, mas os canais de contato continuam desligados até a definição jurídica e operacional. A integração Helena segue bloqueada até a entrega da documentação oficial. A validação PostgreSQL/pgTAP (153 assertions) depende de Docker/CI.
+Fundação, Radar/Score, Portal, Cockpit e Recovery implementados com dados sintéticos; Recovery permanece **sem execução de contato**. Quality está implementado em modo assistido e Google Ads em sandbox sintético, com segredos isolados do schema público e credenciais reais rejeitadas. A landing pública foi redesenhada, mas os canais de contato continuam desligados até a definição jurídica e operacional. A Helena opera **em paralelo** como motor operacional (WhatsApp, Instagram, webhooks, agentes e supervisor de IA); a Althion funciona ao lado dela e a integração de dados Althion↔Helena é **opcional**, desligada por padrão e não bloqueia o roadmap. A validação PostgreSQL/pgTAP (153 assertions) depende de Docker/CI.
 
 ## Requisitos
 

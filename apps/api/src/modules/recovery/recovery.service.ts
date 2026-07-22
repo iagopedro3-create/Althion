@@ -25,8 +25,9 @@ export class RecoveryService {
     };
   }
 
-  // A simulação lê exclusivamente o MockCrmProvider (Helena permanece bloqueada) e
-  // nunca envia contato: o resultado termina em oportunidades e ações a decidir.
+  // A simulação lê exclusivamente o MockCrmProvider (a Helena opera em paralelo e
+  // executa o contato por conta própria) e nunca envia contato: o resultado
+  // termina em oportunidades e ações a decidir.
   public async simulate(
     accessToken: string,
     organizationId: string,

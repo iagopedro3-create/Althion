@@ -1377,6 +1377,11 @@ a {
   background: #f3bd4f;
 }
 
+.source-dot.handled_externally {
+  border-color: #5b8def;
+  background: #5b8def;
+}
+
 .source-dot.source_blocked,
 .source-dot.module_not_available,
 .source-dot.source_not_configured {

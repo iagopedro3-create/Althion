@@ -199,6 +199,7 @@ export function PortalDashboard({
 
 function availabilityLabel(value: string): string {
   const labels: Record<string, string> = {
+    handled_externally: 'Operado pela Helena',
     module_not_available: 'Módulo futuro',
     source_blocked: 'Fonte bloqueada',
     source_not_configured: 'Fonte não configurada',
