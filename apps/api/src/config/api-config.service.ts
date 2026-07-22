@@ -11,6 +11,9 @@ const apiEnvironmentSchema = z.object({
     .transform((value) => value.split(',').map((origin) => origin.trim()))
     .pipe(z.array(z.url()).min(1)),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+  // Só ligar para `enforced` depois que a tela de inscrição no segundo fator
+  // estiver publicada; ver docs/plans/phase-10-security-pilot.md.
+  MFA_ENFORCEMENT: z.enum(['disabled', 'enforced']).default('disabled'),
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   SUPABASE_JWT_AUDIENCE: z.string().min(1).default('authenticated'),
   SUPABASE_JWT_ISSUER: z.url(),

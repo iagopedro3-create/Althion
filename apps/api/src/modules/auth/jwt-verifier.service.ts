@@ -1,10 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
-import { z } from 'zod';
 
 import { ApiConfigService } from '../../config/api-config.service';
-
-const subjectSchema = z.uuid();
+import { parseAccessTokenClaims, type VerifiedAccessToken } from './access-token-claims';
 
 @Injectable()
 export class JwtVerifierService {
@@ -14,14 +12,14 @@ export class JwtVerifierService {
     this.jwks = createRemoteJWKSet(config.jwksUrl);
   }
 
-  public async verify(token: string): Promise<string> {
+  public async verify(token: string): Promise<VerifiedAccessToken> {
     try {
       const { payload } = await jwtVerify(token, this.jwks, {
         audience: this.config.environment.SUPABASE_JWT_AUDIENCE,
         issuer: this.config.environment.SUPABASE_JWT_ISSUER,
       });
 
-      return subjectSchema.parse(payload.sub);
+      return parseAccessTokenClaims(payload);
     } catch {
       throw new UnauthorizedException({
         code: 'INVALID_ACCESS_TOKEN',

@@ -20,7 +20,7 @@ As Fases 2 e 3 foram implementadas em 16 de julho de 2026, as Fases 4, 5, 7 e o 
 | 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | 140 assertions acumuladas; política de conteúdo/IA e privacidade                   | Em validação                   |
 | 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Definição de slot; dados de agenda via integração opcional da Helena (por cliente) | Depende da integração de dados |
 | 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | 153 assertions acumuladas; OAuth/API real e cofre de produção                      | Protótipo sintético            |
-| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores                              | Não iniciada                   |
+| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores                              | Em andamento (10.1 entregue)   |
 
 ## Fase 0 — Auditoria
 
@@ -97,6 +97,8 @@ O protótipo atual é somente leitura e usa dados sintéticos. Métricas da plat
 ## Fase 10 — Segurança e piloto
 
 Inclui E2E por papel/tenant, carga e performance, acessibilidade, secret/dependency scan, revisão de RLS, restore de backup, runbooks, staging, demo sintética, onboarding e checklist go/no-go.
+
+Plano do primeiro incremento: `docs/plans/phase-10-security-pilot.md`. O incremento **10.1 — MFA no backend** foi entregue em 22 de julho (`docs/releases/phase-10-1-mfa-backend.md`): a API lê o claim `aal`, existe `@RequireMfa()` + `MfaGuard`, e o enforcement fica atrás de `MFA_ENFORCEMENT` (padrão `disabled`). A inscrição TOTP no web, a marcação das rotas sensíveis e o rollout dependem de Supabase de staging e de decisão de produto.
 
 ## Trilha do site institucional
 

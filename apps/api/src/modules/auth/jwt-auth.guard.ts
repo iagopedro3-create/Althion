@@ -31,10 +31,11 @@ export class JwtAuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const token = this.extractBearerToken(request.header('authorization'));
-    const subject = await this.verifier.verify(token);
+    const { subject, assuranceLevel } = await this.verifier.verify(token);
     const principal = await this.principals.resolve(token, subject);
 
     request.accessToken = token;
+    request.assuranceLevel = assuranceLevel;
     request.principal = principal;
     return true;
   }

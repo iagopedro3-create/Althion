@@ -9,6 +9,7 @@ const clinicB = '20000000-0000-4000-8000-000000000002';
 
 const principal: PrincipalResponse = {
   assignments: [],
+  assuranceLevel: 'aal1',
   memberships: [
     {
       organizationId,

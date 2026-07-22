@@ -4,6 +4,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 
 import { CapabilitiesGuard } from './common/auth/capabilities.guard';
+import { MfaGuard } from './common/auth/mfa.guard';
 import { RequestContextMiddleware } from './common/http/request-context.middleware';
 import { ApiConfigModule } from './config/api-config.module';
 import { ApiConfigService } from './config/api-config.service';
@@ -63,6 +64,8 @@ import { GoogleAdsModule } from './modules/google-ads/google-ads.module';
     { provide: APP_GUARD, useExisting: ThrottlerGuard },
     ThrottlerGuard,
     { provide: APP_GUARD, useExisting: JwtAuthGuard },
+    { provide: APP_GUARD, useExisting: MfaGuard },
+    MfaGuard,
     { provide: APP_GUARD, useExisting: CapabilitiesGuard },
     CapabilitiesGuard,
   ],

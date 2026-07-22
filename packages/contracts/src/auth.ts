@@ -21,8 +21,14 @@ export const principalAssignmentSchema = z.object({
   status: z.enum(['active', 'ended']),
 });
 
+/** Nível de garantia da sessão: `aal1` = só senha, `aal2` = senha + segundo fator. */
+export const assuranceLevelSchema = z.enum(['aal1', 'aal2']);
+
+export type AssuranceLevel = z.infer<typeof assuranceLevelSchema>;
+
 export const principalResponseSchema = z.object({
   assignments: z.array(principalAssignmentSchema),
+  assuranceLevel: assuranceLevelSchema.default('aal1'),
   memberships: z.array(principalMembershipSchema),
   platformRoles: z.array(z.enum(PLATFORM_ROLES)),
   profileId: uuidSchema,

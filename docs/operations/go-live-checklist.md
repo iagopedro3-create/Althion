@@ -40,7 +40,7 @@ A **fundação técnica** está implementada e **validada** (isolamento multi-te
 | --- | ------------------------------------------------------------ | ------ | -------------- | ------------------------------------ |
 | 2.1 | Isolamento multi-tenant (RLS) validado                       | ✅     | —              | 153 assertions pgTAP verdes no CI    |
 | 2.2 | Secret scan (Gitleaks) e audit de dependências no CI         | ✅     | —              | job `secrets`/`quality` do `ci.yml`  |
-| 2.3 | **MFA obrigatório** na plataforma (ver plano abaixo)         | ❌     | Eng. + Produto | ambiente de auth para testar         |
+| 2.3 | **MFA obrigatório** na plataforma (ver plano abaixo)         | 🟡     | Eng. + Produto | backend pronto; falta tela + rotas   |
 | 2.4 | Revisão de logs reais (amostragem) quanto a dado sensível    | ❌     | Eng.           | 1.8                                  |
 | 2.5 | E2E autenticado por papel/tenant com usuários **sintéticos** | 🟡     | Eng.           | 1.3 (Supabase), provisionar usuários |
 
@@ -68,17 +68,17 @@ A **fundação técnica** está implementada e **validada** (isolamento multi-te
 
 ## Anexo — Plano de implementação do MFA (item 2.3)
 
-> Especificação pronta para construir. Não foi implementada ainda porque exige um fluxo de inscrição/verificação testado contra o Supabase real e decisões de produto sobre **quais papéis/rotas** exigem MFA. Ativar a exigência **antes** de existir a tela de inscrição travaria o acesso.
+> **Passo 3 implementado em 22/07** (`docs/releases/phase-10-1-mfa-backend.md`): a API lê o claim `aal`, existe `@RequireMfa()` + `MfaGuard` e a env var `MFA_ENFORCEMENT` (padrão `disabled`). Os demais passos continuam pendentes de Supabase real e da decisão de **quais papéis/rotas** exigem MFA. Ativar a exigência **antes** de existir a tela de inscrição travaria o acesso.
 
 **Abordagem (Supabase Auth, TOTP + AAL):**
 
 1. **Inscrição (web):** tela para `supabase.auth.mfa.enroll({ factorType: 'totp' })` → exibir QR code/segredo → `challenge` + `verify` com o código do app autenticador. Gerar e exibir **códigos de recuperação**. (Requer decisão de UX e teste real.)
 2. **Sessão AAL2:** após verificar, a sessão passa a `aal2`; o JWT do Supabase carrega o claim `aal` (`aal1` = só senha; `aal2` = senha + MFA) e `amr`.
-3. **Enforcement na API (defesa em profundidade):**
-   - Estender `JwtVerifierService.verify` para também extrair o claim `aal` (hoje só retorna o `sub`).
-   - Criar decorator `@RequireMfa()` + guard que rejeita com `MFA_REQUIRED` quando `aal !== 'aal2'`.
-   - Aplicar às rotas sensíveis (ex.: `platform_admin`, `/admin/*`) — **lista a decidir com Produto**.
-   - Testes unitários com payloads `aal1`/`aal2` (testável sem Supabase real).
+3. **Enforcement na API (defesa em profundidade)** — ✅ **feito**:
+   - ✅ `JwtVerifierService.verify` devolve `{ subject, assuranceLevel, methods }`; `aal` ausente/desconhecido vale `aal1`.
+   - ✅ `@RequireMfa()` + `MfaGuard` rejeitam com `403 MFA_REQUIRED` quando a sessão não é `aal2`, e só quando `MFA_ENFORCEMENT=enforced`.
+   - ❌ Aplicar às rotas sensíveis (ex.: `platform_admin`, `/admin/*`) — **lista a decidir com Produto**; nenhuma rota marcada ainda.
+   - ✅ Testes unitários com payloads `aal1`/`aal2`.
 4. **Enforcement no web:** middleware/guard que redireciona à inscrição/verificação quando a rota exige AAL2 e a sessão está em `aal1`.
 5. **Rollout seguro:** exigir MFA primeiro para `platform_admin`; medir; depois estender. Nunca habilitar a exigência sem a tela de inscrição publicada.
 
