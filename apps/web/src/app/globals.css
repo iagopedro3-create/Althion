@@ -2958,6 +2958,18 @@ details.creation-panel > summary {
   font-size: 0.82rem;
 }
 
+/* No mobile, empilha os dois botoes do CTA final (espelha .hero-actions) */
+@media (max-width: 480px) {
+  .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-actions .site-cta-secondary {
+    width: 100%;
+  }
+}
+
 /* ── Hero connections strip ──────────────────────────────────────────────────*/
 .hero-connections {
   display: flex;
