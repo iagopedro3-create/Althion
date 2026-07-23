@@ -2,6 +2,7 @@ import { fetchPrincipal } from '@/lib/api/principal';
 import { fetchClinics } from '@/lib/api/radar';
 import { requirePortalPage } from '@/lib/portal-page';
 import { portalQuery } from '@/lib/portal-context';
+import { describeSessionAssurance } from '@/lib/session-assurance';
 
 export default async function SettingsPage({
   searchParams,
@@ -18,6 +19,10 @@ export default async function SettingsPage({
       ? principal.principal.memberships.find(
           (item) => item.organizationId === context.organizationId,
         )
+      : null;
+  const assurance =
+    principal.kind === 'success'
+      ? describeSessionAssurance(principal.principal.assuranceLevel)
       : null;
   const query = portalQuery(context);
   return (
@@ -71,6 +76,24 @@ export default async function SettingsPage({
           <p>A clínica não pertence ao contexto autorizado.</p>
         </section>
       )}
+      {assurance ? (
+        <section className="settings-panel">
+          <h2>Segurança da sessão</h2>
+          <dl>
+            <div>
+              <dt>Verificação</dt>
+              <dd>
+                <span className={`badge ${assurance.badge}`}>{assurance.label}</span>
+              </dd>
+            </div>
+            <div>
+              <dt>Nível de garantia</dt>
+              <dd>{assurance.level.toUpperCase()}</dd>
+            </div>
+          </dl>
+          <p className="lead-copy">{assurance.summary}</p>
+        </section>
+      ) : null}
     </main>
   );
 }

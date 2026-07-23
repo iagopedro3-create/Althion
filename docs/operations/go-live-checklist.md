@@ -72,7 +72,7 @@ A **fundação técnica** está implementada e **validada** (isolamento multi-te
 
 **Abordagem (Supabase Auth, TOTP + AAL):**
 
-1. **Inscrição (web):** tela para `supabase.auth.mfa.enroll({ factorType: 'totp' })` → exibir QR code/segredo → `challenge` + `verify` com o código do app autenticador. Gerar e exibir **códigos de recuperação**. (Requer decisão de UX e teste real.)
+1. **Inscrição (web):** tela para `supabase.auth.mfa.enroll({ factorType: 'totp' })` → exibir QR code/segredo → `challenge` + `verify` com o código do app autenticador. Gerar e exibir **códigos de recuperação**. (Requer decisão de UX e teste real.) 🟡 **Base pronta (23/07, `docs/releases/phase-10-2-mfa-web-surface.md`):** o web consome `assuranceLevel` e exibe o status da sessão (`aal1`/`aal2`) em Configurações; a tela de inscrição em si continua pendente de Supabase real.
 2. **Sessão AAL2:** após verificar, a sessão passa a `aal2`; o JWT do Supabase carrega o claim `aal` (`aal1` = só senha; `aal2` = senha + MFA) e `amr`.
 3. **Enforcement na API (defesa em profundidade)** — ✅ **feito**:
    - ✅ `JwtVerifierService.verify` devolve `{ subject, assuranceLevel, methods }`; `aal` ausente/desconhecido vale `aal1`.
