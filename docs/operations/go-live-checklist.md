@@ -29,7 +29,7 @@ A **fundação técnica** está implementada e **validada** (isolamento multi-te
 | 1.6  | Criar projeto **Vercel** do web (root `apps/web`) + domínio            | ❌     | Você      | —                                                                    |
 | 1.7  | Criar projeto **Vercel** da API (root `apps/api`, serverless)          | ❌     | Você      | —                                                                    |
 | 1.8  | Validar o **adaptador serverless** da API no 1º deploy (DI/rotas)      | ❌     | Eng.      | 1.7                                                                  |
-| 1.9  | Preencher **Secrets** do Environment `staging` no GitHub               | ❌     | Você      | 1.3–1.7                                                              |
+| 1.9  | Preencher **Secrets** do Environment `staging` no GitHub               | ❌     | Você      | 1.3–1.7; inclui `TRUST_PROXY_HOPS=1` na Vercel (ver 10.5)            |
 | 1.10 | Primeiro deploy de staging ponta a ponta (web → API → Supabase)        | ❌     | Eng.      | 1.9                                                                  |
 | 1.11 | **Cofre de segredos** de produção definido                             | ❌     | Você      | —                                                                    |
 | 1.12 | Backups do banco e teste de restore                                    | ❌     | Eng.      | 1.3                                                                  |

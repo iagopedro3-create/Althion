@@ -100,6 +100,8 @@ Inclui E2E por papel/tenant, carga e performance, acessibilidade, secret/depende
 
 Plano do primeiro incremento: `docs/plans/phase-10-security-pilot.md`. O incremento **10.1 — MFA no backend** foi entregue em 22 de julho (`docs/releases/phase-10-1-mfa-backend.md`): a API lê o claim `aal`, existe `@RequireMfa()` + `MfaGuard`, e o enforcement fica atrás de `MFA_ENFORCEMENT` (padrão `disabled`). A inscrição TOTP no web, a marcação das rotas sensíveis e o rollout dependem de Supabase de staging e de decisão de produto.
 
+O incremento **10.5 — rate limit por cliente real atrás de proxy** foi entregue em 30 de julho (`docs/releases/phase-10-5-rate-limit-proxy.md`): sem `trust proxy`, o throttler identificaria todos os clientes pelo endereço do proxy da Vercel e os 100 req/min virariam um teto agregado da API — um cliente ruidoso responderia `429` para todos. `TRUST_PROXY_HOPS` torna a confiança no `X-Forwarded-For` uma decisão explícita de deploy.
+
 O incremento **10.4 — acessibilidade em todas as rotas públicas** foi entregue em 30 de julho (`docs/releases/phase-10-4-accessibility.md`): as 12 rotas públicas passam por `axe-core` a partir de uma lista canônica única, que também alimenta a varredura de CSP. Cinco rotas — três delas de autenticação — não tinham verificação alguma.
 
 O incremento **10.3 — nível de garantia da sessão no web** foi entregue em 30 de julho (`docs/releases/phase-10-3-mfa-web-surface.md`): a página de Configurações exibe, em leitura, se a sessão é `aal1` ou `aal2`, fechando o laço de 10.1 no cliente. Nenhuma decisão de acesso lê o valor — a barreira continua sendo o `MfaGuard`.
