@@ -19,6 +19,10 @@ const apiEnvironmentSchema = z.object({
   SUPABASE_JWT_ISSUER: z.url(),
   SUPABASE_PUBLISHABLE_KEY: z.string().min(20),
   SUPABASE_URL: z.url(),
+  // Número de proxies **sob nosso controle** à frente da API. `0` = não confiar
+  // em `X-Forwarded-For` (padrão seguro: um cabeçalho forjado trocaria de balde
+  // no rate limit à vontade). Atrás da Vercel, o valor correto é `1`.
+  TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(10).default(0),
 });
 
 export type ApiEnvironment = z.infer<typeof apiEnvironmentSchema>;

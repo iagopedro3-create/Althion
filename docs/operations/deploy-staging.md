@@ -61,7 +61,10 @@ SUPABASE_JWT_ISSUER=https://[REF].supabase.co/auth/v1
 SUPABASE_JWT_AUDIENCE=authenticated
 LOG_LEVEL=info
 MFA_ENFORCEMENT=disabled     # ver abaixo antes de mudar
+TRUST_PROXY_HOPS=1           # 1 na Vercel; 0 se a API for exposta direto
 ```
+
+> **`TRUST_PROXY_HOPS`** é o número de proxies **sob nosso controle** à frente da API. Na Vercel toda requisição chega pelo proxy da plataforma, então o valor é `1`: sem isso o Express não deriva o endereço do cliente do `X-Forwarded-For` e o rate limit passa a contar **todos os clientes num balde só** — 100 req/min agregados para a API inteira, o que transforma o controle de abuso em vetor de indisponibilidade. Com a API exposta direto (container sem proxy), o valor correto é `0`: confiar num cabeçalho que o cliente controla permitiria trocar de balde à vontade. A API registra um `warn` no boot quando sobe em produção com `0`.
 
 > **`MFA_ENFORCEMENT`** controla se as rotas marcadas com `@RequireMfa()` exigem sessão com segundo fator (`aal2`). Mantenha `disabled` até a tela de inscrição TOTP estar publicada — ligar antes disso tranca o acesso de quem ainda não se inscreveu. O rollout previsto é `platform_admin` primeiro. Detalhes em `docs/plans/phase-10-security-pilot.md`.
 
