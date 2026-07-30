@@ -1,6 +1,6 @@
 # Checklist de Go-Live — Piloto Althion
 
-> Lista de prontidão acionável para iniciar um **piloto com clínica real**. Consolida o estado atual e o que falta, com **dono** e **ordem**. Atualizado em `[22/07/2026]`. Legenda: ✅ pronto · 🟡 em andamento/parcial · ❌ pendente.
+> Lista de prontidão acionável para iniciar um **piloto com clínica real**. Consolida o estado atual e o que falta, com **dono** e **ordem**. Atualizado em `[30/07/2026]`. Legenda: ✅ pronto · 🟡 em andamento/parcial · ❌ pendente.
 
 ## Onde estamos
 
@@ -36,13 +36,13 @@ A **fundação técnica** está implementada e **validada** (isolamento multi-te
 
 ## Gate 2 — Segurança de produção
 
-| #   | Item                                                         | Estado | Dono           | Depende de                           |
-| --- | ------------------------------------------------------------ | ------ | -------------- | ------------------------------------ |
-| 2.1 | Isolamento multi-tenant (RLS) validado                       | ✅     | —              | 153 assertions pgTAP verdes no CI    |
-| 2.2 | Secret scan (Gitleaks) e audit de dependências no CI         | ✅     | —              | job `secrets`/`quality` do `ci.yml`  |
-| 2.3 | **MFA obrigatório** na plataforma (ver plano abaixo)         | 🟡     | Eng. + Produto | backend pronto; falta tela + rotas   |
-| 2.4 | Revisão de logs reais (amostragem) quanto a dado sensível    | ❌     | Eng.           | 1.8                                  |
-| 2.5 | E2E autenticado por papel/tenant com usuários **sintéticos** | 🟡     | Eng.           | 1.3 (Supabase), provisionar usuários |
+| #   | Item                                                         | Estado | Dono           | Depende de                                               |
+| --- | ------------------------------------------------------------ | ------ | -------------- | -------------------------------------------------------- |
+| 2.1 | Isolamento multi-tenant (RLS) validado                       | ✅     | —              | 153 assertions pgTAP verdes no CI                        |
+| 2.2 | Secret scan (Gitleaks) e audit de dependências no CI         | ✅     | —              | job `secrets`/`quality` do `ci.yml`                      |
+| 2.3 | **MFA obrigatório** na plataforma (ver plano abaixo)         | 🟡     | Eng. + Produto | backend + status no web; falta tela de inscrição + rotas |
+| 2.4 | Revisão de logs reais (amostragem) quanto a dado sensível    | ❌     | Eng.           | 1.8                                                      |
+| 2.5 | E2E autenticado por papel/tenant com usuários **sintéticos** | 🟡     | Eng.           | 1.3 (Supabase), provisionar usuários                     |
 
 ## Gate 3 — Produto e operação
 
@@ -72,7 +72,7 @@ A **fundação técnica** está implementada e **validada** (isolamento multi-te
 
 **Abordagem (Supabase Auth, TOTP + AAL):**
 
-1. **Inscrição (web):** tela para `supabase.auth.mfa.enroll({ factorType: 'totp' })` → exibir QR code/segredo → `challenge` + `verify` com o código do app autenticador. Gerar e exibir **códigos de recuperação**. (Requer decisão de UX e teste real.)
+1. **Inscrição (web):** tela para `supabase.auth.mfa.enroll({ factorType: 'totp' })` → exibir QR code/segredo → `challenge` + `verify` com o código do app autenticador. Gerar e exibir **códigos de recuperação**. (Requer decisão de UX e teste real.) 🟡 **Base pronta em 30/07** (`docs/releases/phase-10-3-mfa-web-surface.md`): Configurações mostra o nível de garantia da sessão (`aal1`/`aal2`) em leitura; a tela de inscrição em si continua pendente de Supabase real.
 2. **Sessão AAL2:** após verificar, a sessão passa a `aal2`; o JWT do Supabase carrega o claim `aal` (`aal1` = só senha; `aal2` = senha + MFA) e `amr`.
 3. **Enforcement na API (defesa em profundidade)** — ✅ **feito**:
    - ✅ `JwtVerifierService.verify` devolve `{ subject, assuranceLevel, methods }`; `aal` ausente/desconhecido vale `aal1`.
