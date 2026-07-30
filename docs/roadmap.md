@@ -8,19 +8,19 @@ As Fases 2 e 3 foram implementadas em 16 de julho de 2026, as Fases 4, 5, 7 e o 
 
 ## Sequência
 
-| Fase                   | Resultado                                                                       | Dependências/gate                                                                  | Status                         |
-| ---------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------ |
-| 0. Auditoria           | Estado atual, visão, arquitetura, segurança, dados e plano                      | Revisão do solicitante                                                             | Concluída                      |
-| 1. Fundação            | Base modular, Auth, tenancy, RBAC/RLS, auditoria, flags e providers vazios/mock | Execução de migrations/pgTAP em Docker ou CI                                       | Em validação                   |
-| 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Execução das migrations e 37 assertions pgTAP                                      | Em validação                   |
-| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Execução das migrations e 73 assertions pgTAP                                      | Em validação                   |
-| 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Execução das migrations e 100 assertions pgTAP; validação do modelo operacional    | Em validação                   |
-| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Execução das migrations e 128 assertions pgTAP; base legal do consentimento        | Em validação                   |
-| 6. Integração Helena   | Sync de dados opcional, webhooks, normalização e monitoramento                  | Documentação oficial, sandbox e contrato; Helena já opera em paralelo              | Opcional / não bloqueante      |
-| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | 140 assertions acumuladas; política de conteúdo/IA e privacidade                   | Em validação                   |
-| 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Definição de slot; dados de agenda via integração opcional da Helena (por cliente) | Depende da integração de dados |
-| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | 153 assertions acumuladas; OAuth/API real e cofre de produção                      | Protótipo sintético            |
-| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores                              | Em andamento (10.1 entregue)   |
+| Fase                   | Resultado                                                                       | Dependências/gate                                                                  | Status                             |
+| ---------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------- |
+| 0. Auditoria           | Estado atual, visão, arquitetura, segurança, dados e plano                      | Revisão do solicitante                                                             | Concluída                          |
+| 1. Fundação            | Base modular, Auth, tenancy, RBAC/RLS, auditoria, flags e providers vazios/mock | Execução de migrations/pgTAP em Docker ou CI                                       | Em validação                       |
+| 2. Radar e Score       | Diagnóstico, inputs manuais, score explicável e relatório                       | Execução das migrations e 37 assertions pgTAP                                      | Em validação                       |
+| 3. Portal              | Dashboard acionável, indicadores, oportunidades, solicitações e plano           | Execução das migrations e 73 assertions pgTAP                                      | Em validação                       |
+| 4. Cockpit             | Carteira, saúde, alertas, incidentes, capacidade e próxima ação                 | Execução das migrations e 100 assertions pgTAP; validação do modelo operacional    | Em validação                       |
+| 5. Recovery            | Regras determinísticas, simulação, aprovação, ações e auditoria                 | Execução das migrations e 128 assertions pgTAP; base legal do consentimento        | Em validação                       |
+| 6. Integração Helena   | Sync de dados opcional, webhooks, normalização e monitoramento                  | Documentação oficial, sandbox e contrato; Helena já opera em paralelo              | Opcional / não bloqueante          |
+| 7. Quality             | Critérios, avaliação assistida, revisão e handoff                               | 140 assertions acumuladas; política de conteúdo/IA e privacidade                   | Em validação                       |
+| 8. Capacity            | Snapshots, baixa ocupação, recomendação e simulação                             | Definição de slot; dados de agenda via integração opcional da Helena (por cliente) | Depende da integração de dados     |
+| 9. Google Ads leitura  | OAuth, campanhas, métricas, alertas e relação prudente com leads                | 153 assertions acumuladas; OAuth/API real e cofre de produção                      | Protótipo sintético                |
+| 10. Segurança e piloto | Hardening, E2E, performance, acessibilidade, staging e lançamento               | Clínica piloto, jurídico, runbooks e gates anteriores                              | Em andamento (10.1–10.2 entregues) |
 
 ## Fase 0 — Auditoria
 
@@ -99,6 +99,8 @@ O protótipo atual é somente leitura e usa dados sintéticos. Métricas da plat
 Inclui E2E por papel/tenant, carga e performance, acessibilidade, secret/dependency scan, revisão de RLS, restore de backup, runbooks, staging, demo sintética, onboarding e checklist go/no-go.
 
 Plano do primeiro incremento: `docs/plans/phase-10-security-pilot.md`. O incremento **10.1 — MFA no backend** foi entregue em 22 de julho (`docs/releases/phase-10-1-mfa-backend.md`): a API lê o claim `aal`, existe `@RequireMfa()` + `MfaGuard`, e o enforcement fica atrás de `MFA_ENFORCEMENT` (padrão `disabled`). A inscrição TOTP no web, a marcação das rotas sensíveis e o rollout dependem de Supabase de staging e de decisão de produto.
+
+O incremento **10.2 — Content-Security-Policy no web** também foi entregue em 22 de julho (`docs/releases/phase-10-2-csp.md`): a CSP restringe exfiltração, formulários, enquadramento e plugins, varia com segurança entre desenvolvimento e produção e preserva o prerender estático das páginas institucionais. A necessidade de `'unsafe-inline'` sem nonce está registrada como limitação explícita.
 
 ## Trilha do site institucional
 
