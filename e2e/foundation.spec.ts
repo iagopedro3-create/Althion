@@ -1,6 +1,21 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+const publicRoutes = [
+  '/',
+  '/contato',
+  '/definir-senha',
+  '/diagnostico',
+  '/entrar',
+  '/privacidade',
+  '/produto',
+  '/radar',
+  '/recuperar-acesso',
+  '/seguranca',
+  '/sobre',
+  '/termos',
+] as const;
+
 test('presents the Althion positioning and access path', async ({ page }) => {
   await page.goto('/');
 
@@ -34,4 +49,51 @@ test('serves baseline browser security headers', async ({ page }) => {
   expect(headers['referrer-policy']).toBe('strict-origin-when-cross-origin');
   expect(headers['x-content-type-options']).toBe('nosniff');
   expect(headers['x-frame-options']).toBe('DENY');
+});
+
+test('serves a Content-Security-Policy that contains exfiltration and framing', async ({
+  page,
+}) => {
+  const response = await page.goto('/');
+  const policy = response?.headers()['content-security-policy'] ?? '';
+
+  // Diretivas que sustentam o controle mesmo sem nonce em `script-src`.
+  expect(policy).toContain("default-src 'self'");
+  expect(policy).toContain("base-uri 'self'");
+  expect(policy).toContain("form-action 'self'");
+  expect(policy).toContain("frame-ancestors 'none'");
+  expect(policy).toContain("object-src 'none'");
+  // `connect-src` nunca pode virar curinga: é o que impede exfiltração.
+  expect(policy).toMatch(/connect-src [^;]*'self'/);
+  expect(policy).not.toContain('connect-src *');
+});
+
+test('keeps development-only sources out of the production policy', async ({ page }) => {
+  test.skip(process.env.E2E_EXPECT_PRODUCTION_CSP !== 'true');
+
+  const response = await page.goto('/');
+  const policy = response?.headers()['content-security-policy'] ?? '';
+
+  expect(policy).toContain('upgrade-insecure-requests');
+  expect(policy).not.toContain("'unsafe-eval'");
+  expect(policy).not.toContain('ws:');
+});
+
+test('renders every public page without Content-Security-Policy violations', async ({ page }) => {
+  test.setTimeout(120_000);
+
+  const violations: string[] = [];
+  page.on('console', (message) => {
+    if (/Content Security Policy|Refused to/i.test(message.text())) {
+      violations.push(message.text());
+    }
+  });
+
+  for (const route of publicRoutes) {
+    const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
+    expect(response?.ok(), `${route} should respond successfully`).toBe(true);
+    await expect(page.locator('body')).toBeVisible();
+  }
+
+  expect(violations).toEqual([]);
 });
