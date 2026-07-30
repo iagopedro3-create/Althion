@@ -1,20 +1,6 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const publicRoutes = [
-  '/',
-  '/contato',
-  '/definir-senha',
-  '/diagnostico',
-  '/entrar',
-  '/privacidade',
-  '/produto',
-  '/radar',
-  '/recuperar-acesso',
-  '/seguranca',
-  '/sobre',
-  '/termos',
-] as const;
+import { PUBLIC_ROUTES } from './public-routes';
 
 test('presents the Althion positioning and access path', async ({ page }) => {
   await page.goto('/');
@@ -26,19 +12,14 @@ test('presents the Althion positioning and access path', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Acessar a plataforma' })).toBeFocused();
 });
 
-test('shows an accessible login form without public signup', async ({ page }) => {
+// A verificação de acessibilidade de `/entrar` vive em `accessibility.spec.ts`,
+// junto com as demais rotas públicas: aqui a asserção é sobre o formulário.
+test('shows a labelled login form without public signup', async ({ page }) => {
   await page.goto('/entrar');
 
   await expect(page.getByLabel('E-mail')).toBeVisible();
   await expect(page.getByLabel('Senha')).toBeVisible();
   await expect(page.getByText('Não há cadastro público')).toBeVisible();
-
-  const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-  expect(
-    results.violations.filter((violation) =>
-      ['critical', 'serious'].includes(violation.impact ?? ''),
-    ),
-  ).toEqual([]);
 });
 
 test('serves baseline browser security headers', async ({ page }) => {
@@ -89,7 +70,7 @@ test('renders every public page without Content-Security-Policy violations', asy
     }
   });
 
-  for (const route of publicRoutes) {
+  for (const route of PUBLIC_ROUTES) {
     const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
     expect(response?.ok(), `${route} should respond successfully`).toBe(true);
     await expect(page.locator('body')).toBeVisible();

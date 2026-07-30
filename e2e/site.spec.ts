@@ -1,7 +1,4 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-
-const PUBLIC_PATHS = ['/', '/produto', '/seguranca', '/sobre', '/contato', '/diagnostico'] as const;
 
 test('navigates the public site without requiring a session', async ({ page }) => {
   await page.goto('/');
@@ -82,15 +79,3 @@ test('stops illustrative autoplay when reduced motion is requested', async ({ pa
   await page.waitForTimeout(5_500);
   await expect(page.getByText('Identificada', { exact: true })).toBeVisible();
 });
-
-for (const path of PUBLIC_PATHS) {
-  test(`has no critical accessibility violations on ${path}`, async ({ page }) => {
-    await page.goto(path);
-    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-    expect(
-      results.violations.filter((violation) =>
-        ['critical', 'serious'].includes(violation.impact ?? ''),
-      ),
-    ).toEqual([]);
-  });
-}
