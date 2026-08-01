@@ -121,6 +121,8 @@ A API NestJS roda na Vercel como **função serverless**, via o entry `apps/api/
 
 > ⚠️ **Validar no 1º deploy.** O adaptador serverless importa o **build de `dist/`** (não de `src/`) de propósito: o bundler da Vercel (esbuild) não emite o metadata de decorator que a injeção de dependência do Nest exige. Se a DI falhar no deploy, confirme que o `nest build` rodou e que o entry aponta para `dist/`.
 
+> **`lib` é declarado explicitamente em `apps/api/tsconfig.json`, e precisa continuar sendo.** Depois do `nest build`, a Vercel roda seu próprio type-check usando o tsconfig do **Root Directory** do projeto (`apps/api/`) — e força um alvo de linguagem mais antigo que o do repositório. Enquanto `lib` vinha derivado de `target: ES2022`, o alvo forçado levava junto a biblioteca: o 1º deploy (01/08/2026) falhou com `TS2550: Property 'at' does not exist`, apontando código ES2022 que compila em todo lugar menos ali. Com `lib` fixo, o alvo forçado não altera mais quais APIs existem. Se um erro de tipo aparecer só no build da Vercel, é neste `lib` que se olha — não no código apontado. Um tsconfig no diretório da função **não** funciona: a Vercel usa o do Root Directory e ignora os aninhados (verificado no 2º deploy).
+
 **Trade-offs do serverless para esta API:** cold starts (o `createRemoteJWKSet` re-busca as chaves em instâncias frias — aceitável); limite de duração por request (`maxDuration` no `vercel.json`); sem jobs de longa duração/persistentes (a fila/outbox segue adiada no roadmap, então não é bloqueio hoje).
 
 **Fallback — container host:** se o serverless der atrito, o `apps/api/Dockerfile` (portável) roda a API como servidor de longa duração em Railway/Render/Fly/Cloud Run:
