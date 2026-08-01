@@ -111,6 +111,7 @@ O bypass de RLS é risco crítico. A service role:
 - Paginação e limites máximos em listas/exports.
 - CORS allowlist por ambiente; headers de segurança e CSP no web.
 - A CSP estática limita origens de conexão, submissão de formulário, enquadramento, plugins e URLs relativas sem tornar as páginas institucionais dinâmicas. Em produção, `connect-src` aceita somente a própria origem e a origem configurada do Supabase; a ausência ou invalidade dessa configuração falha fechada. Como o App Router exige scripts e estilos inline sem uma nonce por requisição, `'unsafe-inline'` permanece uma limitação explícita e a CSP não é tratada como defesa completa contra XSS.
+- As áreas do web que exigem sessão são declaradas em `apps/web/src/lib/protected-areas.ts` (`AUTHENTICATED_AREAS`), consumidas pelo proxy e casadas por segmento — `/app` não protege `/application`. Uma área nova entra na barreira por uma linha nessa lista, e não por uma edição na lógica de sessão. A barreira do proxy é a camada externa: cada layout de área continua validando com `getUser()` e a API revalida o JWT por JWKS, de modo que nenhuma das três depende das outras.
 - Erros públicos não expõem stack, SQL, IDs externos ou existência indevida.
 - Mutations críticas usam idempotency key e optimistic concurrency/version quando necessário.
 - Logs têm correlation ID, mas redaction central remove PII e segredos.

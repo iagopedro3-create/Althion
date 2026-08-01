@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { isAuthEntryPoint, requiresSession } from '../protected-areas';
 import { getSupabasePublicConfig } from './config';
 
 export async function updateSession(request: NextRequest) {
@@ -22,8 +23,8 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const isProtected = request.nextUrl.pathname.startsWith('/app');
-  const isAuthPage = ['/entrar', '/recuperar-acesso'].includes(request.nextUrl.pathname);
+  const isProtected = requiresSession(request.nextUrl.pathname);
+  const isAuthPage = isAuthEntryPoint(request.nextUrl.pathname);
 
   if (!user && isProtected) {
     const url = request.nextUrl.clone();
