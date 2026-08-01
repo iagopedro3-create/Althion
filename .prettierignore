@@ -1,0 +1,4 @@
+# Artefato gerado pelo Next a cada `dev`/`build`, com o aviso "should not be
+# edited". Formatá-lo é inútil — a próxima execução reescreve — e nocivo: o
+# arquivo volta reformatado e quebra o `format:check` de quem só rodou o build.
+apps/web/next-env.d.ts

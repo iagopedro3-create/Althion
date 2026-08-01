@@ -53,6 +53,10 @@ pnpm test:db
 pnpm test:e2e
 ```
 
+`pnpm test:e2e` sobe o próprio servidor em `127.0.0.1:3210` — porta dedicada, e não a `3000` do `pnpm dev:web`. O Playwright reaproveita um servidor que já esteja escutando na porta, então compartilhar a porta padrão faria a suíte rodar contra o `next dev` de qualquer outro projeto e reprovar (ou aprovar) por engano. Use `E2E_PORT` para mudar.
+
+Um `pnpm dev:web` já em execução impede o Playwright de subir a sua instância (o Next recusa duas instâncias no mesmo diretório). Encerre-o antes, ou aponte a suíte para ele com `E2E_PORT=3000`.
+
 `pnpm db:reset` é destrutivo somente para o banco local. Não execute `--linked` sem aprovação e confirmação explícita do projeto alvo.
 
 ## Docker indisponível

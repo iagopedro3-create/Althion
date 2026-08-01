@@ -1,0 +1,18 @@
+# Line endings são LF no repositório **e no working tree**, em qualquer sistema.
+#
+# Sem isto, `core.autocrlf=true` (o padrão do Git for Windows) grava CRLF no
+# checkout enquanto o Prettier exige LF (`endOfLine: 'lf'`, o default). O gate
+# `format:check` então reprova arquivos que ninguém editou: passa no CI, falha
+# na máquina de quem escreveu o código — exatamente onde precisa funcionar.
+* text=auto eol=lf
+
+# Binários: nunca normalizar, sob pena de corrupção.
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.pdf binary
+*.png binary
+*.webp binary
+*.woff binary
+*.woff2 binary
