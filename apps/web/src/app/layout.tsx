@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 
 import './globals.css';
+import './marketing.css';
 
 // Fontes self-hosted via next/font (variable fonts): elimina o @import render-blocking
 // do Google Fonts e garante os pesos intermediários (620/650/750) usados no CSS.

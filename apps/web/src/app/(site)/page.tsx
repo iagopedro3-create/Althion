@@ -1,373 +1,655 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import { HeroInteractiveFlow } from '@/components/site/HeroInteractiveFlow';
-import { JourneyLeakStrip } from '@/components/site/JourneyLeakStrip';
-import { ProblemSection } from '@/components/site/ProblemSection';
-import { HowItWorksSection } from '@/components/site/HowItWorksSection';
-import { AlthionScoreDial } from '@/components/site/AlthionScoreDial';
-import { RecoveryOpportunityFila } from '@/components/site/RecoveryOpportunityFila';
-import { CapacityCalor } from '@/components/site/CapacityCalor';
-import { FAQAccordions } from '@/components/site/FAQAccordions';
+import { MarketingHeader } from '@/components/site/MarketingHeader';
 
 export const metadata: Metadata = {
+  title: 'Recuperação e performance da jornada administrativa',
   description:
-    'A Althion integra atendimento, CRM e agenda para mapear perdas operacionais, automatizar a recuperação de oportunidades e acompanhar resultados.',
-  title: 'Althion | Recuperação e Performance da Agenda para Clínicas',
+    'Descubra onde sua clínica perde oportunidades e por onde começar a recuperá-las com o diagnóstico Althion.',
 };
 
-export default function SiteHome() {
+const JOURNEY = [
+  'Contato',
+  'Atendimento',
+  'Agendamento',
+  'Confirmação',
+  'Comparecimento',
+  'Retorno',
+] as const;
+
+const PLATFORM_CAPABILITIES = [
+  {
+    number: '01',
+    title: 'Nenhum contato sem contexto',
+    text: 'Atendimento e histórico centralizados preservam o que já aconteceu e o que precisa acontecer depois.',
+  },
+  {
+    number: '02',
+    title: 'Cada oportunidade com responsável e próxima ação',
+    text: 'CRM, etapas e responsáveis dão clareza sobre quem conduz cada oportunidade e qual é o próximo passo.',
+  },
+  {
+    number: '03',
+    title: 'Menos tarefas dependentes da memória da equipe',
+    text: 'Automações e IA apoiam rotinas repetitivas sem retirar o controle humano da operação.',
+  },
+  {
+    number: '04',
+    title: 'Follow-up que não termina no primeiro contato',
+    text: 'Sequências, mensagens programadas e carteiras ajudam a sustentar a continuidade do relacionamento.',
+  },
+  {
+    number: '05',
+    title: 'Sistemas trabalhando juntos',
+    text: 'Integrações reduzem a fragmentação e aproximam atendimento, agenda, relacionamento e dados.',
+  },
+  {
+    number: '06',
+    title: 'Decisão baseada no que aconteceu',
+    text: 'Ações e resultados formam uma linha de base para orientar prioridades e decisões futuras.',
+  },
+] as const;
+
+const RECOVERY_CASES = [
+  {
+    signal: 'Lead sem resposta',
+    opportunity: 'Contato ainda elegível',
+    action: 'Retomar',
+  },
+  {
+    signal: 'Conversa sem agendamento',
+    opportunity: 'Intenção não convertida',
+    action: 'Fazer follow-up',
+  },
+  {
+    signal: 'Cancelamento',
+    opportunity: 'Paciente e horário perdidos',
+    action: 'Reagendar',
+  },
+  { signal: 'Falta', opportunity: 'Jornada interrompida', action: 'Recuperar' },
+  {
+    signal: 'Agenda ociosa',
+    opportunity: 'Capacidade disponível',
+    action: 'Priorizar elegíveis',
+  },
+] as const;
+
+const FAQ = [
+  {
+    question: 'A Althion é um CRM?',
+    answer:
+      'Não. A Althion estrutura os recursos de CRM, atendimento, automação e relacionamento necessários a cada plano, mas seu foco é recuperar oportunidades e melhorar a performance da jornada administrativa.',
+  },
+  {
+    question: 'Preciso trocar as ferramentas que minha clínica já usa?',
+    answer:
+      'Depende da operação. O diagnóstico identifica o que pode ser integrado, mantido, reorganizado ou substituído antes de qualquer mudança de tecnologia.',
+  },
+  {
+    question: 'A Althion substitui minha recepção ou secretária?',
+    answer:
+      'Não. A tecnologia organiza tarefas, informações e automações para que a equipe tenha mais contexto, continuidade e clareza de prioridade.',
+  },
+  {
+    question: 'Existe acompanhamento humano?',
+    answer:
+      'Sim. A tecnologia é combinada com acompanhamento da operação, revisão de indicadores e planos de melhoria junto à equipe da clínica.',
+  },
+  {
+    question: 'Como a Althion recupera oportunidades?',
+    answer:
+      'Identificamos rupturas administrativas, organizamos oportunidades elegíveis e estruturamos ações de follow-up e recuperação com responsável, contexto e rastreabilidade.',
+  },
+  {
+    question: 'Como começamos?',
+    answer:
+      'Pelo diagnóstico. Ele mostra os principais gargalos, a maturidade da operação e as prioridades iniciais antes de estruturar tecnologia e processos.',
+  },
+] as const;
+
+export default function Home() {
   return (
-    <main className="site-main">
-      {/* Act 1: Hero Section (DARK THEME) */}
-      <section aria-labelledby="hero-headline" className="dark-section hero-section" id="inicio">
-        <div className="site-container hero-grid">
-          {/* Coluna de texto */}
-          <div className="hero-text-col">
-            <span className="hero-eyebrow">Performance da jornada do paciente</span>
+    <div className="marketing-site">
+      <MarketingHeader />
+      <main>
+        <section className="marketing-hero" id="inicio">
+          <div className="marketing-container marketing-hero-grid">
+            <div className="marketing-hero-copy">
+              <p className="marketing-eyebrow">Diagnóstico operacional para clínicas</p>
+              <h1>
+                Sua clínica já recebe oportunidades.
+                <br /> Descubra onde elas se perdem.
+              </h1>
+              <p className="marketing-hero-lead">
+                A Althion identifica os gargalos da jornada administrativa e mostra por onde começar
+                a recuperar oportunidades.
+              </p>
+              <div className="marketing-actions">
+                <Link className="marketing-button marketing-button-primary" href="/diagnostico">
+                  Receber diagnóstico da operação
+                </Link>
+                <a className="marketing-button marketing-button-quiet" href="#como-funciona">
+                  Entender como a Althion funciona
+                </a>
+              </div>
+              <p className="marketing-microcopy">Diagnóstico inicial. Sem compromisso.</p>
+            </div>
 
-            <h1 className="hero-headline" id="hero-headline">
-              Converta mais dos contatos que sua clínica já recebe.
-            </h1>
+            <div className="journey-visual" aria-label="Visão da jornada administrativa Althion">
+              <div className="journey-visual-header">
+                <div>
+                  <span>Operação Althion</span>
+                  <strong>Da oportunidade à performance</strong>
+                </div>
+                <span className="marketing-badge marketing-badge-live">Ciclo acompanhado</span>
+              </div>
+              <ol className="journey-visual-list">
+                {JOURNEY.map((stage, index) => (
+                  <li
+                    className={`journey-visual-stage journey-state-${index < 2 ? 'observed' : index < 4 ? 'attention' : 'unknown'}`}
+                    key={stage}
+                  >
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <strong>{stage}</strong>
+                    <small>{index < 2 ? 'Organizar' : index < 4 ? 'Acompanhar' : 'Medir'}</small>
+                  </li>
+                ))}
+              </ol>
+              <p>Representação conceitual da jornada — não apresenta métricas reais.</p>
+            </div>
+          </div>
+        </section>
 
-            <p className="hero-subheadline">
-              A Althion identifica perdas entre a primeira mensagem e o comparecimento, organiza os
-              próximos passos e combina inteligência artificial com acompanhamento humano para
-              tornar a agenda mais previsível.
-            </p>
+        <section className="journey-band" aria-label="Etapas acompanhadas pela Althion">
+          <div className="marketing-container journey-band-track">
+            {JOURNEY.map((stage, index) => (
+              <div key={stage}>
+                <span>{stage}</span>
+                {index < JOURNEY.length - 1 ? <i aria-hidden="true">→</i> : null}
+              </div>
+            ))}
+          </div>
+        </section>
 
-            <div className="hero-actions">
-              <Link className="site-cta-primary" href="/diagnostico" id="hero-cta-principal">
-                Solicitar diagnóstico
+        <section className="marketing-section marketing-section-light" id="problema">
+          <div className="marketing-container">
+            <header className="marketing-section-heading marketing-section-heading-split">
+              <div>
+                <p className="marketing-eyebrow">O problema</p>
+                <h2>Nem toda agenda vazia começa com falta de demanda.</h2>
+              </div>
+              <p>
+                Oportunidades se perdem em pequenas rupturas — e sistemas isolados impedem que a
+                gestão enxergue a jornada inteira.
+              </p>
+            </header>
+            <div className="loss-card-grid loss-card-grid-four">
+              <article>
+                <span>01</span>
+                <h3>Contatos sem continuidade</h3>
+                <p>Conversas iniciadas não avançam e não deixam uma próxima ação rastreável.</p>
+              </article>
+              <article>
+                <span>02</span>
+                <h3>Agenda sem contexto</h3>
+                <p>Cancelamentos, faltas e capacidade ficam separados da rotina de atendimento.</p>
+              </article>
+              <article>
+                <span>03</span>
+                <h3>Sistemas desconectados</h3>
+                <p>
+                  Atendimento, agenda, CRM e dados vivem separados — sem uma visão completa da
+                  jornada.
+                </p>
+              </article>
+              <article>
+                <span>04</span>
+                <h3>Gestão sem linha de base</h3>
+                <p>A equipe sente os gargalos, mas não consegue provar onde agir primeiro.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="marketing-section marketing-section-dark" id="como-funciona">
+          <div className="marketing-container">
+            <header className="marketing-section-heading">
+              <p className="marketing-eyebrow">Como a Althion funciona</p>
+              <h2>Uma operação completa, explicada em quatro movimentos.</h2>
+              <p>
+                O diagnóstico mostra onde agir. A infraestrutura operacional é estruturada para
+                executar o plano. O acompanhamento sustenta a evolução.
+              </p>
+            </header>
+            <div className="method-steps method-steps-four">
+              <article>
+                <span>Diagnosticar</span>
+                <strong>01</strong>
+                <h3>Descobrir onde estão as perdas</h3>
+                <p>
+                  Radar, evidências, indicadores e Score mostram os principais gargalos da jornada,
+                  respeitando a cobertura disponível.
+                </p>
+              </article>
+              <article>
+                <span>Estruturar</span>
+                <strong>02</strong>
+                <h3>Dar infraestrutura à operação</h3>
+                <p>
+                  Os recursos adequados à realidade da clínica são organizados para conectar
+                  processos, responsáveis e informações.
+                </p>
+              </article>
+              <article>
+                <span>Recuperar</span>
+                <strong>03</strong>
+                <h3>Transformar perdas em ações</h3>
+                <p>
+                  Leads sem continuidade, cancelamentos, faltas e oportunidades esquecidas entram em
+                  processos rastreáveis.
+                </p>
+              </article>
+              <article>
+                <span>Evoluir</span>
+                <strong>04</strong>
+                <h3>Medir e melhorar continuamente</h3>
+                <p>
+                  A Althion acompanha indicadores, prioridades e execução junto à equipe da clínica.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="marketing-section marketing-section-ivory" id="diagnostico">
+          <div className="marketing-container diagnostic-showcase">
+            <div className="diagnostic-showcase-copy">
+              <p className="marketing-eyebrow">Diagnóstico Althion</p>
+              <h2>O diagnóstico mostra onde começar.</h2>
+              <p>
+                Antes de implantar tecnologia ou mudar processos, a Althion identifica os pontos de
+                perda, a maturidade da operação e as prioridades dos próximos 90 dias.
+              </p>
+              <ul className="marketing-check-list">
+                <li>Evidências observadas e nível de confiança</li>
+                <li>Maturidade e principais gargalos operacionais</li>
+                <li>Oportunidades prioritárias de melhoria</li>
+                <li>Indicadores a estruturar e plano inicial de 90 dias</li>
+              </ul>
+              <Link className="marketing-button marketing-button-dark" href="/diagnostico">
+                Testar o diagnóstico
               </Link>
-              <a className="hero-link-secondary" href="#como-funciona" id="hero-cta-secundario">
-                Ver como a Althion funciona
-                <span aria-hidden="true"> &#8594;</span>
-              </a>
             </div>
-
-            <p className="hero-microcopy">Diagnóstico inicial. Sem compromisso.</p>
-
-            <div className="hero-connections" aria-label="Integrações">
-              <span className="hero-connections-label">WhatsApp</span>
-              <span aria-hidden="true" className="hero-connections-sep">
-                •
-              </span>
-              <span className="hero-connections-label">CRM</span>
-              <span aria-hidden="true" className="hero-connections-sep">
-                •
-              </span>
-              <span className="hero-connections-label">Agenda</span>
-              <span aria-hidden="true" className="hero-connections-sep">
-                •
-              </span>
-              <span className="hero-connections-label">IA</span>
-              <span aria-hidden="true" className="hero-connections-sep">
-                •
-              </span>
-              <span className="hero-connections-label">Especialista de Relacionamento</span>
+            <div
+              className="report-preview-card"
+              aria-label="Prévia ilustrativa do diagnóstico executivo"
+            >
+              <div className="report-preview-topline">
+                <span>Diagnóstico Executivo</span>
+                <small>Exemplo ilustrativo</small>
+              </div>
+              <h3>Onde a operação precisa agir primeiro</h3>
+              <div className="report-preview-summary">
+                <div className="report-preview-radar">
+                  <span>Radar qualitativo</span>
+                  <strong>Leitura inicial</strong>
+                  <small>Baseada na amostra</small>
+                </div>
+                <div className="report-preview-score">
+                  <span>Althion Score</span>
+                  <strong>Não disponível</strong>
+                  <small>Cobertura insuficiente</small>
+                </div>
+              </div>
+              <div className="report-preview-bars">
+                <div>
+                  <span>Atendimento</span>
+                  <i>
+                    <b className="preview-bar-64" />
+                  </i>
+                  <small>Observado</small>
+                </div>
+                <div>
+                  <span>Processos</span>
+                  <i>
+                    <b className="preview-bar-46" />
+                  </i>
+                  <small>Parcial</small>
+                </div>
+                <div>
+                  <span>Tecnologia</span>
+                  <i>
+                    <b className="preview-bar-28" />
+                  </i>
+                  <small>A validar</small>
+                </div>
+                <div>
+                  <span>Dados e gestão</span>
+                  <i>
+                    <b className="preview-bar-20" />
+                  </i>
+                  <small>A validar</small>
+                </div>
+              </div>
+              <p>Composição ilustrativa — não representa resultados ou métricas reais.</p>
             </div>
           </div>
+        </section>
 
-          {/* Mockup da jornada */}
-          <div className="hero-mockup-col">
-            <HeroInteractiveFlow />
+        <aside className="marketing-manifesto">
+          <div className="marketing-container">
+            <span>A tecnologia é o meio.</span>
+            <strong>Performance é o produto.</strong>
           </div>
-        </div>
-      </section>
+        </aside>
 
-      {/* Act 2: Faixa de Posicionamento (LIGHT THEME) */}
-      <section
-        aria-labelledby="positioning-heading"
-        className="positioning-band"
-        id="posicionamento"
-      >
-        <div className="site-container">
-          <div className="positioning-header">
-            <h2 className="positioning-headline" id="positioning-heading">
-              O problema nem sempre é gerar mais demanda.
-              <br />
-              <span className="positioning-headline-accent">
-                É aproveitar melhor o que já chegou.
-              </span>
-            </h2>
-            <p className="positioning-lead">
-              A Althion mapeia cada etapa entre o primeiro contato e o comparecimento, identifica
-              onde as oportunidades se perdem e fecha esses pontos sistematicamente.
-            </p>
+        <section className="marketing-section platform-section" id="plataforma">
+          <div className="marketing-container">
+            <header className="marketing-section-heading marketing-section-heading-split">
+              <div>
+                <p className="marketing-eyebrow">Infraestrutura operacional</p>
+                <h2>Diagnóstico sem execução vira apenas um relatório.</h2>
+              </div>
+              <p>
+                A infraestrutura operacional da Althion conecta os recursos necessários para
+                executar o plano de melhoria e transformar prioridades em ações rastreáveis.
+              </p>
+            </header>
+            <div
+              className="platform-architecture"
+              aria-label="Arquitetura conceitual da plataforma Althion"
+            >
+              <div className="platform-core">
+                <span>A</span>
+                <div>
+                  <small>Infraestrutura</small>
+                  <strong>PLATAFORMA ALTHION</strong>
+                </div>
+              </div>
+              <div className="platform-systems">
+                <span>Atendimento</span>
+                <span>CRM</span>
+                <span>Automação</span>
+                <span>IA</span>
+                <span>Relacionamento</span>
+                <span>Dados</span>
+              </div>
+              <div className="platform-connector" aria-hidden="true">
+                <i />
+                <b />
+              </div>
+              <div className="platform-journey">
+                <strong>Jornada administrativa</strong>
+                <div>
+                  {JOURNEY.map((stage) => (
+                    <span key={stage}>{stage}</span>
+                  ))}
+                </div>
+              </div>
+              <p className="platform-availability-note">
+                A composição da infraestrutura é definida após o diagnóstico, conforme as
+                necessidades, ferramentas e integrações viáveis em cada operação.
+              </p>
+            </div>
+            <div className="platform-capability-grid">
+              {PLATFORM_CAPABILITIES.map((item) => (
+                <article key={item.number}>
+                  <span>{item.number}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Strip de vazamentos — scroll horizontal infinito */}
-        <div className="positioning-strip-container">
-          <div className="positioning-strip-fade positioning-strip-fade--left" aria-hidden="true" />
-          <div
-            className="positioning-strip-fade positioning-strip-fade--right"
-            aria-hidden="true"
-          />
-          <JourneyLeakStrip />
-        </div>
+        <section className="marketing-section marketing-section-light" id="recuperacao">
+          <div className="marketing-container recovery-layout">
+            <header className="marketing-section-heading">
+              <p className="marketing-eyebrow">Recuperação de oportunidades</p>
+              <h2>Toda perda identificada precisa virar uma próxima ação.</h2>
+              <p>
+                A recuperação começa como método: identificar rupturas, organizar oportunidades
+                elegíveis e definir ações com contexto, responsável e rastreabilidade.
+              </p>
+            </header>
+            <div
+              className="recovery-table"
+              role="table"
+              aria-label="Exemplos de recuperação operacional"
+            >
+              <div className="recovery-table-head" role="row">
+                <span role="columnheader">Sinal</span>
+                <span role="columnheader">Oportunidade</span>
+                <span role="columnheader">Próxima ação</span>
+              </div>
+              {RECOVERY_CASES.map((item) => (
+                <div className="recovery-table-row" role="row" key={item.signal}>
+                  <strong role="cell">{item.signal}</strong>
+                  <span role="cell">{item.opportunity}</span>
+                  <b role="cell">{item.action} →</b>
+                </div>
+              ))}
+            </div>
+            <div className="recovery-flow" aria-label="Ciclo de recuperação">
+              <article>
+                <span>01</span>
+                <h3>Detectar</h3>
+                <p>Identificar a ruptura.</p>
+              </article>
+              <i aria-hidden="true">→</i>
+              <article>
+                <span>02</span>
+                <h3>Priorizar</h3>
+                <p>Definir o que merece atenção.</p>
+              </article>
+              <i aria-hidden="true">→</i>
+              <article>
+                <span>03</span>
+                <h3>Acionar</h3>
+                <p>Organizar ação e responsável.</p>
+              </article>
+              <i aria-hidden="true">→</i>
+              <article>
+                <span>04</span>
+                <h3>Medir</h3>
+                <p>Devolver o resultado ao ciclo.</p>
+              </article>
+            </div>
+          </div>
+        </section>
 
-        <div className="site-container">
-          <p className="positioning-note" aria-label="Nota sobre dados">
-            Percentuais são dados ilustrativos baseados em padrões operacionais observados no setor.
-          </p>
-        </div>
-      </section>
-
-      {/* Act 3: Seção do Problema (LIGHT THEME) */}
-      <ProblemSection />
-
-      {/* Act 4: Althion Radar & Score (LIGHT THEME) */}
-      <section aria-labelledby="radar-heading" className="radar-section" id="radar">
-        <div className="site-container">
-          <div className="radar-section-header">
+        <section className="marketing-section specialist-section" id="especialista">
+          <div className="marketing-container specialist-grid">
             <div>
-              <span className="section-eyebrow" aria-hidden="true">
-                Althion Radar
-              </span>
-              <h2 className="section-headline" id="radar-heading">
-                Veja onde sua operação está perdendo oportunidades.
-              </h2>
+              <p className="marketing-eyebrow">Acompanhamento</p>
+              <h2>Tecnologia organiza a operação. Pessoas ajudam a transformá-la.</h2>
+              <p>
+                Na fase de acompanhamento, o Especialista Althion revisa os indicadores disponíveis,
+                organiza prioridades e mantém o plano de ação visível para a clínica.
+              </p>
+              <blockquote>
+                Você não recebe apenas acesso a uma plataforma. Recebe uma operação acompanhada.
+              </blockquote>
             </div>
-            <p className="section-lead radar-section-lead">
-              O Althion Radar reúne indicadores da jornada, identifica gargalos e transforma dados
-              operacionais em prioridades claras. As 8 dimensões abaixo são exemplos ilustrativos do
-              tipo de diagnóstico que a plataforma realiza.
-            </p>
-          </div>
-
-          <AlthionScoreDial />
-        </div>
-      </section>
-
-      {/* Act 5: Como Funciona (Scrollytelling) */}
-      <HowItWorksSection />
-
-      {/* Act 6: Recovery Engine (LIGHT THEME) */}
-      <section className="landing-band landing-band--soft" id="recuperacao">
-        <div className="site-container">
-          <div className="band-intro">
-            <span className="section-eyebrow">Recuperação de oportunidades</span>
-            <h2 className="section-headline">Da perda identificada à próxima ação.</h2>
-            <p className="section-lead">
-              A Althion identifica oportunidades paradas e organiza ações aprovadas para que leads,
-              cancelamentos, faltas e retornos não fiquem sem acompanhamento.
-            </p>
-          </div>
-
-          <RecoveryOpportunityFila />
-        </div>
-      </section>
-
-      {/* Act 7: Capacity Engine (LIGHT THEME) */}
-      <section className="landing-band landing-band--white" id="capacidade">
-        <div className="site-container">
-          <div className="band-intro">
-            <span className="section-eyebrow">Inteligência de capacidade</span>
-            <h2 className="section-headline">
-              Use a capacidade da agenda para priorizar a operação.
-            </h2>
-            <p className="section-lead">
-              A Althion relaciona horários disponíveis, lista de espera, leads ainda não agendados e
-              oportunidades de retorno para sugerir onde a equipe deve agir primeiro.
-            </p>
-          </div>
-
-          <CapacityCalor />
-        </div>
-      </section>
-
-      {/* Act 8: IA vs Humano (LIGHT THEME) */}
-      <section className="landing-band landing-band--soft" id="ia">
-        <div className="site-container band-split band-split--wide">
-          <div>
-            <span className="section-eyebrow">Triagem de Mensagens</span>
-            <h2 className="section-headline">Automação para a rotina. Pessoas para as exceções.</h2>
-            <p className="section-lead">
-              A inteligência artificial cuida de tarefas administrativas repetitivas de forma veloz.
-              Quando uma situação exige contexto e sensibilidade humana, a conversa é imediatamente
-              direcionada para a equipe da clínica.
-            </p>
-            <div className="note-block">
-              A Althion atua na jornada administrativa e não realiza diagnósticos, prescrições ou
-              orientações clínicas de saúde.
+            <div className="specialist-panel">
+              <div className="specialist-panel-header">
+                <span>Especialista Althion</span>
+                <small>O que acompanha</small>
+              </div>
+              <article>
+                <span>01</span>
+                <div>
+                  <h3>Performance</h3>
+                  <p>Leitura dos indicadores e pontos de perda disponíveis.</p>
+                </div>
+              </article>
+              <article>
+                <span>02</span>
+                <div>
+                  <h3>Prioridades</h3>
+                  <p>Plano de ação e ordem do que merece atenção primeiro.</p>
+                </div>
+              </article>
+              <article>
+                <span>03</span>
+                <div>
+                  <h3>Execução</h3>
+                  <p>Responsáveis, próximos passos e pendências acordadas.</p>
+                </div>
+              </article>
+              <article>
+                <span>04</span>
+                <div>
+                  <h3>Evolução</h3>
+                  <p>Aprendizados e ajustes necessários no ciclo seguinte.</p>
+                </div>
+              </article>
             </div>
           </div>
+        </section>
 
-          <div className="info-card">
-            <h3 className="info-card-title">Divisão de Responsabilidades</h3>
-            <ul className="spec-list" style={{ paddingLeft: '20px' }}>
-              <li>
-                <strong>Auxiliado pela IA:</strong> dúvidas administrativas, confirmação de horários
-                de agenda, lembretes de retorno, mapa de localização e formas de pagamento.
-              </li>
-              <li>
-                <strong>Direcionado a Pessoas:</strong> reclamações, negociação de valores
-                excepcionais, baixa confiança da IA ou termos sensíveis sinalizados.
-              </li>
+        <section className="marketing-section marketing-section-ivory" id="performance">
+          <div className="marketing-container performance-grid">
+            <header className="marketing-section-heading">
+              <p className="marketing-eyebrow">Performance contínua</p>
+              <h2>Performance não é uma implantação. É um ciclo.</h2>
+              <p>
+                A operação muda, os gargalos mudam e as oportunidades também. A Althion acompanha
+                esse movimento continuamente.
+              </p>
+            </header>
+            <div className="performance-cycle" aria-label="Ciclo contínuo de performance">
+              {[
+                ['01', 'Diagnosticar'],
+                ['02', 'Estruturar'],
+                ['03', 'Recuperar'],
+                ['04', 'Medir'],
+                ['05', 'Evoluir'],
+              ].map(([number, label], index) => (
+                <div className={`performance-cycle-step cycle-step-${index + 1}`} key={label}>
+                  <span>{number}</span>
+                  <strong>{label}</strong>
+                </div>
+              ))}
+              <div className="performance-cycle-core">
+                <span>A</span>
+                <strong>Melhoria contínua</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="trust-compact" id="seguranca">
+          <div className="marketing-container trust-compact-grid">
+            <div>
+              <p className="marketing-eyebrow">Segurança e limites</p>
+              <h2>Tecnologia responsável começa com escopo claro.</h2>
+            </div>
+            <ul>
+              <li>Minimização e mascaramento de dados</li>
+              <li>Escopo exclusivamente administrativo</li>
+              <li>Revisão humana e incerteza explícita</li>
             </ul>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Act 9: Especialista de Relacionamento (LIGHT THEME) */}
-      <section className="landing-band landing-band--white" id="especialista">
-        <div className="site-container band-split">
-          <div>
-            <span className="section-eyebrow">Acompanhamento Humano</span>
-            <h2 className="section-headline">
-              Tecnologia para executar. Uma pessoa responsável para acompanhar.
+        <section className="marketing-section marketing-section-light" id="como-comeca">
+          <div className="marketing-container getting-started-layout">
+            <header className="marketing-section-heading">
+              <p className="marketing-eyebrow">Como começa</p>
+              <h2>O diagnóstico abre uma jornada clara de evolução.</h2>
+              <p>
+                Você não precisa contratar toda a transformação de uma vez. O primeiro passo é
+                entender o problema e definir por onde começar.
+              </p>
+            </header>
+            <div className="getting-started-steps">
+              <article>
+                <span>01</span>
+                <h3>Diagnóstico</h3>
+                <p>Entendemos a jornada atual e identificamos os principais pontos de perda.</p>
+              </article>
+              <article>
+                <span>02</span>
+                <h3>Plano</h3>
+                <p>Definimos prioridades, indicadores e processos que precisam ser estruturados.</p>
+              </article>
+              <article>
+                <span>03</span>
+                <h3>Implantação</h3>
+                <p>
+                  Configuramos a infraestrutura operacional necessária para executar o plano
+                  aprovado.
+                </p>
+              </article>
+              <article>
+                <span>04</span>
+                <h3>Acompanhamento</h3>
+                <p>
+                  Indicadores, prioridades e próximos passos passam a ser revistos ao longo da
+                  evolução.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="marketing-section marketing-section-ivory" id="faq">
+          <div className="marketing-container faq-layout">
+            <header className="marketing-section-heading">
+              <p className="marketing-eyebrow">Perguntas frequentes</p>
+              <h2>O essencial antes de começar.</h2>
+            </header>
+            <div className="faq-list">
+              {FAQ.map((item) => (
+                <details key={item.question}>
+                  <summary>
+                    {item.question}
+                    <span aria-hidden="true">+</span>
+                  </summary>
+                  <p>{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="marketing-final-cta">
+          <div className="marketing-container marketing-final-cta-inner">
+            <p className="marketing-eyebrow">Diagnóstico Althion</p>
+            <h2>
+              Descubra onde sua operação perde oportunidades — e por onde começar a recuperá-las.
             </h2>
-            <p className="section-lead">
-              Cada clínica possui um Especialista de Relacionamento como principal ponto de contato.
-              Ele estuda os processos internos da clínica, monitora os indicadores operacionais e
-              coordena os planos de melhoria da agenda.
+            <p>
+              O diagnóstico inicial mostra os principais gargalos, prioridades e próximos passos
+              para evoluir sua jornada administrativa.
             </p>
+            <Link className="marketing-button marketing-button-primary" href="/diagnostico">
+              Receber diagnóstico da operação
+            </Link>
+            <small>Diagnóstico inicial. Sem compromisso.</small>
           </div>
+        </section>
+      </main>
 
-          <div className="info-card info-card--soft">
-            <h3 className="info-card-title">Painel do Especialista (Demonstração)</h3>
-            <ul className="spec-list">
-              <li className="spec-row spec-row--divided">
-                <span>Especialista Dedicado</span>
-                <strong>Juliana S.</strong>
-              </li>
-              <li className="spec-row spec-row--divided">
-                <span>Saúde Operacional da Clínica</span>
-                <span className="badge success">94%</span>
-              </li>
-              <li className="spec-row spec-row--divided">
-                <span>Próxima Reunião</span>
-                <strong>27 de Julho, às 14:00</strong>
-              </li>
-              <li className="spec-row">
-                <span>Aderência à Configuração</span>
-                <strong className="spec-accent">Conforme as diretrizes</strong>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Act 10: Segurança & Termos (DARK THEME) */}
-      <section id="seguranca" className="dark-section landing-band landing-band--bordered">
-        <div className="site-container band-split band-split--wide">
+      <footer className="marketing-footer">
+        <div className="marketing-container marketing-footer-inner">
           <div>
-            <span className="section-eyebrow">Segurança &amp; Privacidade</span>
-            <h2 className="section-headline">Tecnologia responsável começa com limites claros.</h2>
-            <p className="section-lead">
-              Nossos sistemas são construídos adotando isolamento total de dados entre organizações
-              e limites rígidos de controle de permissões.
-            </p>
-            <div className="security-note">
-              A plataforma está sendo desenvolvida com princípios de segurança, minimização de dados
-              e controle de acesso. A documentação definitiva deverá ser revisada juridicamente
-              antes da operação comercial.
-            </div>
+            <strong>Althion</strong>
+            <span>Recuperação e performance da jornada administrativa.</span>
           </div>
-
-          <div className="trust-stack">
-            <div className="trust-card">
-              <strong>Isolamento por clínica</strong>
-              <small>
-                Dados administrativos e logs de cada clínica são segregados por controles de acesso
-                e políticas no banco de dados.
-              </small>
-            </div>
-            <div className="trust-card">
-              <strong>Escopo administrativo</strong>
-              <small>
-                Histórico médico ou exames não são processados. As regras focam exclusivamente na
-                agenda administrativa.
-              </small>
-            </div>
-          </div>
+          <nav aria-label="Links do rodapé">
+            <a href="#como-funciona">Como funciona</a>
+            <a href="#plataforma">Plataforma</a>
+            <a href="#recuperacao">Recuperação</a>
+            <a href="#especialista">Especialista</a>
+            <Link href="/diagnostico">Diagnóstico</Link>
+          </nav>
+          <small>© 2026 Althion. MVP em validação.</small>
         </div>
-      </section>
-
-      {/* Act 11: Implantação (LIGHT THEME) */}
-      <section className="landing-band landing-band--white">
-        <div className="site-container">
-          <div className="band-intro" style={{ marginBottom: '60px' }}>
-            <span className="section-eyebrow">Processo de Ativação</span>
-            <h2 className="section-headline">Comece sem mudar toda a operação de uma vez.</h2>
-            <p className="section-lead">
-              Nossa implantação é modular e gradual, adaptando-se aos sistemas e cronogramas
-              específicos de cada clínica para evitar sobrecargas.
-            </p>
-          </div>
-
-          <div className="step-grid">
-            <div className="step-card">
-              <strong className="step-card-title">1. Diagnóstico</strong>
-              <p className="step-card-desc">
-                Mapeamos as janelas ociosas históricas e identificamos os pontos de perda da
-                recepção.
-              </p>
-            </div>
-
-            <div className="step-card">
-              <strong className="step-card-title">2. Configuração</strong>
-              <p className="step-card-desc">
-                Definimos as regras de reengajamento da IA de acordo com os procedimentos
-                autorizados.
-              </p>
-            </div>
-
-            <div className="step-card">
-              <strong className="step-card-title">3. Acompanhamento</strong>
-              <p className="step-card-desc">
-                Seu Especialista de Relacionamento avalia o andamento e apresenta relatórios
-                periódicos de melhorias.
-              </p>
-            </div>
-          </div>
-          <div className="band-footnote">
-            * O cronograma final é definido após o diagnóstico da operação de cada clínica.
-          </div>
-        </div>
-      </section>
-
-      {/* Act 12: FAQ (LIGHT THEME) */}
-      <section className="landing-band landing-band--soft" id="faq">
-        <div className="site-container">
-          <div className="band-intro--center">
-            <span className="section-eyebrow">FAQ</span>
-            <h2 className="section-headline">Perguntas e Respostas</h2>
-            <p className="section-lead">
-              Esclareça suas dúvidas técnicas operacionais sobre a Althion.
-            </p>
-          </div>
-
-          <FAQAccordions />
-        </div>
-      </section>
-
-      {/* Act 13: CTA Final (DARK THEME) */}
-      <section className="dark-section landing-band landing-band--bordered">
-        <div className="site-container cta-final">
-          <span className="section-eyebrow">Diagnóstico Althion</span>
-          <h2 className="section-headline">
-            Descubra onde sua clínica está perdendo oportunidades.
-          </h2>
-          <p className="section-lead">
-            Receba uma análise inicial detalhada da jornada de atendimento, conversão e
-            aproveitamento da agenda da sua clínica.
-          </p>
-          <div className="cta-actions">
-            <Link className="site-cta-primary" href="/diagnostico">
-              Solicitar diagnóstico
-            </Link>
-            <Link className="site-cta-secondary" href="/contato">
-              Falar com a Althion
-            </Link>
-          </div>
-          <small className="cta-microcopy">
-            Sem compromisso. Informações utilizadas exclusivamente para a análise operacional.
-          </small>
-        </div>
-      </section>
-    </main>
+      </footer>
+    </div>
   );
 }
