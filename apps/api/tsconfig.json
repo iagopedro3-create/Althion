@@ -5,6 +5,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "isolatedModules": false,
+    "lib": ["ES2023"],
     "module": "CommonJS",
     "moduleResolution": "Node",
     "outDir": "dist",

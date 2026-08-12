@@ -15,12 +15,19 @@ export default function SiteLayout({ children }: Readonly<{ children: React.Reac
       <div className="dark-section" style={{ width: '100%', borderTop: '1px solid var(--line)' }}>
         <footer className="site-footer" style={{ borderTop: 'none', marginTop: 0 }}>
           <div>
-            <p className="brand">
-              <span className="brand-mark" style={{ background: '#18A987', color: '#061713' }}>
-                A
-              </span>
-              <span>Althion</span>
-            </p>
+            <Link
+              aria-label="Althion — página inicial"
+              className="brand site-footer-brand"
+              href="/"
+            >
+              <img
+                alt="Althion"
+                className="site-brand-logo"
+                height="48"
+                src="/brand/official/svg/althion-lockup-negative.svg"
+                width="228"
+              />
+            </Link>
             <p>Recuperação e Performance da Agenda para clínicas.</p>
           </div>
           <nav aria-label="Links institucionais" className="site-footer-links">

@@ -2387,6 +2387,10 @@ details.creation-panel > summary {
   color: var(--muted);
 }
 
+.site-footer-brand {
+  margin-bottom: 16px;
+}
+
 .site-footer-links {
   display: flex;
   gap: 18px;
@@ -2601,6 +2605,16 @@ details.creation-panel > summary {
 
 .site-header .brand {
   color: #f3faf7;
+}
+
+.site-brand {
+  flex: 0 0 auto;
+}
+
+.site-brand-logo {
+  display: block;
+  width: 142px;
+  height: auto;
 }
 
 .site-header-inner {

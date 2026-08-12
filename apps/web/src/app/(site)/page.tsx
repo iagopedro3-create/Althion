@@ -11,6 +11,9 @@ import { CapacityCalor } from '@/components/site/CapacityCalor';
 import { FAQAccordions } from '@/components/site/FAQAccordions';
 
 export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
   description:
     'A Althion integra atendimento, CRM e agenda para mapear perdas operacionais, automatizar a recuperação de oportunidades e acompanhar resultados.',
   title: 'Althion | Recuperação e Performance da Agenda para Clínicas',
