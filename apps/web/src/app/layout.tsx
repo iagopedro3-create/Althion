@@ -18,10 +18,41 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://althionops.com.br'),
+  applicationName: 'Althion',
   description: 'Infraestrutura de Recuperação e Performance da Agenda para clínicas.',
   title: {
     default: 'Althion',
     template: '%s | Althion',
+  },
+  icons: {
+    icon: [
+      { url: '/brand/official/png/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/official/png/favicon-64.png', sizes: '64x64', type: 'image/png' },
+    ],
+    apple: '/brand/official/png/favicon-180.png',
+  },
+  openGraph: {
+    description: 'Infraestrutura de Recuperação e Performance da Agenda para clínicas.',
+    images: [
+      {
+        alt: 'Althion — Recuperação e Performance da Agenda',
+        height: 630,
+        url: '/brand/official/png/og-image-1200x630.png',
+        width: 1200,
+      },
+    ],
+    locale: 'pt_BR',
+    siteName: 'Althion',
+    title: 'Althion',
+    type: 'website',
+    url: '/',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    description: 'Infraestrutura de Recuperação e Performance da Agenda para clínicas.',
+    images: ['/brand/official/png/og-image-1200x630.png'],
+    title: 'Althion',
   },
 };
 

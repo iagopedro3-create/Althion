@@ -53,15 +53,18 @@ export function SiteHeader() {
     >
       <div className="site-header-inner">
         {/* Marca */}
-        <Link aria-label="Ir para a página inicial da Althion" className="brand" href="/">
-          <span
-            aria-hidden="true"
-            className="brand-mark"
-            style={{ background: '#18A987', color: '#061713' }}
-          >
-            A
-          </span>
-          <span>Althion</span>
+        <Link
+          aria-label="Ir para a página inicial da Althion"
+          className="brand site-brand"
+          href="/"
+        >
+          <img
+            alt="Althion"
+            className="site-brand-logo"
+            height="48"
+            src="/brand/official/svg/althion-lockup-negative.svg"
+            width="228"
+          />
         </Link>
 
         {/* Navegação desktop */}
