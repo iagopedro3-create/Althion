@@ -1,22 +1,17 @@
 import { z } from 'zod';
 
 export const diagnosisSchema = z.object({
-  avgResponseTime: z.string().trim().min(1).max(80),
-  city: z.string().trim().min(2).max(120),
   clinicName: z.string().trim().min(2).max(160),
   consent: z.literal(true, {
     message: 'É necessário aceitar os termos de consentimento para enviar.',
   }),
-  email: z.email().max(160),
-  investsAds: z.enum(['sim', 'nao']),
-  mainChannel: z.enum(['whatsapp', 'redes', 'site', 'indicacao']),
-  mainDifficulty: z.string().trim().min(2).max(1_000),
-  monthlyContacts: z.string().trim().min(1).max(40),
+  dailyContactAverage: z.coerce.number().int().min(0).max(100_000),
+  email: z.union([z.literal(''), z.email().max(160)]).optional(),
+  mainDifficulty: z.string().trim().min(10).max(2_000),
   name: z.string().trim().min(2).max(120),
-  professionalsCount: z.string().trim().min(1).max(40),
-  role: z.string().trim().min(2).max(120),
+  professionalsCount: z.coerce.number().int().min(1).max(10_000),
   specialty: z.string().trim().min(2).max(120),
-  website: z.string().max(0).optional(),
+  website: z.string().max(120).optional(),
   whatsapp: z
     .string()
     .trim()
@@ -27,5 +22,7 @@ export const diagnosisSchema = z.object({
 
 export type DiagnosisInput = z.infer<typeof diagnosisSchema>;
 
-// O canal permanece desligado até destino, retenção, base legal e antiabuso serem aprovados.
-export const DIAGNOSIS_CHANNEL_CONFIGURED = false;
+export const DIAGNOSIS_CHANNEL_CONFIGURED = Boolean(
+  process.env.SUPABASE_URL &&
+  (process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY),
+);

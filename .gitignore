@@ -25,3 +25,5 @@ Thumbs.db
 
 # OneDrive conflict artifacts
 *-conflicted copy*
+
+.vercel
